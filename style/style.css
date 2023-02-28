@@ -1,0 +1,5 @@
+/* Hide Streamlit Branding */
+#MainMenu {visibility: show !important;}
+footer {visibility: hidden !important;}
+header {visibility: show !important;}
+title {padding: 0px 0px;}
