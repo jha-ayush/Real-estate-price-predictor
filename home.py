@@ -3,9 +3,9 @@ import pandas as pd
 
 import matplotlib.pyplot as plt # Visualizations
 
-from sklearn.linear_model import LassoCV
+from sklearn.linear_model import LassoCV # Target variable prediction
 from sklearn.ensemble import BaggingRegressor
-from sklearn.metrics import r2_score
+from sklearn.metrics import r2_score, mean_squared_error
 
 # Import warnings + watermark
 from watermark import watermark
@@ -65,7 +65,8 @@ virgin_islands_by_zip = virgin_islands.groupby('zip_code').agg({'price': 'mean',
 
 # Title/ header
 st.header("Real estate price predictor")
-st.write(f"Select from different Machine Learning models to view the best housing predictor for your budget - 4,030 from U.S. Mainland, 136 from Puerto Rico and 6 from U.S. Virgin Islands",unsafe_allow_html=True)
+st.write(f"Select from different Machine Learning models to view the best housing predictor for your budget - <b>4,030</b> from U.S. Mainland, <b>136</b> from Puerto Rico and <b>6</b> from U.S. Virgin Islands",unsafe_allow_html=True)
+st.info("Download Kaggle `csv` data > Cleanup and group by regions with the following dimensions - `price`, `bed`, `bath`, `acre_lot`, `house_size`, `zip_code` > Display dataframe(s)/visualization(s) > Features Accuracy coefficient using LassoCV > Implement BaggingRegressor with R-squared score & Root Mean Squared Error metrics > Next steps ??")
 st.write("---")
 
 
@@ -141,7 +142,7 @@ with tab2:
         st.write(f"<b>Line graph for prediction 2025</b>",unsafe_allow_html=True)
         
     
-    if st.checkbox("U.S. Mainland Lasso Accuracy & Bagging Regressor ML"):
+    if st.checkbox("U.S. Mainland LassoCV Accuracy & Bagging Regressor ML"):
         # Split data into input (X) and output (y) variables
         mainland_by_zip_data=mainland_by_zip.values
         
@@ -170,14 +171,19 @@ with tab2:
         # Make predictions on the whole dataset
         y_pred = bagging_model.predict(X)
 
-        # Calculate R-squared score
+        # Calculate R-squared score and RMSE
         bagging_score = r2_score(y, y_pred)
-        st.write(f"BaggingRegressor R-squared score <b>{bagging_score:.3f}</b>",unsafe_allow_html=True)
+        bagging_rmse = mean_squared_error(y, y_pred, squared=False)
+
+        # Print BaggingRegressor model performance metrics
+        st.write("BaggingRegressor Model Performance Metrics:")
+        st.write(f"R-squared score: <b>{bagging_score:.3f}</b>",unsafe_allow_html=True)
+        st.write(f"Root Mean Squared Error: <b>{bagging_rmse:.3f}</b>",unsafe_allow_html=True)
 
     
     
     
-    if st.checkbox("Puerto Rico Lasso Accuracy & Bagging Regressor ML"):
+    if st.checkbox("Puerto Rico LassoCV Accuracy & Bagging Regressor ML"):
         # Split data into input (X) and output (y) variables
         puerto_rico_by_zip_data=puerto_rico_by_zip.values
         
@@ -207,14 +213,19 @@ with tab2:
         # Make predictions on the whole dataset
         y_pred = bagging_model.predict(X)
 
-        # Calculate R-squared score
+        # Calculate R-squared score and RMSE
         bagging_score = r2_score(y, y_pred)
-        st.write(f"BaggingRegressor R-squared score: <b>{bagging_score:.3f}</b>",unsafe_allow_html=True)
+        bagging_rmse = mean_squared_error(y, y_pred, squared=False)
+
+        # Print BaggingRegressor model performance metrics
+        st.write("BaggingRegressor Model Performance Metrics:")
+        st.write(f"R-squared score: <b>{bagging_score:.3f}</b>",unsafe_allow_html=True)
+        st.write(f"Root Mean Squared Error: <b>{bagging_rmse:.3f}</b>",unsafe_allow_html=True)
         
         
     
     
-    if st.checkbox("Virgin Islands Lasso Accuracy & Bagging Regressor ML"):
+    if st.checkbox("Virgin Islands LassoCV Accuracy & Bagging Regressor ML"):
         # Split data into input (X) and output (y) variables
         virgin_islands_by_zip_data=virgin_islands_by_zip.values
         
@@ -243,9 +254,14 @@ with tab2:
         # Make predictions on the whole dataset
         y_pred = bagging_model.predict(X)
 
-        # Calculate R-squared score
+        # Calculate R-squared score and RMSE
         bagging_score = r2_score(y, y_pred)
-        st.write(f"BaggingRegressor R-squared score: <b>{bagging_score:.3f}</b>",unsafe_allow_html=True)
+        bagging_rmse = mean_squared_error(y, y_pred, squared=False)
+
+        # Print BaggingRegressor model performance metrics
+        st.write("BaggingRegressor Model Performance Metrics:")
+        st.write(f"R-squared score: <b>{bagging_score:.3f}</b>",unsafe_allow_html=True)
+        st.write(f"Root Mean Squared Error: <b>{bagging_rmse:.3f}</b>",unsafe_allow_html=True)
         
         
         
