@@ -7,4 +7,4 @@ Real estate price predictor using Machine Learning models
   src="./Resources/apartments.png"
   alt="Real Estate"
   title=""
-  style="display: inline-block; margin: 0 auto; max-width: 200px">
+  style="display: inline-block; margin: 0 auto; max-width: 100px">
