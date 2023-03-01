@@ -19,3 +19,6 @@ Real estate price predictor using Machine Learning models
 ## Deployment
 
 ## Next steps
+
+
+<sub>Note: This app is for educational purposes only.</sub>
