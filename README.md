@@ -18,7 +18,12 @@ Real estate price predictor using Machine Learning models
 
 - `conda create -n [name] python=3.9`
 - `conda activate [name]`
+- `git clone` repo
 - `pip install -r requirements.txt`
+- In Terminal `cd` into cloned repo
+- `cd` to directory where `home.py` file is located
+- `streamlit run home.py`
+- The app will run on `http://localhost:8501/`
 
 ## Deployment
 
