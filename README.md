@@ -14,6 +14,12 @@ Real estate price predictor using Machine Learning models
 
 ## Technologies
 
+- `python`
+- `anaconda`
+- `pandas    : 1.3.5`
+- `matplotlib: 3.5.3`
+- `streamlit : 1.18.1`
+
 ## Environment setup
 
 - `conda create -n [name] python=3.9`
