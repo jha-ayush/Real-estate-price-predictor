@@ -18,6 +18,14 @@ Real estate price predictor using Machine Learning models
 
 ## Deployment
 
+## Contributors
+
+[Christine Pham](https://github.com/cpham35?tab=repositories) - `cpham35`
+
+[Kranthi C Mitta](https://github.com/kranthicmitta?tab=repositories) - `kranthicmitta` 
+
+[Ayush Jha](https://github.com/jha-ayush?tab=repositories) - `jha-ayush`
+
 ## Next steps
 
 
