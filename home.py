@@ -55,9 +55,9 @@ virgin_islands = load_data("./Resources/virgin_islands_data.csv")
 
 
 # Create dataframes with aggregated Zip Code Values
-mainland_by_zip = mainland.groupby('zip_code').agg({'price': 'mean', 'house_size': 'mean'}).round(2)
-puerto_rico_by_zip = puerto_rico.groupby('zip_code').agg({'price': 'mean', 'house_size': 'mean'}).round(2)
-virgin_islands_by_zip = virgin_islands.groupby('zip_code').agg({'price': 'mean', 'house_size': 'mean'}).round(2)
+mainland_by_bed = mainland.groupby('zip_code').agg({'price': 'mean', 'bed': 'mean'}).round(2)
+puerto_rico_by_bed = puerto_rico.groupby('zip_code').agg({'price': 'mean', 'bed': 'mean'}).round(2)
+virgin_islands_by_bed = virgin_islands.groupby('zip_code').agg({'price': 'mean', 'bed': 'mean'}).round(2)
 
 
 #------------------------------------------------------------------#
@@ -66,50 +66,34 @@ virgin_islands_by_zip = virgin_islands.groupby('zip_code').agg({'price': 'mean',
 # Title/ header
 st.header("Real estate price predictor")
 st.write(f"Select from different Machine Learning models to view the best housing predictor for your budget - <b>4,030</b> from U.S. Mainland, <b>136</b> from Puerto Rico and <b>6</b> from U.S. Virgin Islands",unsafe_allow_html=True)
-st.info("Download Kaggle `csv` data > Cleanup and group by regions with the following dimensions - `price`, `bed`, `bath`, `acre_lot`, `house_size`, `zip_code` > Display dataframe(s)/visualization(s) > Features Accuracy coefficient using LassoCV > Implement BaggingRegressor with R-squared score & Root Mean Squared Error metrics > Next steps ??")
+st.info("Download Kaggle `csv` data > Cleanup and group by regions with the following dimensions - `price`, `bed`, `bath`, `acre_lot`, `house_size`, `zip_code` > Funnel down to `price`, `bed`, `bath`, `zip_code` > Remove outliers > Focus on PR & VI only > Display dataframe(s)/visualization(s) > Features Accuracy coefficient using LassoCV > Implement BaggingRegressor with R-squared score & Root Mean Squared Error metrics > Next steps ??")
 st.write("---")
 
 
 #------------------------------------------------------------------#
 
 
-tab1, tab2, tab3 = st.tabs(["Intro", "Accuracy & ML", "Config"])
+tab1, tab2, tab3 = st.tabs(["Intro", "Config", "Accuracy & ML"])
 
 with tab1:
     
     # Show dataset grouped by regions
     
-    # U.S. Mainland
-    if st.checkbox("View U.S. Mainland data"):
-        st.write(f"<b>Clean Data</b>",mainland,unsafe_allow_html=True)
-        st.write(f"<b>Cleaned data visualization - add desc</b>",unsafe_allow_html=True)
-        st.bar_chart(mainland,x="house_size",y="price",width=450, height=450,use_container_width=True)
-        
-        st.write(f"<b>Data agg by zip</b>",mainland_by_zip,unsafe_allow_html=True)
-        st.write(f"<b>Visualization by zip - add desc</b>",unsafe_allow_html=True)
-        st.bar_chart(mainland_by_zip, x="house_size", y="price", height=450, use_container_width=True)
-        
-        st.write(mainland_by_zip.shape)
-        st.write(mainland_by_zip.keys())
-        st.write(f"<b>Data descriptive statistics</b>",unsafe_allow_html=True)
-        st.write(mainland_by_zip.describe())
-        
-        
     
     # Puerto Rico
     if st.checkbox("View Puerto Rico data"):        
         st.write(f"<b>Clean Data</b>",puerto_rico,unsafe_allow_html=True)
         st.write(f"<b>Cleaned data visualization - add desc</b>",unsafe_allow_html=True)
-        st.bar_chart(puerto_rico,x="house_size",y="price",width=450, height=450,use_container_width=True)
+        st.bar_chart(puerto_rico,x="bed",y="price",width=450, height=450,use_container_width=True)
         
-        st.write(f"<b>Data agg by zip</b>",puerto_rico_by_zip,unsafe_allow_html=True)
+        st.write(f"<b>Data agg by zip</b>",puerto_rico_by_bed,unsafe_allow_html=True)
         st.write(f"<b>Visualization by zip - add desc</b>",unsafe_allow_html=True)
-        st.bar_chart(puerto_rico_by_zip, x="house_size", y="price", height=450, use_container_width=True)
+        st.bar_chart(puerto_rico_by_bed, x="bed", y="price", height=450, use_container_width=True)
         
-        st.write(puerto_rico_by_zip.shape)
-        st.write(puerto_rico_by_zip.keys())
+        st.write(puerto_rico_by_bed.shape)
+        st.write(puerto_rico_by_bed.keys())
         st.write(f"<b>Data descriptive statistics</b>",unsafe_allow_html=True)
-        st.write(puerto_rico_by_zip.describe())
+        st.write(puerto_rico_by_bed.describe())
         
         
     
@@ -117,16 +101,16 @@ with tab1:
     if st.checkbox("View U.S. Virgin Islands data"):        
         st.write(f"<b>Clean Data</b>",virgin_islands,unsafe_allow_html=True)
         st.write(f"<b>Cleaned data visualization - add desc</b>",unsafe_allow_html=True)
-        st.bar_chart(virgin_islands,x="house_size",y="price",width=450, height=450,use_container_width=True)
+        st.bar_chart(virgin_islands,x="bed",y="price",width=450, height=450,use_container_width=True)
         
-        st.write(f"<b>Data agg by zip</b>",virgin_islands_by_zip,unsafe_allow_html=True)
+        st.write(f"<b>Data agg by zip</b>",virgin_islands_by_bed,unsafe_allow_html=True)
         st.write(f"<b>Visualization by zip - add desc</b>",unsafe_allow_html=True)
-        st.bar_chart(virgin_islands_by_zip, x="house_size", y="price", height=450, use_container_width=True)
+        st.bar_chart(virgin_islands_by_bed, x="bed", y="price", height=450, use_container_width=True)
         
-        st.write(virgin_islands_by_zip.shape)
-        st.write(virgin_islands_by_zip.keys())
+        st.write(virgin_islands_by_bed.shape)
+        st.write(virgin_islands_by_bed.keys())
         st.write(f"<b>Data descriptive statistics</b>",unsafe_allow_html=True)
-        st.write(virgin_islands_by_zip.describe())
+        st.write(virgin_islands_by_bed.describe())
         
         
              
@@ -134,6 +118,36 @@ with tab1:
 
 
 with tab2:
+
+    # Define the location dropdown
+    location_options = [ "Puerto Rico", "U.S. Virgin Islands"]
+    location = st.selectbox("Select a location", location_options)
+
+
+    # Print the location and state
+    st.write(f"Selected region: <b>{location}</b>",unsafe_allow_html=True)
+
+    st.write("---")
+
+    # Define dropdown number of bedrooms
+    dropdown_bedroom = ['1','2','3','4','5','6','7','8']
+
+    # Create dropdown
+    selected_option = st.selectbox('Select bedroom count:', dropdown_bedroom)
+
+
+    # Define dropdown number of bathrooms
+    dropdown_bathroom = ['1','2','3','4','5','6','7']
+
+    # Create dropdown
+    selected_option = st.selectbox('Select bathroom count:', dropdown_bathroom)
+
+
+#------------------------------------------------------------------#
+
+
+
+with tab3:
     if st.checkbox("To Dos"):
         st.write(f"<b>WIP...⏳</b>",unsafe_allow_html=True)
         st.write(f"<b>Pick 1 or 2 Accuracy score metrics</b>",unsafe_allow_html=True)
@@ -144,10 +158,10 @@ with tab2:
     
     if st.checkbox("U.S. Mainland LassoCV Accuracy & Bagging Regressor ML"):
         # Split data into input (X) and output (y) variables
-        mainland_by_zip_data=mainland_by_zip.values
+        mainland_by_bed_data=mainland_by_bed.values
         
         # Split data into input (X) and output (y) variables
-        X, y = mainland_by_zip_data[:, :-1], mainland_by_zip_data[:, -1]
+        X, y = mainland_by_bed_data[:, :-1], mainland_by_bed_data[:, -1]
         
         # Define LassoCV model
         model = LassoCV()
@@ -185,10 +199,10 @@ with tab2:
     
     if st.checkbox("Puerto Rico LassoCV Accuracy & Bagging Regressor ML"):
         # Split data into input (X) and output (y) variables
-        puerto_rico_by_zip_data=puerto_rico_by_zip.values
+        puerto_rico_by_bed_data=puerto_rico_by_bed.values
         
         # Split data into input (X) and output (y) variables
-        X, y = puerto_rico_by_zip_data[:, :-1], puerto_rico_by_zip_data[:, -1]
+        X, y = puerto_rico_by_bed_data[:, :-1], puerto_rico_by_bed_data[:, -1]
         
         # Define LassoCV model
         model = LassoCV()
@@ -227,10 +241,10 @@ with tab2:
     
     if st.checkbox("Virgin Islands LassoCV Accuracy & Bagging Regressor ML"):
         # Split data into input (X) and output (y) variables
-        virgin_islands_by_zip_data=virgin_islands_by_zip.values
+        virgin_islands_by_bed_data=virgin_islands_by_bed.values
         
         # Split data into input (X) and output (y) variables
-        X, y = virgin_islands_by_zip_data[:, :-1], virgin_islands_by_zip_data[:, -1]
+        X, y = virgin_islands_by_bed_data[:, :-1], virgin_islands_by_bed_data[:, -1]
         
         # Define LassoCV model
         model = LassoCV()
@@ -270,43 +284,6 @@ with tab2:
 
 
 
-with tab3:
-    if st.checkbox("Config"):
-        # Define the location dropdown
-        location_options = ["U.S. Mainland", "Puerto Rico", "U.S. Virgin Islands"]
-        location = st.selectbox("Select a location", location_options)
 
-        # Define the state dropdown (only visible if U.S. Mainland is selected)
-        if location == "U.S. Mainland":
-            state_options = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware",
-                             "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa",
-                             "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota",
-                             "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
-                             "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon",
-                             "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah",
-                             "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"]
-            state = st.selectbox("Select a state", state_options)
-        else:
-            state = None
-
-        # Print the location and state
-        st.write(f"Selected region: <b>{location}</b>",unsafe_allow_html=True)
-        if state:
-            st.write(f"Selected state: <b>{state}</b>",unsafe_allow_html=True)
-        
-        st.write("---")
-        
-        # Define dropdown number of bedrooms
-        dropdown_bedroom = ['1','2','3','4','5','6']
-
-        # Create dropdown
-        selected_option = st.selectbox('Select bedroom count:', dropdown_bedroom)
-        
-        
-        # Define dropdown number of bathrooms
-        dropdown_bathroom = ['1','2','3','4']
-
-        # Create dropdown
-        selected_option = st.selectbox('Select bathroom count:', dropdown_bathroom)
         
         
