@@ -16,6 +16,10 @@ Real estate price predictor using Machine Learning models
 
 ## Environment setup
 
+- `conda create -n [name] python=3.9`
+- `conda activate [name]`
+- `pip install -r requirements.txt`
+
 ## Deployment
 
 ## Contributors
