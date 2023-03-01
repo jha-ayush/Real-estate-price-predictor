@@ -125,19 +125,19 @@ with tab2:
 
 
     # Print the location and state
-    st.write(f"Selected region: <b>{location}</b>",unsafe_allow_html=True)
+    st.write(f"Selected location: <b>{location}</b>",unsafe_allow_html=True)
 
     st.write("---")
 
     # Define dropdown number of bedrooms
-    dropdown_bedroom = ['1','2','3','4','5','6','7','8']
+    dropdown_bedroom = ['1','2','3','4','5','6','7']
 
     # Create dropdown
     selected_option = st.selectbox('Select bedroom count:', dropdown_bedroom)
 
 
     # Define dropdown number of bathrooms
-    dropdown_bathroom = ['1','2','3','4','5','6','7']
+    dropdown_bathroom = ['1','2','3','4','5']
 
     # Create dropdown
     selected_option = st.selectbox('Select bathroom count:', dropdown_bathroom)
