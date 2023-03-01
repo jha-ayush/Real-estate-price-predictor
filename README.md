@@ -8,3 +8,14 @@ Real estate price predictor using Machine Learning models
   alt="Real Estate"
   title=""
   style="display: inline-block; margin: 0 auto; max-width: 100px">
+  
+  
+## Objective
+
+## Technologies
+
+## Environment setup
+
+## Deployment
+
+## Next steps
