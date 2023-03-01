@@ -73,7 +73,7 @@ st.write("---")
 #------------------------------------------------------------------#
 
 
-tab1, tab2 = st.tabs(["Intro", "Accuracy & ML"])
+tab1, tab2, tab3 = st.tabs(["Intro", "Accuracy & ML", "Config"])
 
 with tab1:
     
@@ -268,3 +268,45 @@ with tab2:
 
 #------------------------------------------------------------------#
 
+
+
+with tab3:
+    if st.checkbox("Config"):
+        # Define the location dropdown
+        location_options = ["U.S. Mainland", "Puerto Rico", "U.S. Virgin Islands"]
+        location = st.selectbox("Select a location", location_options)
+
+        # Define the state dropdown (only visible if U.S. Mainland is selected)
+        if location == "U.S. Mainland":
+            state_options = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware",
+                             "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa",
+                             "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota",
+                             "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
+                             "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon",
+                             "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah",
+                             "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"]
+            state = st.selectbox("Select a state", state_options)
+        else:
+            state = None
+
+        # Print the location and state
+        st.write(f"Selected region: <b>{location}</b>",unsafe_allow_html=True)
+        if state:
+            st.write(f"Selected state: <b>{state}</b>",unsafe_allow_html=True)
+        
+        st.write("---")
+        
+        # Define dropdown number of bedrooms
+        dropdown_bedroom = ['1','2','3','4','5','6']
+
+        # Create dropdown
+        selected_option = st.selectbox('Select bedroom count:', dropdown_bedroom)
+        
+        
+        # Define dropdown number of bathrooms
+        dropdown_bathroom = ['1','2','3','4']
+
+        # Create dropdown
+        selected_option = st.selectbox('Select bathroom count:', dropdown_bathroom)
+        
+        
