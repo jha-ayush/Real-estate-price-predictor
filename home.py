@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-import matplotlib.pyplot as plt # Visualizations
+import plotly.express as px # Visualizations
 
 from sklearn.linear_model import LassoCV # Target variable prediction
 from sklearn.ensemble import BaggingRegressor
@@ -16,6 +16,7 @@ print(watermark(iversions=True, globals_=globals()))
 
 
 #------------------------------------------------------------------#
+
 
 # Set page configurations - ALWAYS at the top
 st.set_page_config(page_title="Real estate price predictor",
@@ -47,17 +48,16 @@ def load_data(filename):
         
 # Create variables to load datafiles as dataframes
 mainland = load_data("./Resources/mainland_data.csv")
-puerto_rico = load_data("./Resources/puerto_rico_data.csv")
-virgin_islands = load_data("./Resources/virgin_islands_data.csv")
 
 
 #------------------------------------------------------------------#
 
 
-# Create dataframes with aggregated Zip Code Values
-mainland_by_bed = mainland.groupby('zip_code').agg({'price': 'mean', 'bed': 'mean'}).round(2)
-puerto_rico_by_bed = puerto_rico.groupby('zip_code').agg({'price': 'mean', 'bed': 'mean'}).round(2)
-virgin_islands_by_bed = virgin_islands.groupby('zip_code').agg({'price': 'mean', 'bed': 'mean'}).round(2)
+# Create dataframes with aggregated by State
+mainland_by_state = mainland.groupby('state').agg({'price': 'mean', 'bed': 'mean'}).round(2)
+
+# Create dataframes with aggregated by Zip Code Values
+mainland_by_zip = mainland.groupby('zip_code').agg({'price': 'mean', 'bed': 'mean'}).round(2)
 
 
 #------------------------------------------------------------------#
@@ -65,225 +65,145 @@ virgin_islands_by_bed = virgin_islands.groupby('zip_code').agg({'price': 'mean',
 
 # Title/ header
 st.header("Real estate price predictor")
-st.write(f"Select from different Machine Learning models to view the best housing predictor for your budget - <b>4,030</b> from U.S. Mainland, <b>136</b> from Puerto Rico and <b>6</b> from U.S. Virgin Islands",unsafe_allow_html=True)
-st.info("Download Kaggle `csv` data > Cleanup and group by regions with the following dimensions - `price`, `bed`, `bath`, `acre_lot`, `house_size`, `zip_code` > Funnel down to `price`, `bed`, `bath`, `zip_code` > Remove outliers > Focus on PR & VI only > Display dataframe(s)/visualization(s) > Features Accuracy coefficient using LassoCV > Implement BaggingRegressor with R-squared score & Root Mean Squared Error metrics > Next steps ??")
+st.write(f"Select from different Machine Learning models to view the best housing predictor for your budget, grouped by Zip Code - <b>4,051</b> from U.S. Mainland, <b>136</b> from Puerto Rico and <b>6</b> from U.S. Virgin Islands",unsafe_allow_html=True)
+st.info("Download Kaggle `csv` data >> Cleanup and group by regions with the following dimensions - `price`, `bed`, `bath`, `acre_lot`, `house_size`, `zip_code` >> Funnel down to `price`, `bed`, `bath`, `zip_code` >> Remove outliers >> Focus on U.S. Mainland data only >> Display dataframe(s)/visualization(s) >> Run `lazypredict` analysis >> Features Accuracy coefficient using LassoCV >> Implement BaggingRegressor with R-squared score & Root Mean Squared Error metrics >> Next steps ??")
 st.write("---")
 
 
 #------------------------------------------------------------------#
 
 
-tab1, tab2, tab3 = st.tabs(["Intro", "Config", "Accuracy & ML"])
+tab1, tab2 = st.tabs(["Intro", "Accuracy & ML"])
 
 with tab1:
+        
+    # Define state and number of bedrooms and bathrooms dropdowns
+    state_options = mainland["state"].unique()
+    state_selected = st.selectbox("Select a state", state_options)
+
+    bedrooms_options = [2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8]
+    bedrooms_selected = st.selectbox("Select number of bedrooms", bedrooms_options)
+
+    bathrooms_options = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7]
+    bathrooms_selected = st.selectbox("Select number of bathrooms", bathrooms_options)
+
+    # Filter data based on user selections
+    filtered_df = mainland[(mainland["state"] == state_selected) & 
+                     (mainland["bed"] == bedrooms_selected) & 
+                     (mainland["bath"] == bathrooms_selected)]
     
-    # Show dataset grouped by regions
+    
+    if st.checkbox(f"Display data for the above criteria for {state_selected}"):
+        # Show table
+        st.write(f"<b>Dataframe for the above selected criteria for {state_selected}</b>",unsafe_allow_html=True)
+        st.write(filtered_df)
+        st.write(f"<b>Summary statistics for the above selected criteria for {state_selected}</b>",unsafe_allow_html=True)
+        st.write(filtered_df.describe().round(2))
+
+        # Show bar chart
+        st.write(f"<b>Zip code vs Price for the above selected criteria for {state_selected}</b>",unsafe_allow_html=True)
+        fig = px.bar(filtered_df, x=filtered_df["zip_code"].apply(lambda x: '{0:0>5}'.format(x)), y="price")
+        fig.update_xaxes(title_text="Zip Code")
+        fig.update_yaxes(title_text="Price (USD)")
+        st.plotly_chart(fig)
+
+        
+    st.write("---")
+    
+        
+    if st.checkbox(f"Display top 10 zip codes per price for the above criteria for {state_selected}"):
+        # Show list of top 10 zip codes based on overall price
+        top_zipcodes = filtered_df.groupby("zip_code")["price"].mean().reset_index().sort_values(by="price", ascending=False).head(10)
+        top_zipcodes["zip_code"] = top_zipcodes["zip_code"].apply(lambda x: '{0:0>5}'.format(x))
+        top_zipcodes["price"] = top_zipcodes["price"].round(2)
+
+        st.write("Top 10 zip codes:")
+        st.write(top_zipcodes.set_index("zip_code"))
     
     
-    # Puerto Rico
-    if st.checkbox("View Puerto Rico data"):        
-        st.write(f"<b>Clean Data</b>",puerto_rico,unsafe_allow_html=True)
-        st.write(f"<b>Cleaned data visualization - add desc</b>",unsafe_allow_html=True)
-        st.bar_chart(puerto_rico,x="bed",y="price",width=450, height=450,use_container_width=True)
-        
-        st.write(f"<b>Data agg by zip</b>",puerto_rico_by_bed,unsafe_allow_html=True)
-        st.write(f"<b>Visualization by zip - add desc</b>",unsafe_allow_html=True)
-        st.bar_chart(puerto_rico_by_bed, x="bed", y="price", height=450, use_container_width=True)
-        
-        st.write(puerto_rico_by_bed.shape)
-        st.write(puerto_rico_by_bed.keys())
-        st.write(f"<b>Data descriptive statistics</b>",unsafe_allow_html=True)
-        st.write(puerto_rico_by_bed.describe())
-        
-        
+    st.write("---")
     
-    # U.S. Virgin Islands
-    if st.checkbox("View U.S. Virgin Islands data"):        
-        st.write(f"<b>Clean Data</b>",virgin_islands,unsafe_allow_html=True)
-        st.write(f"<b>Cleaned data visualization - add desc</b>",unsafe_allow_html=True)
-        st.bar_chart(virgin_islands,x="bed",y="price",width=450, height=450,use_container_width=True)
+    
+    # Select a single zipcode from the Top 10 list for further analysis
+    if st.checkbox(f"LassoCV Accuracy & Bagging Regressor ML for {state_selected}"):
+        # Check if top_zipcodes is empty
+        if top_zipcodes.empty:
+            st.write("Please select the Display data checkbox above to populate top 10 zip codes.")
+        else:
+            zip_selected = st.selectbox("Select a zip code for ML analysis", top_zipcodes["zip_code"])
+
+            # Filter the dataframe by the selected zip code
+            data = filtered_df[filtered_df['zip_code'] == zip_selected]
+            data = data.drop_duplicates()
+            st.write(f"Number of available properties in <b>{zip_selected}</b> zip code: <b>{len(data)}</b>",unsafe_allow_html=True)
+            st.write(data)
+            
+    
+            st.write("---")
+    
+                
+            
+            
+                 
+                           
         
-        st.write(f"<b>Data agg by zip</b>",virgin_islands_by_bed,unsafe_allow_html=True)
-        st.write(f"<b>Visualization by zip - add desc</b>",unsafe_allow_html=True)
-        st.bar_chart(virgin_islands_by_bed, x="bed", y="price", height=450, use_container_width=True)
-        
-        st.write(virgin_islands_by_bed.shape)
-        st.write(virgin_islands_by_bed.keys())
-        st.write(f"<b>Data descriptive statistics</b>",unsafe_allow_html=True)
-        st.write(virgin_islands_by_bed.describe())
         
         
-             
+        
+        # Split data into input (X) and output (y) variables
+        if type(zip_selected) == dict:
+            zip_selected_data = zip_selected.values()
+        else:
+            # Handle the case where zip_selected is not a dictionary
+            st.write(zip_selected_data)
+
+            # Split data into input (X) and output (y) variables
+            X, y = zip_selected_data[:, :-1], zip_selected_data[:, -1]
+            st.write(X)
+            st.write(y)
+
+            # Define LassoCV model
+            model = LassoCV()
+
+            # Fit the model on the whole dataset
+            model.fit(X, y)
+
+            # Make predictions on the whole dataset
+            y_pred = model.predict(X)
+
+            # Calculate R-squared score
+            lasso_score = r2_score(y, y_pred)
+            st.write(f"LassoCV R-squared score: <b>{lasso_score:.3f}</b>",unsafe_allow_html=True)
+
+            # Define BaggingRegressor model
+            bagging_model = BaggingRegressor(base_estimator=model, n_estimators=50, random_state=1)
+
+            # Fit the BaggingRegressor model on the whole dataset
+            bagging_model.fit(X, y)
+
+            # Make predictions on the whole dataset
+            y_pred = bagging_model.predict(X)
+
+            # Calculate R-squared score and RMSE
+            bagging_score = r2_score(y, y_pred)
+            bagging_rmse = mean_squared_error(y, y_pred, squared=False)
+
+            # Print BaggingRegressor model performance metrics
+            st.write("BaggingRegressor Model Performance Metrics:")
+            st.write(f"R-squared score: <b>{bagging_score:.3f}</b>",unsafe_allow_html=True)
+            st.write(f"Root Mean Squared Error: <b>{bagging_rmse:.3f}</b>",unsafe_allow_html=True)
+    
+    
 #------------------------------------------------------------------#
 
 
 with tab2:
 
-    # Define the location dropdown
-    location_options = [ "Puerto Rico", "U.S. Virgin Islands"]
-    location = st.selectbox("Select a location", location_options)
+    st.write(f"<b>To Dos...⏳</b>",unsafe_allow_html=True)
+    st.write("<b>'We will use these scoring metrics' - Ridge + LassoCV + ElasticNetCV >> feed into ML model - BaggingReggresor</b>",unsafe_allow_html=True)
 
-
-    # Print the location and state
-    st.write(f"Selected location: <b>{location}</b>",unsafe_allow_html=True)
-
-    st.write("---")
-
-    # Define dropdown number of bedrooms
-    dropdown_bedroom = ['1','2','3','4','5','6','7']
-
-    # Create dropdown
-    selected_option = st.selectbox('Select bedroom count:', dropdown_bedroom)
-
-
-    # Define dropdown number of bathrooms
-    dropdown_bathroom = ['1','2','3','4','5']
-
-    # Create dropdown
-    selected_option = st.selectbox('Select bathroom count:', dropdown_bathroom)
-
-
-#------------------------------------------------------------------#
-
-
-
-with tab3:
-    if st.checkbox("To Dos"):
-        st.write(f"<b>WIP...⏳</b>",unsafe_allow_html=True)
-        st.write(f"<b>Pick 1 or 2 Accuracy score metrics</b>",unsafe_allow_html=True)
-        st.write("<b>'We used these ML models' - Ridge + LassoCV + ElasticNetCV >> feed into BaggingReggresor</b>",unsafe_allow_html=True)
-        
-        st.write(f"<b>Line graph for prediction 2025</b>",unsafe_allow_html=True)
-        
-    
-    if st.checkbox("U.S. Mainland LassoCV Accuracy & Bagging Regressor ML"):
-        # Split data into input (X) and output (y) variables
-        mainland_by_bed_data=mainland_by_bed.values
-        
-        # Split data into input (X) and output (y) variables
-        X, y = mainland_by_bed_data[:, :-1], mainland_by_bed_data[:, -1]
-        
-        # Define LassoCV model
-        model = LassoCV()
-
-        # Fit the model on the whole dataset
-        model.fit(X, y)
-
-        # Make predictions on the whole dataset
-        y_pred = model.predict(X)
-
-        # Calculate R-squared score
-        lasso_score = r2_score(y, y_pred)
-        st.write(f"LassoCV R-squared score: <b>{lasso_score:.3f}</b>",unsafe_allow_html=True)
-        
-        # Define BaggingRegressor model
-        bagging_model = BaggingRegressor(base_estimator=model, n_estimators=50, random_state=1)
-
-        # Fit the BaggingRegressor model on the whole dataset
-        bagging_model.fit(X, y)
-
-        # Make predictions on the whole dataset
-        y_pred = bagging_model.predict(X)
-
-        # Calculate R-squared score and RMSE
-        bagging_score = r2_score(y, y_pred)
-        bagging_rmse = mean_squared_error(y, y_pred, squared=False)
-
-        # Print BaggingRegressor model performance metrics
-        st.write("BaggingRegressor Model Performance Metrics:")
-        st.write(f"R-squared score: <b>{bagging_score:.3f}</b>",unsafe_allow_html=True)
-        st.write(f"Root Mean Squared Error: <b>{bagging_rmse:.3f}</b>",unsafe_allow_html=True)
-
-    
-    
-    
-    if st.checkbox("Puerto Rico LassoCV Accuracy & Bagging Regressor ML"):
-        # Split data into input (X) and output (y) variables
-        puerto_rico_by_bed_data=puerto_rico_by_bed.values
-        
-        # Split data into input (X) and output (y) variables
-        X, y = puerto_rico_by_bed_data[:, :-1], puerto_rico_by_bed_data[:, -1]
-        
-        # Define LassoCV model
-        model = LassoCV()
-
-        # Fit the model on the whole dataset
-        model.fit(X, y)
-
-        # Make predictions on the whole dataset
-        y_pred = model.predict(X)
-
-        # Calculate R-squared score
-        lasso_score = r2_score(y, y_pred)
-        st.write(f"LassoCV R-squared score: <b>{lasso_score:.3f}</b>",unsafe_allow_html=True)
-        
-        
-        # Define BaggingRegressor model
-        bagging_model = BaggingRegressor(base_estimator=model, n_estimators=50, random_state=1)
-
-        # Fit the BaggingRegressor model on the whole dataset
-        bagging_model.fit(X, y)
-
-        # Make predictions on the whole dataset
-        y_pred = bagging_model.predict(X)
-
-        # Calculate R-squared score and RMSE
-        bagging_score = r2_score(y, y_pred)
-        bagging_rmse = mean_squared_error(y, y_pred, squared=False)
-
-        # Print BaggingRegressor model performance metrics
-        st.write("BaggingRegressor Model Performance Metrics:")
-        st.write(f"R-squared score: <b>{bagging_score:.3f}</b>",unsafe_allow_html=True)
-        st.write(f"Root Mean Squared Error: <b>{bagging_rmse:.3f}</b>",unsafe_allow_html=True)
-        
-        
-    
-    
-    if st.checkbox("Virgin Islands LassoCV Accuracy & Bagging Regressor ML"):
-        # Split data into input (X) and output (y) variables
-        virgin_islands_by_bed_data=virgin_islands_by_bed.values
-        
-        # Split data into input (X) and output (y) variables
-        X, y = virgin_islands_by_bed_data[:, :-1], virgin_islands_by_bed_data[:, -1]
-        
-        # Define LassoCV model
-        model = LassoCV()
-
-        # Fit the model on the whole dataset
-        model.fit(X, y)
-
-        # Make predictions on the whole dataset
-        y_pred = model.predict(X)
-
-        # Calculate R-squared score
-        lasso_score = r2_score(y, y_pred)
-        st.write(f"LassoCV R-squared score: <b>{lasso_score:.3f}</b>",unsafe_allow_html=True)
-        
-        # Define BaggingRegressor model
-        bagging_model = BaggingRegressor(base_estimator=model, n_estimators=50, random_state=1, bootstrap_features=True)
-
-        # Fit the BaggingRegressor model on the whole dataset
-        bagging_model.fit(X, y)
-
-        # Make predictions on the whole dataset
-        y_pred = bagging_model.predict(X)
-
-        # Calculate R-squared score and RMSE
-        bagging_score = r2_score(y, y_pred)
-        bagging_rmse = mean_squared_error(y, y_pred, squared=False)
-
-        # Print BaggingRegressor model performance metrics
-        st.write("BaggingRegressor Model Performance Metrics:")
-        st.write(f"R-squared score: <b>{bagging_score:.3f}</b>",unsafe_allow_html=True)
-        st.write(f"Root Mean Squared Error: <b>{bagging_rmse:.3f}</b>",unsafe_allow_html=True)
-        
+    st.write(f"<b>Line graph for prediction 2025</b>",unsafe_allow_html=True)
         
         
 
 #------------------------------------------------------------------#
-
-
-
-
-        
-        

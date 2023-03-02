@@ -1,7 +1,6 @@
 # Real-estate-price-predictor
+
 Real estate price predictor using Machine Learning models
-
-
 
 <img
   src="./Resources/apartments.png"
