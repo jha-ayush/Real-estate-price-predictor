@@ -198,7 +198,7 @@ with tab1:
                 
             ############### Select a Regression model ###############
             
-            model_options = ["LassoCV", "Ridge", "ElasticNet", "BaggingRegressor", "GradientBoostingRegressor"]
+            model_options = ["LassoCV", "Ridge", "ElasticNet", "BaggingRegressor", "GradientBoostingRegressor", "RandomForestRegressor"]
             model_selected = st.selectbox("Select a model for regression analysis", model_options)
 
             ############### Add Title for Model Training ###############
@@ -216,8 +216,11 @@ with tab1:
                     model = ElasticNet() 
                 elif model_selected == "BaggingRegressor":
                     model = BaggingRegressor()
-                else:
+                elif model_selected == "GradientBoostingRegressor":
                     model = GradientBoostingRegressor()
+                else:
+                    model = RandomForestRegressor()
+                    
 
                 ############### Train the model ###############
                 model.fit(X_train, y_train)
@@ -230,13 +233,10 @@ with tab1:
 
                 ############### Display results ###############
                 st.write(f"Model: <b>{model_selected}</b>",unsafe_allow_html=True)
-                st.write(f"Score: <b>{score:.2f}</b>",unsafe_allow_html=True)
+                st.write(f"Mean Absolute Error (MAE) Score: <b>{score:.2f}</b>",unsafe_allow_html=True)
                 st.write(f"<b>🚧 Add metrics and price prediction explainations 🚧</b>",unsafe_allow_html=True)
                 
-                
-
-
-                
+                              
                 
                 
                 
@@ -347,7 +347,7 @@ with tab2:
                 score = mean_absolute_error(y_test, y_pred)
 
                 ############### Display results ###############
-                st.write(f"Mean Absolute Error Score + BaggingRegressor(): <b>{score:.2f}</b>",unsafe_allow_html=True)
+                st.write(f"Mean Absolute Error Score (MAE) + BaggingRegressor(): <b>{score:.2f}</b>",unsafe_allow_html=True)
                 st.write(f"<b>🚧 Add metrics and price prediction explainations 🚧</b>",unsafe_allow_html=True)
     
     
@@ -462,7 +462,7 @@ with tab3:
                 score = mean_absolute_error(y_test, y_pred)
 
                 ############### Display results ###############
-                st.write(f"Mean Absolute Error Score + GradientBoostingRegressor(): <b>{score:.2f}</b>",unsafe_allow_html=True)
+                st.write(f"Mean Absolute Error (MAE) Score + GradientBoostingRegressor(): <b>{score:.2f}</b>",unsafe_allow_html=True)
                 st.write(f"<b>🚧 Add metrics and price prediction explainations 🚧</b>",unsafe_allow_html=True)
     
     
