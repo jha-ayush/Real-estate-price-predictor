@@ -134,6 +134,10 @@ with tab1:
     
     
     
+    st.write("---")
+        
+        
+    
     if st.checkbox(f"Display data for the above criteria for {state_selected}"):
         ############### Show table ###############
         st.write(f"<b>Dataframe for the above selected criteria for {state_selected}</b>",unsafe_allow_html=True)
@@ -153,6 +157,7 @@ with tab1:
         
     st.write("---")
     
+    
     ############### Show list of top 15 zip codes based on overall price ###############  
     if st.checkbox(f"Display top 15 zip codes by median price for the selected state of {state_selected}"):
         top_zipcodes = filtered_mainland_df.groupby("zip_code")["price"].mean().reset_index().sort_values(by="price", ascending=False).head(15)
@@ -166,13 +171,13 @@ with tab1:
     st.write("---")
     
     
-    ############### Select a single zipcode from the Top 10 list for further analysis ###############
-    if st.checkbox(f"Machine Learning model run for {bedrooms_selected} bedroom(s) & {bedrooms_selected} bathroom(s) in the state of {state_selected}"):
+    ############### Select a single zipcode from the top 15 list for further analysis ###############
+    if st.checkbox(f"Display price predictions for {bedrooms_selected} bedroom(s) & {bedrooms_selected} bathroom(s) in the top 15 zipcodes in {state_selected}"):
         ############### Check if top_zipcodes is empty ###############
         if top_zipcodes.empty:
-            st.write("Please select the Display data checkbox above to populate top 10 zip codes.")
+            st.write("Please select the Display data checkbox above to populate top 15 zip codes.")
         else:
-            zip_selected = st.selectbox("Select a zip code for ML analysis", top_zipcodes["zip_code"])
+            zip_selected = st.selectbox(f"Select from the top 15 zip codes in {state_selected} for price prediction", top_zipcodes["zip_code"])
 
             ############### Filter the dataframe by the selected zip code ###############
             data = filtered_mainland_df[filtered_mainland_df['zip_code'] == zip_selected]
@@ -181,6 +186,7 @@ with tab1:
             st.write(data)
             
     
+            
             st.write("---")
         
         
@@ -189,43 +195,17 @@ with tab1:
             X = filtered_mainland_df.drop(["price","state"], axis=1)
             y = filtered_mainland_df["price"]
 
-            ############### Define regression models and scoring metrics ###############
-            models = {
-                "LassoCV": LassoCV(),
-                "Ridge": Ridge(),
-                "ElasticNet": ElasticNet()
-            }
-            scoring_metrics = {
-                "R^2 Score": r2_score,
-                "Mean Absolute Error": mean_absolute_error,
-                "Root Mean Squared Error": lambda y_true, y_pred: mean_squared_error(y_true, y_pred, squared=False)
-            }
-            
-            
-            
-            ############### Select a Scoring metric ###############
-            scoring_options = ["r2_score", "mean_squared_error", "mean_absolute_error"]
-            scoring_selected = st.selectbox("Select a scoring metric", scoring_options)
-            
-            
-            ############### Select a Regression model ###############
-            model_options = ["LassoCV", "Ridge", "ElasticNet"]
-            model_selected = st.selectbox("Select a model for regression analysis", model_options)
 
             ############### Add Title for Model Training ###############
-            st.subheader("Press the button 🔘 below to train the model")
+
             
-            if st.button("Train Model"):
+            if st.button(f"Run price prediction for {state_selected} zip: {zip_selected}"):
                 ############### Split data into training and testing sets ###############
                 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10)
 
                 ############### Initialize the model ###############
-                if model_selected == "LassoCV":
-                    model = LassoCV()
-                elif model_selected == "Ridge":
-                    model = Ridge()
-                else:
-                    model = ElasticNet()
+                model = LassoCV()
+
 
                 ############### Train the model ###############
                 model.fit(X_train, y_train)
@@ -234,17 +214,10 @@ with tab1:
                 y_pred = model.predict(X_test)
 
                 ############### Calculate scoring metric ###############
-                if scoring_selected == "r2_score":
-                    score = r2_score(y_test, y_pred)
-                elif scoring_selected == "mean_squared_error":
-                    score = mean_squared_error(y_test, y_pred)
-                else:
-                    score = mean_absolute_error(y_test, y_pred)
+                score = mean_absolute_error(y_test, y_pred)
 
                 ############### Display results ###############
-                st.write(f"Model: <b>{model_selected}</b>",unsafe_allow_html=True)
-                st.write(f"Scoring metric: <b>{scoring_selected}</b>",unsafe_allow_html=True)
-                st.write(f"Score: <b>{score:.2f}</b>",unsafe_allow_html=True)
+                st.write(f"Mean Absolute Error Score + LassoCV(): <b>{score:.2f}</b>",unsafe_allow_html=True)
 
 
                 
@@ -268,8 +241,14 @@ with tab2:
     bathrooms_selected = st.selectbox(f"Select number of bathroom(s) in Puerto Rico", bathrooms_options)
     st.write(f"You have selected the following count for bathroom(s): <b>{bathrooms_selected}</b>",unsafe_allow_html=True)
 
+    
+    
+    st.write("---")
+        
+        
+        
     ############### Create new datafram - Filter data based on user selections ###############
-    filtered_puerto_rico_df = mainland[(mainland["bed"] == bedrooms_selected) & (mainland["bath"] == bathrooms_selected)]
+    filtered_puerto_rico_df = puerto_rico[(puerto_rico["bed"] == bedrooms_selected) & (puerto_rico["bath"] == bathrooms_selected)]
     
     
     
@@ -292,6 +271,7 @@ with tab2:
         
     st.write("---")
     
+    
     ############### Show list of top 15 zip codes based on overall price ###############  
     if st.checkbox(f"Display top 15 zip codes by median price for Puerto Rico"):
         top_zipcodes = filtered_puerto_rico_df.groupby("zip_code")["price"].mean().reset_index().sort_values(by="price", ascending=False).head(15)
@@ -305,13 +285,13 @@ with tab2:
     st.write("---")
     
     
-    ############### Select a single zipcode from the Top 10 list for further analysis ###############
-    if st.checkbox(f"Machine Learning model run for {bedrooms_selected} bedroom(s) & {bedrooms_selected} bathroom(s) in  Puerto Rico"):
+    ############### Select a single zipcode from the top 15 list for further analysis ###############
+    if st.checkbox(f"Display price predictions for {bedrooms_selected} bedroom(s) & {bedrooms_selected} bathroom(s) in  the top 15 Puerto Rico zipcodes"):
         ############### Check if top_zipcodes is empty ###############
         if top_zipcodes.empty:
-            st.write("Please select the Display data checkbox above to populate top 10 zip codes.")
+            st.write("Please select the Display data checkbox above to populate top 15 zip codes.")
         else:
-            zip_selected = st.selectbox("Select a zip code for ML analysis", top_zipcodes["zip_code"])
+            zip_selected = st.selectbox(f"Select from the top 15 zip codes in Puerto Rico for price prediction", top_zipcodes["zip_code"])
 
             ############### Filter the dataframe by the selected zip code ###############
             data = filtered_puerto_rico_df[filtered_puerto_rico_df['zip_code'] == zip_selected]
@@ -320,6 +300,7 @@ with tab2:
             st.write(data)
             
     
+            
             st.write("---")
         
         
@@ -328,43 +309,17 @@ with tab2:
             X = filtered_puerto_rico_df.drop(["price"], axis=1)
             y = filtered_puerto_rico_df["price"]
 
-            ############### Define regression models and scoring metrics ###############
-            models = {
-                "LassoCV": LassoCV(),
-                "Ridge": Ridge(),
-                "ElasticNet": ElasticNet()
-            }
-            scoring_metrics = {
-                "R^2 Score": r2_score,
-                "Mean Absolute Error": mean_absolute_error,
-                "Root Mean Squared Error": lambda y_true, y_pred: mean_squared_error(y_true, y_pred, squared=False)
-            }
             
-            
-            
-            ############### Select a Scoring metric ###############
-            scoring_options = ["r2_score", "mean_squared_error", "mean_absolute_error"]
-            scoring_selected = st.selectbox("Select a scoring metric", scoring_options)
-            
-            
-            ############### Select a Regression model ###############
-            model_options = ["LassoCV", "Ridge", "ElasticNet"]
-            model_selected = st.selectbox("Select a model for regression analysis", model_options)
-
             ############### Add Title for Model Training ###############
-            st.subheader("Press the button 🔘 below to train the model")
+
             
-            if st.button("Train Model"):
+            if st.button(f"Run price prediction for Puerto Rico zip: {zip_selected}"):
                 ############### Split data into training and testing sets ###############
                 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10)
 
                 ############### Initialize the model ###############
-                if model_selected == "LassoCV":
-                    model = LassoCV()
-                elif model_selected == "Ridge":
-                    model = Ridge()
-                else:
-                    model = ElasticNet()
+                model = BaggingRegressor()
+
 
                 ############### Train the model ###############
                 model.fit(X_train, y_train)
@@ -373,17 +328,10 @@ with tab2:
                 y_pred = model.predict(X_test)
 
                 ############### Calculate scoring metric ###############
-                if scoring_selected == "r2_score":
-                    score = r2_score(y_test, y_pred)
-                elif scoring_selected == "mean_squared_error":
-                    score = mean_squared_error(y_test, y_pred)
-                else:
-                    score = mean_absolute_error(y_test, y_pred)
+                score = mean_absolute_error(y_test, y_pred)
 
                 ############### Display results ###############
-                st.write(f"Model: <b>{model_selected}</b>",unsafe_allow_html=True)
-                st.write(f"Scoring metric: <b>{scoring_selected}</b>",unsafe_allow_html=True)
-                st.write(f"Score: <b>{score:.2f}</b>",unsafe_allow_html=True)
+                st.write(f"Mean Absolute Error Score + BaggingRegressor(): <b>{score:.2f}</b>",unsafe_allow_html=True)
     
     
                 
@@ -406,9 +354,15 @@ with tab3:
     bathrooms_options = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7]
     bathrooms_selected = st.selectbox(f"Select number of bathroom(s) in U.S. Virgin Islands", bathrooms_options)
     st.write(f"You have selected the following count for bathroom(s): <b>{bathrooms_selected}</b>",unsafe_allow_html=True)
-
+    
+    
+    
+    st.write("---")
+        
+        
+        
     ############### Create new datafram - Filter data based on user selections ###############
-    filtered_virgin_islands_df = mainland[(mainland["bed"] == bedrooms_selected) & (mainland["bath"] == bathrooms_selected)]
+    filtered_virgin_islands_df = virgin_islands[(virgin_islands["bed"] == bedrooms_selected) & (virgin_islands["bath"] == bathrooms_selected)]
     
     
     
@@ -431,6 +385,7 @@ with tab3:
         
     st.write("---")
     
+    
     ############### Show list of top 15 zip codes based on overall price ###############  
     if st.checkbox(f"Display top 15 zip codes by median price for U.S. Virgin Islands"):
         top_zipcodes = filtered_virgin_islands_df.groupby("zip_code")["price"].mean().reset_index().sort_values(by="price", ascending=False).head(15)
@@ -444,13 +399,13 @@ with tab3:
     st.write("---")
     
     
-    ############### Select a single zipcode from the Top 10 list for further analysis ###############
-    if st.checkbox(f"Machine Learning model run for {bedrooms_selected} bedroom(s) & {bedrooms_selected} bathroom(s) in  U.S. Virgin Islands"):
+    ############### Select a single zipcode from the top 15 list for further analysis ###############
+    if st.checkbox(f"Display price predictions for {bedrooms_selected} bedroom(s) & {bedrooms_selected} bathroom(s) in  the top 15 U.S. Virgin Islands zipcodes"):
         ############### Check if top_zipcodes is empty ###############
         if top_zipcodes.empty:
-            st.write("Please select the Display data checkbox above to populate top 10 zip codes.")
+            st.write("Please select the Display data checkbox above to populate top 15 zip codes.")
         else:
-            zip_selected = st.selectbox("Select a zip code for ML analysis", top_zipcodes["zip_code"])
+            zip_selected = st.selectbox(f"Select from the top 15 zip codes in U.S. Virgin Islands for price prediction", top_zipcodes["zip_code"])
 
             ############### Filter the dataframe by the selected zip code ###############
             data = filtered_virgin_islands_df[filtered_virgin_islands_df['zip_code'] == zip_selected]
@@ -459,6 +414,7 @@ with tab3:
             st.write(data)
             
     
+            
             st.write("---")
         
         
@@ -467,43 +423,17 @@ with tab3:
             X = filtered_virgin_islands_df.drop(["price"], axis=1)
             y = filtered_virgin_islands_df["price"]
 
-            ############### Define regression models and scoring metrics ###############
-            models = {
-                "LassoCV": LassoCV(),
-                "Ridge": Ridge(),
-                "ElasticNet": ElasticNet()
-            }
-            scoring_metrics = {
-                "R^2 Score": r2_score,
-                "Mean Absolute Error": mean_absolute_error,
-                "Root Mean Squared Error": lambda y_true, y_pred: mean_squared_error(y_true, y_pred, squared=False)
-            }
             
-            
-            
-            ############### Select a Scoring metric ###############
-            scoring_options = ["r2_score", "mean_squared_error", "mean_absolute_error"]
-            scoring_selected = st.selectbox("Select a scoring metric", scoring_options)
-            
-            
-            ############### Select a Regression model ###############
-            model_options = ["LassoCV", "Ridge", "ElasticNet"]
-            model_selected = st.selectbox("Select a model for regression analysis", model_options)
-
             ############### Add Title for Model Training ###############
-            st.subheader("Press the button 🔘 below to train the model")
+
             
-            if st.button("Train Model"):
+            if st.button(f"Run price prediction for U.S. Virgin Islands zip: {zip_selected}"):
                 ############### Split data into training and testing sets ###############
                 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10)
 
                 ############### Initialize the model ###############
-                if model_selected == "LassoCV":
-                    model = LassoCV()
-                elif model_selected == "Ridge":
-                    model = Ridge()
-                else:
-                    model = ElasticNet()
+                model = GradientBoostingRegressor()
+
 
                 ############### Train the model ###############
                 model.fit(X_train, y_train)
@@ -512,17 +442,10 @@ with tab3:
                 y_pred = model.predict(X_test)
 
                 ############### Calculate scoring metric ###############
-                if scoring_selected == "r2_score":
-                    score = r2_score(y_test, y_pred)
-                elif scoring_selected == "mean_squared_error":
-                    score = mean_squared_error(y_test, y_pred)
-                else:
-                    score = mean_absolute_error(y_test, y_pred)
+                score = mean_absolute_error(y_test, y_pred)
 
                 ############### Display results ###############
-                st.write(f"Model: <b>{model_selected}</b>",unsafe_allow_html=True)
-                st.write(f"Scoring metric: <b>{scoring_selected}</b>",unsafe_allow_html=True)
-                st.write(f"Score: <b>{score:.2f}</b>",unsafe_allow_html=True)
+                st.write(f"Mean Absolute Error Score + GradientBoostingRegressor(): <b>{score:.2f}</b>",unsafe_allow_html=True)
     
     
     
