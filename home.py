@@ -174,17 +174,6 @@ with tab1:
             if st.button("Train Model"):
                 # Split data into training and testing sets
                 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10)
-                
-                
-                # Calculate scoring metric
-                if scoring_selected == "r2_score":
-                    score = r2_score(y_test, y_pred)
-                elif scoring_selected == "mean_squared_error":
-                    score = mean_squared_error(y_test, y_pred)
-                else:
-                    score = mean_absolute_error(y_test, y_pred)
-
-                    
 
                 # Initialize the model
                 if model_selected == "LassoCV":
@@ -200,7 +189,14 @@ with tab1:
                 # Test the model
                 y_pred = model.predict(X_test)
 
-                
+                # Calculate scoring metric
+                if scoring_selected == "r2_score":
+                    score = r2_score(y_test, y_pred)
+                elif scoring_selected == "mean_squared_error":
+                    score = mean_squared_error(y_test, y_pred)
+                else:
+                    score = mean_absolute_error(y_test, y_pred)
+
                 # Display results
                 st.write(f"Model: <b>{model_selected}</b>",unsafe_allow_html=True)
                 st.write(f"Scoring metric: <b>{scoring_selected}</b>",unsafe_allow_html=True)
