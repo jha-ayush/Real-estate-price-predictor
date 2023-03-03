@@ -65,7 +65,7 @@ mainland_by_zip = mainland.groupby('zip_code').agg({'price': 'mean', 'bed': 'mea
 
 # Title/ header
 st.header("Real estate price predictor")
-st.write(f"Select from different Machine Learning models to view the best housing predictor for your budget, grouped by Zip Code - <b>4,051</b> from U.S. Mainland",unsafe_allow_html=True)
+st.write(f"Select from different Machine Learning models to view the best housing predictor for your budget",unsafe_allow_html=True)
 st.info("Download Kaggle `csv` data >> Cleanup and group by regions with the following dimensions - `price`, `bed`, `bath`, `acre_lot`, `house_size`, `state`, `zip_code` >> Focus on U.S. Mainland data only >> Display dataframe(s)/visualization(s) >> Run `lazypredict` analysis on the back-end for PR & VI >> Scoring metrics & Regression Model >> Next steps ??")
 st.write("---")
 
