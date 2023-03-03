@@ -3,9 +3,9 @@ import pandas as pd
 
 import plotly.express as px # Visualizations
 
-from sklearn.linear_model import LassoCV # Target variable prediction
-from sklearn.ensemble import BaggingRegressor
-from sklearn.metrics import r2_score, mean_squared_error
+from sklearn.linear_model import LassoCV, Ridge, ElasticNet
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 
 # Import warnings + watermark
 from watermark import watermark
@@ -111,7 +111,7 @@ with tab1:
     st.write("---")
     
         
-    if st.checkbox(f"Display top 10 zip codes per price for the above criteria for {state_selected}"):
+    if st.checkbox(f"Display top 10 zip codes per price for the selected state of {state_selected}"):
         # Show list of top 10 zip codes based on overall price
         top_zipcodes = filtered_df.groupby("zip_code")["price"].mean().reset_index().sort_values(by="price", ascending=False).head(10)
         top_zipcodes["zip_code"] = top_zipcodes["zip_code"].apply(lambda x: '{0:0>5}'.format(x))
@@ -140,58 +140,69 @@ with tab1:
             
     
             st.write("---")
-    
-                
-            
-            
-                 
-                           
         
         
         
-        
-        # Split data into input (X) and output (y) variables
-        if type(zip_selected) == dict:
-            zip_selected_data = zip_selected.values()
-        else:
-            # Handle the case where zip_selected is not a dictionary
-            st.write(zip_selected_data)
-
             # Split data into input (X) and output (y) variables
-            X, y = zip_selected_data[:, :-1], zip_selected_data[:, -1]
-            st.write(X)
-            st.write(y)
+            X = filtered_df.drop(["price", "zip_code"], axis=1)
+            y = filtered_df["price"]
 
-            # Define LassoCV model
-            model = LassoCV()
+            # Define regression models and scoring metrics
+            models = {
+                "LassoCV": LassoCV(),
+                "Ridge": Ridge(),
+                "ElasticNet": ElasticNet()
+            }
+            scoring_metrics = {
+                "R^2 Score": r2_score,
+                "Mean Absolute Error": mean_absolute_error,
+                "Root Mean Squared Error": lambda y_true, y_pred: mean_squared_error(y_true, y_pred, squared=False)
+            }
+            
+            
+            
+            # Select a model
+            model_options = ["LassoCV", "Ridge", "ElasticNet"]
+            model_selected = st.selectbox("Select a model for regression analysis", model_options)
 
-            # Fit the model on the whole dataset
-            model.fit(X, y)
+            # Select a scoring metric
+            scoring_options = ["r2_score", "mean_squared_error", "mean_absolute_error"]
+            scoring_selected = st.selectbox("Select a scoring metric", scoring_options)
 
-            # Make predictions on the whole dataset
-            y_pred = model.predict(X)
+            if st.button("Train Model"):
+                # Split data into training and testing sets
+                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-            # Calculate R-squared score
-            lasso_score = r2_score(y, y_pred)
-            st.write(f"LassoCV R-squared score: <b>{lasso_score:.3f}</b>",unsafe_allow_html=True)
+                # Initialize the model
+                if model_selected == "LassoCV":
+                    model = LassoCV()
+                elif model_selected == "Ridge":
+                    model = Ridge()
+                else:
+                    model = ElasticNet()
 
-            # Define BaggingRegressor model
-            bagging_model = BaggingRegressor(base_estimator=model, n_estimators=50, random_state=1)
+                # Train the model
+                model.fit(X_train, y_train)
 
-            # Fit the BaggingRegressor model on the whole dataset
-            bagging_model.fit(X, y)
+                # Test the model
+                y_pred = model.predict(X_test)
 
-            # Make predictions on the whole dataset
-            y_pred = bagging_model.predict(X)
+                # Calculate scoring metric
+                if scoring_selected == "r2_score":
+                    score = r2_score(y_test, y_pred)
+                elif scoring_selected == "mean_squared_error":
+                    score = mean_squared_error(y_test, y_pred)
+                else:
+                    score = mean_absolute_error(y_test, y_pred)
 
-            # Calculate R-squared score and RMSE
-            bagging_score = r2_score(y, y_pred)
-            bagging_rmse = mean_squared_error(y, y_pred, squared=False)
+                # Display results
+                st.write(f"Model: {model_selected}")
+                st.write(f"Scoring metric: {scoring_selected}")
+                st.write(f"Score: {score:.2f}")
 
-            # Print BaggingRegressor model performance metrics
-            st.write("BaggingRegressor Model Performance Metrics:")
-            st.write(f"R-squared score: <b>{bagging_score:.3f}</b>",unsafe_allow_html=True)
-            st.write(f"Root Mean Squared Error: <b>{bagging_rmse:.3f}</b>",unsafe_allow_html=True)
+            
+            
+
     
     
 #------------------------------------------------------------------#
