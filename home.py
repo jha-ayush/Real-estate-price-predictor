@@ -205,18 +205,13 @@ with tab1:
             
             
 
-    
-    
 #------------------------------------------------------------------#
 
 
 with tab2:
 
     st.write(f"<b>To Dos...⏳</b>",unsafe_allow_html=True)
-    st.write("<b>'We will use these scoring metrics' - Ridge + LassoCV + ElasticNetCV >> feed into ML model - BaggingReggresor</b>",unsafe_allow_html=True)
-
     st.write(f"<b>Line graph for prediction 2025</b>",unsafe_allow_html=True)
-        
-        
+              
 
 #------------------------------------------------------------------#
