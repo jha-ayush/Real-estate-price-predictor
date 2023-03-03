@@ -125,7 +125,7 @@ with tab1:
     
     
     # Select a single zipcode from the Top 10 list for further analysis
-    if st.checkbox(f"LassoCV Accuracy & Bagging Regressor ML for {state_selected}"):
+    if st.checkbox(f"Scoring metrics & ML models for {state_selected}"):
         # Check if top_zipcodes is empty
         if top_zipcodes.empty:
             st.write("Please select the Display data checkbox above to populate top 10 zip codes.")
@@ -173,7 +173,7 @@ with tab1:
 
             if st.button("Train Model"):
                 # Split data into training and testing sets
-                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10)
 
                 # Initialize the model
                 if model_selected == "LassoCV":
