@@ -73,7 +73,7 @@ st.write("---")
 #------------------------------------------------------------------#
 
 
-tab1, tab2 = st.tabs(["Intro", "Accuracy & ML"])
+tab1, tab2 = st.tabs(["Intro", "Next Steps"])
 
 with tab1:
         
