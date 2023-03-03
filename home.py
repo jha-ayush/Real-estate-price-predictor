@@ -141,7 +141,7 @@ with tab1:
     if st.checkbox(f"Display data for the above criteria for {state_selected}"):
         ############### Show table ###############
         st.write(f"<b>Dataframe for the above selected criteria for {state_selected}</b>",unsafe_allow_html=True)
-        st.write(f"We found <b>{filtered_mainland_df.count().price}</b> properties 🏠 matching your criteria! <br>Here's a little preview of the data ⬇️",unsafe_allow_html=True)
+        st.write(f"We found <b>{filtered_mainland_df.count().price}</b> property listings 🏠 matching your criteria! <br>Here's a little preview of the data ⬇️",unsafe_allow_html=True)
         st.write(filtered_mainland_df.head(50))
         # st.write(f"<b>Summary statistics for the above selected criteria for {state_selected}</b>",unsafe_allow_html=True)
         # st.write(filtered_mainland_df.describe().round(2))
@@ -172,7 +172,7 @@ with tab1:
     
     
     ############### Select a single zipcode from the top 15 list for further analysis ###############
-    if st.checkbox(f"Display price predictions for {bedrooms_selected} bedroom(s) & {bedrooms_selected} bathroom(s) in the top 15 zipcodes in {state_selected}"):
+    if st.checkbox(f"Display price predictions for {bedrooms_selected} bedroom(s) & {bathrooms_selected} bathroom(s) in the top 15 zipcodes in {state_selected}"):
         ############### Check if top_zipcodes is empty ###############
         if top_zipcodes.empty:
             st.write("Please select the Display data checkbox above to populate top 15 zip codes.")
@@ -218,6 +218,7 @@ with tab1:
 
                 ############### Display results ###############
                 st.write(f"Mean Absolute Error Score + LassoCV(): <b>{score:.2f}</b>",unsafe_allow_html=True)
+                st.write(f"<b>🚧 Add metrics and price prediction explainations 🚧</b>",unsafe_allow_html=True)
 
 
                 
@@ -255,7 +256,7 @@ with tab2:
     if st.checkbox(f"Display data for the above criteria for Puerto Rico"):
         ############### Show table ###############
         st.write(f"<b>Dataframe for the above selected criteria for Puerto Rico</b>",unsafe_allow_html=True)
-        st.write(f"We found <b>{filtered_puerto_rico_df.count().price}</b> properties 🏠 matching your criteria! <br>Here's a little preview of the data ⬇️",unsafe_allow_html=True)
+        st.write(f"We found <b>{filtered_puerto_rico_df.count().price}</b> property listings 🏠 matching your criteria! <br>Here's a little preview of the data ⬇️",unsafe_allow_html=True)
         st.write(filtered_puerto_rico_df.head(50))
         # st.write(f"<b>Summary statistics for the above selected criteria for {state_selected}</b>",unsafe_allow_html=True)
         # st.write(filtered_puerto_rico_df.describe().round(2))
@@ -286,7 +287,7 @@ with tab2:
     
     
     ############### Select a single zipcode from the top 15 list for further analysis ###############
-    if st.checkbox(f"Display price predictions for {bedrooms_selected} bedroom(s) & {bedrooms_selected} bathroom(s) in  the top 15 Puerto Rico zipcodes"):
+    if st.checkbox(f"Display price predictions for {bedrooms_selected} bedroom(s) & {bathrooms_selected} bathroom(s) in  the top 15 Puerto Rico zipcodes"):
         ############### Check if top_zipcodes is empty ###############
         if top_zipcodes.empty:
             st.write("Please select the Display data checkbox above to populate top 15 zip codes.")
@@ -332,6 +333,7 @@ with tab2:
 
                 ############### Display results ###############
                 st.write(f"Mean Absolute Error Score + BaggingRegressor(): <b>{score:.2f}</b>",unsafe_allow_html=True)
+                st.write(f"<b>🚧 Add metrics and price prediction explainations 🚧</b>",unsafe_allow_html=True)
     
     
                 
@@ -369,7 +371,7 @@ with tab3:
     if st.checkbox(f"Display data for the above criteria for U.S. Virgin Islands"):
         ############### Show table ###############
         st.write(f"<b>Dataframe for the above selected criteria for U.S. Virgin Islands</b>",unsafe_allow_html=True)
-        st.write(f"We found <b>{filtered_virgin_islands_df.count().price}</b> properties 🏠 matching your criteria! <br>Here's a little preview of the data ⬇️",unsafe_allow_html=True)
+        st.write(f"We found <b>{filtered_virgin_islands_df.count().price}</b> property listings 🏠 matching your criteria! <br>Here's a little preview of the data ⬇️",unsafe_allow_html=True)
         st.write(filtered_virgin_islands_df.head(50))
         # st.write(f"<b>Summary statistics for the above selected criteria for {state_selected}</b>",unsafe_allow_html=True)
         # st.write(filtered_virgin_islands_df.describe().round(2))
@@ -400,7 +402,7 @@ with tab3:
     
     
     ############### Select a single zipcode from the top 15 list for further analysis ###############
-    if st.checkbox(f"Display price predictions for {bedrooms_selected} bedroom(s) & {bedrooms_selected} bathroom(s) in  the top 15 U.S. Virgin Islands zipcodes"):
+    if st.checkbox(f"Display price predictions for {bedrooms_selected} bedroom(s) & {bathrooms_selected} bathroom(s) in  the top 15 U.S. Virgin Islands zipcodes"):
         ############### Check if top_zipcodes is empty ###############
         if top_zipcodes.empty:
             st.write("Please select the Display data checkbox above to populate top 15 zip codes.")
@@ -446,6 +448,7 @@ with tab3:
 
                 ############### Display results ###############
                 st.write(f"Mean Absolute Error Score + GradientBoostingRegressor(): <b>{score:.2f}</b>",unsafe_allow_html=True)
+                st.write(f"<b>🚧 Add metrics and price prediction explainations 🚧</b>",unsafe_allow_html=True)
     
     
     
