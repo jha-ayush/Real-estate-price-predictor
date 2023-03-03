@@ -144,7 +144,7 @@ with tab1:
         
         
             # Split data into input (X) and output (y) variables
-            X = filtered_df.drop(["price", "zip_code"], axis=1)
+            X = filtered_df.drop(["price","state"], axis=1)
             y = filtered_df["price"]
 
             # Define regression models and scoring metrics
@@ -198,9 +198,9 @@ with tab1:
                     score = mean_absolute_error(y_test, y_pred)
 
                 # Display results
-                st.write(f"Model: {model_selected}")
-                st.write(f"Scoring metric: {scoring_selected}")
-                st.write(f"Score: {score:.2f}")
+                st.write(f"Model: <b>{model_selected}</b>",unsafe_allow_html=True)
+                st.write(f"Scoring metric: <b>{scoring_selected}</b>",unsafe_allow_html=True)
+                st.write(f"Score: <b>{score:.2f}</b>",unsafe_allow_html=True)
 
             
             
