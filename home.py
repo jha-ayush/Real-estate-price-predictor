@@ -188,24 +188,36 @@ with tab1:
     
             
             st.write("---")
-        
-        
-        
+            
+             
+            
             ############### Training & Testing - Split data into input (X) and output (y) variables ###############
             X = filtered_mainland_df.drop(["price","state"], axis=1)
             y = filtered_mainland_df["price"]
-
+                
+                
+            ############### Select a Regression model ###############
+            
+            model_options = ["LassoCV", "Ridge", "ElasticNet", "BaggingRegressor", "GradientBoostingRegressor"]
+            model_selected = st.selectbox("Select a model for regression analysis", model_options)
 
             ############### Add Title for Model Training ###############
 
-            
             if st.button(f"Run price prediction for {state_selected} zip: {zip_selected}"):
                 ############### Split data into training and testing sets ###############
                 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10)
 
                 ############### Initialize the model ###############
-                model = LassoCV()
-
+                if model_selected == "LassoCV":
+                    model = LassoCV()
+                elif model_selected == "Ridge":
+                    model = Ridge()
+                elif model_selected == "ElasticNet":
+                    model = ElasticNet() 
+                elif model_selected == "BaggingRegressor":
+                    model = BaggingRegressor()
+                else:
+                    model = GradientBoostingRegressor()
 
                 ############### Train the model ###############
                 model.fit(X_train, y_train)
@@ -217,8 +229,11 @@ with tab1:
                 score = mean_absolute_error(y_test, y_pred)
 
                 ############### Display results ###############
-                st.write(f"Mean Absolute Error Score + LassoCV(): <b>{score:.2f}</b>",unsafe_allow_html=True)
+                st.write(f"Model: <b>{model_selected}</b>",unsafe_allow_html=True)
+                st.write(f"Score: <b>{score:.2f}</b>",unsafe_allow_html=True)
                 st.write(f"<b>🚧 Add metrics and price prediction explainations 🚧</b>",unsafe_allow_html=True)
+                
+                
 
 
                 
