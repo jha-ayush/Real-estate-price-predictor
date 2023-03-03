@@ -161,13 +161,15 @@ with tab1:
             
             
             
+            # Select a scoring metric
+            scoring_options = ["r2_score", "mean_squared_error", "mean_absolute_error"]
+            scoring_selected = st.selectbox("Select a scoring metric", scoring_options)
+            
+            
             # Select a model
             model_options = ["LassoCV", "Ridge", "ElasticNet"]
             model_selected = st.selectbox("Select a model for regression analysis", model_options)
 
-            # Select a scoring metric
-            scoring_options = ["r2_score", "mean_squared_error", "mean_absolute_error"]
-            scoring_selected = st.selectbox("Select a scoring metric", scoring_options)
 
             if st.button("Train Model"):
                 # Split data into training and testing sets
