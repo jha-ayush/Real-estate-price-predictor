@@ -1,0 +1,2 @@
+# Define states for the U.S. Mainland
+us_mainland_states = ["Connecticut", "Massachusetts", "New Hampshire", "Vermont", "New Jersey", "New York", "Rhode Island", "Maine", "Pennsylvania", "West Virginia", "Delaware"]

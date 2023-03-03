@@ -18,7 +18,7 @@ print(watermark(iversions=True, globals_=globals()))
 #------------------------------------------------------------------#
 
 
-# Set page configurations - ALWAYS at the top
+############### Set page configurations - ALWAYS at the top ###############
 st.set_page_config(page_title="Real estate price predictor",
                    page_icon="🏠",
                    layout="centered",
@@ -26,7 +26,9 @@ st.set_page_config(page_title="Real estate price predictor",
 
 @st.cache_data # Add cache data decorator
 
-# Load and Use local style.css file
+
+
+############### Load and Use local style.css file ###############
 def local_css(file_name):
     """
     Use a local style.css file.
@@ -37,7 +39,8 @@ def local_css(file_name):
 local_css("./style/style.css")
 
 
-# Load data
+
+############### Load data ###############
 def load_data(filename):
     try:
         return pd.read_csv(filename)
@@ -46,24 +49,40 @@ def load_data(filename):
         st.error(f"Failed to load {filename}")
         
         
-# Create variables to load datafiles as dataframes
+
+############### Create variables to load datafiles as dataframes ###############
+
+# Import csv data files for - U.S. Mainland, Puerto Rico, U.S. Virgin Islands
 mainland = load_data("./Resources/mainland_data.csv")
+puerto_rico = load_data("./Resources/puerto_rico_data.csv")
+virgin_islands = load_data("./Resources/virgin_islands_data.csv")
+
+# st.write(mainland["state"].unique())
 
 
 #------------------------------------------------------------------#
 
 
-# Create dataframes with aggregated by State
+############### U.S. Mainland - Create dataframes with aggregated by State ###############
 mainland_by_state = mainland.groupby('state').agg({'price': 'mean', 'bed': 'mean'}).round(2)
 
-# Create dataframes with aggregated by Zip Code Values
+############### U.S. Mainland - Create dataframes with aggregated by Zip Code Values ###############
 mainland_by_zip = mainland.groupby('zip_code').agg({'price': 'mean', 'bed': 'mean'}).round(2)
 
 
+
+############### Puerto Rico - Create dataframes with aggregated by Zip Code Values ###############
+puerto_rico_by_zip = puerto_rico.groupby('zip_code').agg({'price': 'mean', 'bed': 'mean'}).round(2)
+
+
+############### U.S. Virgin Islands - Create dataframes with aggregated by Zip Code Values ###############
+virgin_islands_by_zip = virgin_islands.groupby('zip_code').agg({'price': 'mean', 'bed': 'mean'}).round(2)
+
+
 #------------------------------------------------------------------#
 
 
-# Title/ header
+############### Title/ header ###############
 st.header("Real estate price predictor")
 st.write(f"Select from different Machine Learning models to view the best housing predictor for your budget",unsafe_allow_html=True)
 st.info("Download Kaggle `csv` data >> Cleanup and group by regions with the following dimensions - `price`, `bed`, `bath`, `acre_lot`, `house_size`, `state`, `zip_code` >> Focus on U.S. Mainland data only >> Display dataframe(s)/visualization(s) >> Run `lazypredict` analysis on the back-end for PR & VI >> Scoring metrics & Regression Model >> Next steps ??")
@@ -72,37 +91,51 @@ st.write("---")
 
 #------------------------------------------------------------------#
 
+############### Initial app in Streamlit tab format ###############
+tab1, tab2, tab3 = st.tabs(["U.S. Mainland", "Puerto Rico", "U.S. Virgin Islands"])
 
-tab1, tab2 = st.tabs(["Intro", "Next Steps"])
-
+############### U.S. Mainland ###############
 with tab1:
-        
-    # Define state and number of bedrooms and bathrooms dropdowns
-    state_options = mainland["state"].unique()
-    state_selected = st.selectbox("Select a state", state_options)
+      
+    st.subheader("U.S. Mainland")
+    ############### Define a dictionary to map states to U.S. mainland ###############
+    state = {"", "Connecticut", "Delaware", "Maine", "Massachusetts", "New Hampshire", "New Jersey", "New York", "Pennsylvania", "Rhode Island", "Vermont", "West Virginia", "Wyoming"}
 
+
+    ############### Create a selectbox for the region ###############
+    state_selected = st.selectbox("Select a state", state)
+    st.write(f"You selected the following state: <b>{state_selected}</b>",unsafe_allow_html=True)
+    
+    
+    ############### Display number of bedrooms dropdown menu ###############
     bedrooms_options = [2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8]
     bedrooms_selected = st.selectbox("Select number of bedrooms", bedrooms_options)
+    st.write(f"You selected the following count for bedroom(s): <b>{bedrooms_selected}</b>",unsafe_allow_html=True)
 
+    ############### Display number of bedrooms dropdown menu ###############
     bathrooms_options = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7]
     bathrooms_selected = st.selectbox("Select number of bathrooms", bathrooms_options)
+    st.write(f"You selected the following count for bathroom(s): <b>{bathrooms_selected}</b>",unsafe_allow_html=True)
 
-    # Filter data based on user selections
-    filtered_df = mainland[(mainland["state"] == state_selected) & 
+    ############### Create new datafram - Filter data based on user selections ###############
+    filtered_mainland_df = mainland[(mainland["state"] == state_selected) & 
                      (mainland["bed"] == bedrooms_selected) & 
                      (mainland["bath"] == bathrooms_selected)]
     
     
+    
     if st.checkbox(f"Display data for the above criteria for {state_selected}"):
-        # Show table
+        ############### Show table ###############
         st.write(f"<b>Dataframe for the above selected criteria for {state_selected}</b>",unsafe_allow_html=True)
-        st.write(filtered_df)
-        st.write(f"<b>Summary statistics for the above selected criteria for {state_selected}</b>",unsafe_allow_html=True)
-        st.write(filtered_df.describe().round(2))
+        st.write(f"We found <b>{filtered_mainland_df.count().price}</b> properties 🏠 matching your criteria! <br>Here's a little preview of the data ⬇️",unsafe_allow_html=True)
+        st.write(filtered_mainland_df.head(50))
+        # st.write(f"<b>Summary statistics for the above selected criteria for {state_selected}</b>",unsafe_allow_html=True)
+        # st.write(filtered_mainland_df.describe().round(2))
+        # st.write(filtered_mainland_df.dtypes)
 
-        # Show bar chart
+        ############### Show bar chart ###############
         st.write(f"<b>Zip code vs Price for the above selected criteria for {state_selected}</b>",unsafe_allow_html=True)
-        fig = px.bar(filtered_df, x=filtered_df["zip_code"].apply(lambda x: '{0:0>5}'.format(x)), y="price")
+        fig = px.bar(filtered_mainland_df, x=filtered_mainland_df["zip_code"].apply(lambda x: '{0:0>5}'.format(x)), y="price")
         fig.update_xaxes(title_text="Zip Code")
         fig.update_yaxes(title_text="Price (USD)")
         st.plotly_chart(fig)
@@ -110,30 +143,29 @@ with tab1:
         
     st.write("---")
     
-        
-    if st.checkbox(f"Display top 10 zip codes per price for the selected state of {state_selected}"):
-        # Show list of top 10 zip codes based on overall price
-        top_zipcodes = filtered_df.groupby("zip_code")["price"].mean().reset_index().sort_values(by="price", ascending=False).head(10)
+    ############### Show list of top 15 zip codes based on overall price ###############  
+    if st.checkbox(f"Display top 15 zip codes by median price for the selected state of {state_selected}"):
+        top_zipcodes = filtered_mainland_df.groupby("zip_code")["price"].mean().reset_index().sort_values(by="price", ascending=False).head(15)
         top_zipcodes["zip_code"] = top_zipcodes["zip_code"].apply(lambda x: '{0:0>5}'.format(x))
         top_zipcodes["price"] = top_zipcodes["price"].round(2)
 
-        st.write("Top 10 zip codes:")
+        st.write("Top 15 zip codes:")
         st.write(top_zipcodes.set_index("zip_code"))
     
     
     st.write("---")
     
     
-    # Select a single zipcode from the Top 10 list for further analysis
+    ############### Select a single zipcode from the Top 10 list for further analysis ###############
     if st.checkbox(f"Scoring metrics & ML models for {state_selected}"):
-        # Check if top_zipcodes is empty
+        ############### Check if top_zipcodes is empty ###############
         if top_zipcodes.empty:
             st.write("Please select the Display data checkbox above to populate top 10 zip codes.")
         else:
             zip_selected = st.selectbox("Select a zip code for ML analysis", top_zipcodes["zip_code"])
 
-            # Filter the dataframe by the selected zip code
-            data = filtered_df[filtered_df['zip_code'] == zip_selected]
+            ############### Filter the dataframe by the selected zip code ###############
+            data = filtered_mainland_df[filtered_mainland_df['zip_code'] == zip_selected]
             data = data.drop_duplicates()
             st.write(f"Number of available properties in <b>{zip_selected}</b> zip code: <b>{len(data)}</b>",unsafe_allow_html=True)
             st.write(data)
@@ -143,11 +175,11 @@ with tab1:
         
         
         
-            # Split data into input (X) and output (y) variables
-            X = filtered_df.drop(["price","state"], axis=1)
-            y = filtered_df["price"]
+            ############### Training & Testing - Split data into input (X) and output (y) variables ###############
+            X = filtered_mainland_df.drop(["price","state"], axis=1)
+            y = filtered_mainland_df["price"]
 
-            # Define regression models and scoring metrics
+            ############### Define regression models and scoring metrics ###############
             models = {
                 "LassoCV": LassoCV(),
                 "Ridge": Ridge(),
@@ -161,21 +193,23 @@ with tab1:
             
             
             
-            # Select a Scoring metric
+            ############### Select a Scoring metric ###############
             scoring_options = ["r2_score", "mean_squared_error", "mean_absolute_error"]
             scoring_selected = st.selectbox("Select a scoring metric", scoring_options)
             
             
-            # Select a Regression model
+            ############### Select a Regression model ###############
             model_options = ["LassoCV", "Ridge", "ElasticNet"]
             model_selected = st.selectbox("Select a model for regression analysis", model_options)
 
-
+            ############### Add Title for Model Training ###############
+            st.subheader("Press the button 🔘 to train the model")
+            
             if st.button("Train Model"):
-                # Split data into training and testing sets
+                ############### Split data into training and testing sets ###############
                 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10)
 
-                # Initialize the model
+                ############### Initialize the model ###############
                 if model_selected == "LassoCV":
                     model = LassoCV()
                 elif model_selected == "Ridge":
@@ -183,13 +217,13 @@ with tab1:
                 else:
                     model = ElasticNet()
 
-                # Train the model
+                ############### Train the model ###############
                 model.fit(X_train, y_train)
 
-                # Test the model
+                ############### Test the model ###############
                 y_pred = model.predict(X_test)
 
-                # Calculate scoring metric
+                ############### Calculate scoring metric ###############
                 if scoring_selected == "r2_score":
                     score = r2_score(y_test, y_pred)
                 elif scoring_selected == "mean_squared_error":
@@ -197,7 +231,7 @@ with tab1:
                 else:
                     score = mean_absolute_error(y_test, y_pred)
 
-                # Display results
+                ############### Display results ###############
                 st.write(f"Model: <b>{model_selected}</b>",unsafe_allow_html=True)
                 st.write(f"Scoring metric: <b>{scoring_selected}</b>",unsafe_allow_html=True)
                 st.write(f"Score: <b>{score:.2f}</b>",unsafe_allow_html=True)
@@ -207,11 +241,15 @@ with tab1:
 
 #------------------------------------------------------------------#
 
-
+############### Puerto Rico ###############
 with tab2:
 
-    st.write(f"<b>To Dos...⏳</b>",unsafe_allow_html=True)
-    st.write(f"<b>Line graph for prediction 2025</b>",unsafe_allow_html=True)
+    st.subheader("Puerto Rico")
               
 
 #------------------------------------------------------------------#
+
+
+############### U.S. Virgin Islands ###############
+with tab3:
+    st.subheader("U.S. Virgin Islands")
