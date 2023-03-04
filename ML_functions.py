@@ -90,19 +90,19 @@ def extra_trees_regressor(X, y):
     Returns:
     y_pred (array-like): The predicted target variable.
     """
-    global et_mean
-    global et_r2
-    global et_mae
+    global etr_mean
+    global etr_r2
+    global etr_mae
     
     # Split data into training and test sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10)
     
     # Initialize the regressor and fit it to the training data
-    et_regressor = ExtraTreesRegressor((n_estimators=100, max_depth=10, random_state=10)
-    et_regressor.fit(X_train, y_train)
+    etr_regressor = ExtraTreesRegressor(n_estimators=100, max_depth=10, random_state=10)
+    etr_regressor.fit(X_train, y_train)
                                        
     # Use the regressor to predict the test data   
-    y_pred = et_regressor.predict(X_test)
+    y_pred = etr_regressor.predict(X_test)
                                        
     # Calculate metrics and store them in global variables
     etr_mean=mean_squared_error(y_test, y_pred)
@@ -166,7 +166,7 @@ def lasso_cv(X, y):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10)
                                        
     # Initialize the regressor and fit it to the training data
-    lasso_regressor = LassoCV(cv=5, random_state=10)
+    lasso_regressor = LassoCV(alphas=10, cv=5, random_state=10)
     lasso_regressor.fit(X_train, y_train)
                                        
     # Use the regressor to predict the test data
@@ -246,10 +246,3 @@ def elastic_net_regressor(X, y):
     enet_mae = mean_absolute_error(y, y_pred)
                                        
     return y_pred
-
-
-
-
-
-    
-    
