@@ -8,8 +8,8 @@ A real estate company wants to predict the selling prices of houses based on var
 
 <img
   src="./Resources/apartments.png"
-  alt="Real Estate"
-  title=""
+  alt="Real Estate price predictor"
+  title="Real Estate price predictor"
   style="display: inline-block; margin: 0 auto; max-width: 100px">
   
   
