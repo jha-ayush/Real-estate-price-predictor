@@ -165,7 +165,7 @@ with tab1:
         top_zipcodes["price"] = top_zipcodes["price"].round(2)
 
         st.write("Top 15 zip codes:")
-        st.write(top_zipcodes.set_index("zip_code"))
+        st.write(top_zipcodes.set_index("zip_code").drop_duplicates())
     
     
     st.write("---")
@@ -291,7 +291,7 @@ with tab2:
         top_zipcodes["price"] = top_zipcodes["price"].round(2)
 
         st.write("Top 15 zip codes:")
-        st.write(top_zipcodes.set_index("zip_code"))
+        st.write(top_zipcodes.set_index("zip_code").drop_duplicates())
     
     
     st.write("---")
@@ -408,7 +408,7 @@ with tab3:
         top_zipcodes["price"] = top_zipcodes["price"].round(2)
 
         st.write("Top 15 zip codes:")
-        st.write(top_zipcodes.set_index("zip_code"))
+        st.write(top_zipcodes.set_index("zip_code").drop_duplicates())
     
     
     st.write("---")
