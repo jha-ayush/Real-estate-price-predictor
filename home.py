@@ -147,7 +147,7 @@ with tab1:
         st.write(filtered_mainland_df.head(50))
         # st.write(f"<b>Summary statistics for the above selected criteria for {state_selected}</b>",unsafe_allow_html=True)
         # st.write(filtered_mainland_df.describe().round(2))
-        st.write(filtered_mainland_df.dtypes)
+        # st.write(filtered_mainland_df.dtypes)
 
         ############### Show bar chart ###############
         st.write(f"<b>Zip code vs Price for the above selected criteria for {state_selected}</b>",unsafe_allow_html=True)
