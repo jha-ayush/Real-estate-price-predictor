@@ -177,7 +177,7 @@ with tab1:
         if top_zipcodes.empty:
             st.write("Please select the Display data checkbox above to populate top 15 zip codes.")
         else:
-            zip_selected = st.selectbox(f"Select from the top 15 zip codes in {state_selected} for price prediction", top_zipcodes["zip_code"])
+            zip_selected = st.selectbox(f"Select from the top 15 zip codes in {state_selected} for price prediction", top_zipcodes["zip_code"].unique())
 
             ############### Filter the dataframe by the selected zip code ###############
             data = filtered_mainland_df[filtered_mainland_df['zip_code'] == zip_selected]
@@ -217,8 +217,9 @@ with tab1:
                           ElasticNet(random_state=10)]
 
                 ############### Train and evaluate the models ###############
-                best_model = None
-                best_score = float("inf")
+                best_model = None # Declare initial variable
+                best_score = float("inf") # Declare datatype
+                # Iterate through each model in the 'models' array
                 for model in models:
                     model.fit(X_train, y_train)
                     y_pred = model.predict(X_test)
@@ -231,11 +232,7 @@ with tab1:
                 ############### Display the best model and its metrics ###############
                 st.write(f"Best model: {type(best_model).__name__} - Mean Absolute Error: {best_score:.2f}")
                 st.balloons()
-                st.write(f"<b>🚧 Add metrics and price prediction explainations 🚧</b>",unsafe_allow_html=True)
-                
-                
-                
-                
+                st.write(f"<b>🚧 Add metrics and price prediction explainations 🚧</b>",unsafe_allow_html=True)            
                 
                 
                 
@@ -306,7 +303,7 @@ with tab2:
         if top_zipcodes.empty:
             st.write("Please select the Display data checkbox above to populate top 15 zip codes.")
         else:
-            zip_selected = st.selectbox(f"Select from the top 15 zip codes in Puerto Rico for price prediction", top_zipcodes["zip_code"])
+            zip_selected = st.selectbox(f"Select from the top 15 zip codes in Puerto Rico for price prediction", top_zipcodes["zip_code"].unique())
 
             ############### Filter the dataframe by the selected zip code ###############
             data = filtered_puerto_rico_df[filtered_puerto_rico_df['zip_code'] == zip_selected]
@@ -423,7 +420,7 @@ with tab3:
         if top_zipcodes.empty:
             st.write("Please select the Display data checkbox above to populate top 15 zip codes.")
         else:
-            zip_selected = st.selectbox(f"Select from the top 15 zip codes in U.S. Virgin Islands for price prediction", top_zipcodes["zip_code"])
+            zip_selected = st.selectbox(f"Select from the top 15 zip codes in U.S. Virgin Islands for price prediction", top_zipcodes["zip_code"].unique())
 
             ############### Filter the dataframe by the selected zip code ###############
             data = filtered_virgin_islands_df[filtered_virgin_islands_df['zip_code'] == zip_selected]
