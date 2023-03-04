@@ -109,7 +109,9 @@ with tab1:
     st.subheader("U.S. Mainland")
     
     ############### Define a dictionary to map states to U.S. mainland ###############
-    state = {"", "Connecticut", "Delaware", "Maine", "Massachusetts", "New Hampshire", "New Jersey", "New York", "Pennsylvania", "Rhode Island", "Vermont", "West Virginia", "Wyoming"}
+    state = ["", "Connecticut", "Delaware", "Maine", "Massachusetts", "New Hampshire", "New Jersey", "New York", "Pennsylvania", "Rhode Island", "Vermont", "West Virginia", "Wyoming"]
+    # Sort states alphabetically
+    state.sort()
 
 
     ############### Create a selectbox for the region ###############
@@ -145,7 +147,7 @@ with tab1:
         st.write(filtered_mainland_df.head(50))
         # st.write(f"<b>Summary statistics for the above selected criteria for {state_selected}</b>",unsafe_allow_html=True)
         # st.write(filtered_mainland_df.describe().round(2))
-        # st.write(filtered_mainland_df.dtypes)
+        st.write(filtered_mainland_df.dtypes)
 
         ############### Show bar chart ###############
         st.write(f"<b>Zip code vs Price for the above selected criteria for {state_selected}</b>",unsafe_allow_html=True)
