@@ -10,7 +10,7 @@ A real estate company wants to predict the selling prices of houses based on var
   src="./Resources/home.jpg"
   alt="Real Estate price predictor"
   title="Real Estate price predictor"
-  style="display: inline-block; margin: 0 auto; max-width: 100px">
+  style="display: inline-block; margin: 0 auto; max-height: 90px;">
   
   
 ## Objective
