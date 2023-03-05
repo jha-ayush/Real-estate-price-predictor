@@ -33,12 +33,15 @@ A real estate company wants to predict the selling prices of houses based on var
 - `conda activate [name]`
 - `git clone` repo
 - `pip install -r requirements.txt`
+
+
+## Deployment
+
 - In Terminal `cd` into cloned repo
 - `cd` to directory where `home.py` file is located
 - `streamlit run home.py`
 - The app will run on `http://localhost:8501/`
 
-## Deployment
 
 ## Contributors
 
