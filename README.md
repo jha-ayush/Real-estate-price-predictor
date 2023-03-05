@@ -7,7 +7,7 @@ Real estate price predictor using Machine Learning models
 A real estate company wants to predict the selling prices of houses based on various features such as the number of bedrooms, bathrooms, square footage, and location. They have collected data on past house sales, which includes these features as well as the final selling price. The company wants to use this data to train a machine learning model that can accurately predict the selling price of a house given its features. They also want to be able to evaluate the performance of different models using different scoring metrics.
 
 <img
-  src="./Resources/home.jpg"
+  src="./Resources/home.png"
   alt="Real Estate price predictor"
   title="Real Estate price predictor"
   style="display: inline-block; margin: 0 auto; max-width: 75px">
