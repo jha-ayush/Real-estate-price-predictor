@@ -234,7 +234,7 @@ with tab1:
                 ############### Display the best model and its metrics ###############
                 st.write(f"Best model: {type(best_model).__name__} + Mean Absolute Error - {best_score:.2f}")
                 st.balloons()
-                st.write(f"<b>🚧 Add metrics and price prediction explainations 🚧</b>",unsafe_allow_html=True)            
+                st.write(f"<b>🚧 UNDER CONSTRUCTION: Add metrics and price prediction explainations 🚧</b>",unsafe_allow_html=True)            
                 
                 
                 
@@ -348,7 +348,7 @@ with tab2:
                 ############### Display results ###############
                 st.write(f"Mean Absolute Error Score (MAE) + BaggingRegressor(): <b>{score:.2f}</b>",unsafe_allow_html=True)
                 st.balloons()
-                st.write(f"<b>🚧 Add metrics and price prediction explainations 🚧</b>",unsafe_allow_html=True)
+                st.write(f"<b>🚧 UNDER CONSTRUCTION: Add metrics and price prediction explainations 🚧</b>",unsafe_allow_html=True)
     
     
                 
@@ -465,7 +465,7 @@ with tab3:
                 ############### Display results ###############
                 st.write(f"Mean Absolute Error (MAE) Score + GradientBoostingRegressor(): <b>{score:.2f}</b>",unsafe_allow_html=True)
                 st.balloons()
-                st.write(f"<b>🚧 Add metrics and price prediction explainations 🚧</b>",unsafe_allow_html=True)
+                st.write(f"<b>🚧 UNDER CONSTRUCTION: Add metrics and price prediction explainations 🚧</b>",unsafe_allow_html=True)
     
     
     
