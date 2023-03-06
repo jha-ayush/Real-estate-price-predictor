@@ -1,6 +1,6 @@
 # Real-estate-price-predictor
 
-Real estate price predictor using Machine Learning models
+Real estate price predictor using Machine Learning models - U.S. Mainland, Puerto Rico & U.S. Virgin Islands
 
 
 <img
