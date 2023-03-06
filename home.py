@@ -29,7 +29,7 @@ st.set_page_config(page_title="Real estate price predictor",
                    layout="centered",
                    initial_sidebar_state="auto")
 
-@st.cache_data # Add cache data decorator
+# @st.cache_data # Add cache data decorator
 
 
 
