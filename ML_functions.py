@@ -24,6 +24,8 @@ def random_forest(X, y):
     global rf_mean
     global rf_r2
     global rf_mae
+    global rf_mse
+    global rf_rmse
     
     # Split data into training and test sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
@@ -38,7 +40,8 @@ def random_forest(X, y):
     # Calculate metrics and store them in global variables
     rf_mean = mean_squared_error(y_test, y_pred)
     rf_r2 = r2_score(y_test, y_pred)
-    rf_mae = mean_absolute_error(y, y_pred)
+    rf_mae = mean_squared_error(y, y_pred)
+    rf_mse = np.sqrt(mean_squared_error(y, y_pred)
     
     return y_pred
 

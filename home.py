@@ -69,16 +69,16 @@ virgin_islands = load_data("./Resources/data_files/virgin_islands_data.csv")
 
 
 ############### U.S. Mainland by zipcode - Create dataframes with aggregated by Zip Code Values ###############
-mainland_by_zip = mainland.groupby('zip_code').agg({'price': 'mean', 'bed': 'mean'}).round(2)
+mainland_by_zip = mainland.groupby('zip_code').agg({'price': 'median', 'bed': 'median'}).round(2)
 
 
 
 ############### Puerto Rico - Create dataframes with aggregated by Zip Code Values ###############
-puerto_rico_by_zip = puerto_rico.groupby('zip_code').agg({'price': 'mean', 'bed': 'mean'}).round(2)
+puerto_rico_by_zip = puerto_rico.groupby('zip_code').agg({'price': 'median', 'bed': 'median'}).round(2)
 
 
 ############### U.S. Virgin Islands - Create dataframes with aggregated by Zip Code Values ###############
-virgin_islands_by_zip = virgin_islands.groupby('zip_code').agg({'price': 'mean', 'bed': 'mean'}).round(2)
+virgin_islands_by_zip = virgin_islands.groupby('zip_code').agg({'price': 'median', 'bed': 'median'}).round(2)
 
 
 #######################################################################################################################
@@ -115,19 +115,17 @@ with tab1:
 
     ############### Create a selectbox for the region ###############
     state_selected = st.selectbox("Select a U.S. mainland state", state)
-    st.write(f"You have selected the following state: <b>{state_selected}</b>",unsafe_allow_html=True)
-    
     
     
     ############### Display number of bedrooms dropdown menu ###############
-    bedrooms_options = [2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8]
+    bedrooms_options = [2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6]
     bedrooms_selected = st.selectbox(f"Select number of bedroom(s) in the state of {state_selected}", bedrooms_options)
-    st.write(f"You have selected the following count for bedroom(s): <b>{bedrooms_selected}</b>",unsafe_allow_html=True)
+
 
     ############### Display number of bedrooms dropdown menu ###############
-    bathrooms_options = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7]
+    bathrooms_options = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]
     bathrooms_selected = st.selectbox(f"Select number of bathroom(s) in the state of {state_selected}", bathrooms_options)
-    st.write(f"You have selected the following count for bathroom(s): <b>{bathrooms_selected}</b>",unsafe_allow_html=True)
+
 
     ############### Create new datafram - Filter data based on user selections ###############
     filtered_mainland_df = mainland[(mainland["state"] == state_selected) & 
@@ -137,41 +135,29 @@ with tab1:
     
     
     ############### Show list of top zip codes based on Median price ###############
-    top_zipcodes = filtered_mainland_df.groupby("zip_code")["price"].median().reset_index().sort_values(by="price", ascending=False).head(50)
+    top_zipcodes = filtered_mainland_df.groupby("zip_code")["price"].median().reset_index().sort_values(by="price", ascending=False)
     top_zipcodes["zip_code"] = top_zipcodes["zip_code"].apply(lambda x: '{0:0>5}'.format(x))
     top_zipcodes["price"] = top_zipcodes["price"].round(2)
 
-    st.write(f"<b>Top 50 Zip codes by Median price in {state_selected} for the above {bedrooms_selected} bed & {bathrooms_selected} bath criteria</b>",unsafe_allow_html=True)
-    st.write(top_zipcodes.set_index("zip_code").drop_duplicates())
+    st.write(f"<b>Here is a list of all the zip codes by median descening price in {state_selected} for the above {bedrooms_selected} bed & {bathrooms_selected} bath criteria ⬇️</b>",unsafe_allow_html=True)
+    st.write(top_zipcodes.set_index("zip_code").drop_duplicates().sort_values(by="price", ascending=False))
+
     
     
     st.write("---")
     
     
-    ############### Show property listings of the top zip codes based on Median price ###############
+    ############### Show property listings of a selected zipcode from the top list ###############
     
-    # Create an empty DataFrame to store property results
-    top_properties_df = pd.DataFrame(columns=["zip_code", "price", "bed", "bath", "acre_lot", "house_size"])
+    ############### Create dropdown to select a specific zipcode ###############
+    selected_zipcode = st.selectbox("Select a zipcode from the above top list", top_zipcodes["zip_code"])
+    
+    ############### Create & display dataframe for selected zipcode ###############
+    selected_zipcode_df = filtered_mainland_df[filtered_mainland_df["zip_code"] == int(selected_zipcode)].sort_values(by="price", ascending=False)
 
-    # Loop through each zip code in the top_zipcodes DataFrame
-    for zip_code in top_zipcodes["zip_code"]:
-        # Filter the dataframe by zip code and sort by ascending price
-        properties = filtered_mainland_df[filtered_mainland_df["zip_code"]==zip_code].sort_values(by=["price"])
-        # Add the first five properties to the top_properties_df
-        top_properties_df = pd.concat([top_properties_df, properties[["zip_code", "price", "bed", "bath", "acre_lot", "house_size"]].head(30)])
+    st.write(f"<b>Here are {selected_zipcode_df.count().price} property listings for zip code {selected_zipcode} in {state_selected}:</b>", unsafe_allow_html=True)
+    st.write(selected_zipcode_df)
 
-    # Reset the index of the top_properties_df DataFrame
-    top_properties_df.reset_index(drop=True, inplace=True)
-
-    ############### Display the top_properties_df DataFrame ###############
-    st.write(f"<b>Display {top_properties_df.count().price} properties, from Top 30 property listings from Top 50 zipcodes in {state_selected} by median price ⬇️</b>", unsafe_allow_html=True)
-    
-    ############### Store sorted value in a variable for further visualization ###############
-    visualization_mainland = top_properties_df.sort_values(by="price", ascending=False)
-    
-    ############### Display dataframe ###############
-    st.write(visualization_mainland)
-    
     
     
     ############### Display bar chart ###############
