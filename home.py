@@ -88,7 +88,7 @@ virgin_islands_by_zip = virgin_islands.groupby('zip_code').agg({'price': 'median
 st.header("Real estate price predictor")
 st.write(f"Select from different Machine Learning models to view the best housing predictor for your budget",unsafe_allow_html=True)
 st.info("Download Kaggle `csv` data >> Cleanup and group by regions with the following dimensions - `price`, `bed`, `bath`, `acre_lot`, `house_size`, `state`, `zip_code` >> Focus on U.S. Mainland data only >> Display dataframe(s)/visualization(s) >> Run `lazypredict` analysis on the back-end for PR & VI >> Scoring metrics & Regression Model >> Next steps ??")
-st.image("./Resources/assets/home.gif", caption=None, width=100, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
+st.image("./Resources/assets/home.gif", caption=None, width=100)
 st.write("---")
 
 
@@ -108,7 +108,7 @@ with tab1:
     st.subheader("U.S. Mainland")
     
     ############### Define a dictionary to map states to U.S. mainland ###############
-    state = ["", "Connecticut", "Delaware", "Maine", "Massachusetts", "New Hampshire", "New Jersey", "New York", "Pennsylvania", "Rhode Island", "Vermont", "West Virginia", "Wyoming"]
+    state = ["Connecticut", "Delaware", "Maine", "Massachusetts", "New Hampshire", "New Jersey", "New York", "Pennsylvania", "Rhode Island", "Vermont", "West Virginia", "Wyoming"]
     # Sort states alphabetically
     state.sort()
 
@@ -155,10 +155,20 @@ with tab1:
     ############### Create & display dataframe for selected zipcode ###############
     selected_zipcode_df = filtered_mainland_df[filtered_mainland_df["zip_code"] == int(selected_zipcode)].sort_values(by="price", ascending=False)
 
-    st.write(f"<b>Here are {selected_zipcode_df.count().price} property listings for zip code {selected_zipcode} in {state_selected}:</b>", unsafe_allow_html=True)
-    st.write(selected_zipcode_df)
-
     
+    ############### Assign label to each row displayed ###############
+    selected_zipcode_df = mainland[mainland["zip_code"] == selected_zipcode].sort_values(by="price", ascending=False)
+
+    ############### Add new column with labels ###############
+    selected_zipcode_df["label"] = [f"Property {i+1}" for i in range(len(selected_zipcode_df))]
+
+    ############### Drop state column ###############
+    selected_zipcode_df = selected_zipcode_df.drop(columns="state", axis=1)
+
+    st.write(f"<b>Here is a list of {len(selected_zipcode_df)} property listings for the zipcode {selected_zipcode} in {state_selected}:</b>",unsafe_allow_html=True)
+    st.write(selected_zipcode_df.set_index("label"))
+
+
     
     ############### Display bar chart ###############
 
@@ -169,76 +179,74 @@ with tab1:
     
     
     ############### Select a single zipcode from the top 15 list for further analysis ###############
-    if st.checkbox(f"Display price predictions for {bedrooms_selected} bedroom(s) & {bathrooms_selected} bathroom(s) in the top 15 zipcodes in {state_selected}"):
+    if st.checkbox(f"Display price prediction(s) for a property in {selected_zipcode}"):
         ############### Check if top_zipcodes is empty ###############
-        if top_zipcodes.empty:
-            st.write("Please select the Display data checkbox above to populate top zip codes.")
-        else:
-            zip_selected = st.selectbox(f"Select from the top zip codes in {state_selected} for price prediction", top_zipcodes["zip_code"].unique())
-
-            ############### Filter the dataframe by the selected zip code ###############
-            data = filtered_mainland_df[filtered_mainland_df['zip_code'] == zip_selected]
-            data = data.drop_duplicates()
-            st.write(f"Number of available properties in <b>{zip_selected}</b> zip code: <b>{len(data)}</b>",unsafe_allow_html=True)
-            st.write(data)
+        property_selected = st.selectbox(f"Select a property label from below for price prediction", selected_zipcode_df["label"])
+        
+        
+        
+        st.write(f"<b>Below is the data for {property_selected}: </b>",unsafe_allow_html=True)
+        st.write("Display dataframe")
             
     
             
-            st.write("---")
+        st.write("---")
 
-            
-                
-            ############### Select a Regression model ###############
-            
-            model_options = ["LassoCV", "Ridge", "ElasticNet", "BaggingRegressor", "GradientBoostingRegressor", "RandomForestRegressor"]
 
-            ############### Add Title for Model Training ###############
 
-            if st.button(f"Run price prediction for {state_selected} zip: {zip_selected}"):
-                
-                
-                ############### Training & Testing - Split data into input (X) and output (y) variables ###############
-                X = filtered_mainland_df.drop(["price","state"], axis=1)
-                y = filtered_mainland_df["price"]
-                
-                ############### Split data into training and testing sets ###############
-                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10)
+        ############### Select a Regression model ###############
 
-                                
-                ############### Define the models ###############
-                models = [RandomForestRegressor(random_state=10),
-                          BaggingRegressor(random_state=10),
-                          GradientBoostingRegressor(random_state=10),
-                          LassoCV(random_state=10),
-                          Ridge(random_state=10),
-                          ElasticNet(random_state=10)]
+        model_options = ["LassoCV", "Ridge", "ElasticNet", "BaggingRegressor", "GradientBoostingRegressor", "RandomForestRegressor"]
 
-                ############### Train and evaluate the models ###############
-                best_model = None # Declare initial variable
-                best_score = float("inf") # Declare datatype
-                # Iterate through each model in the 'models' array
-                for model in models:
-                    
-                    # Fit train & test model
-                    model.fit(X_train, y_train)
-                    y_pred = model.predict(X_test)
-                    
-                    # Use Mean Squared Error metrics for scoring metrics
-                    score = mean_squared_error(y_test, y_pred)
-                    # st.write(f"Score",score)
-                    # Move to use RMSE
-                    rmse = np.sqrt(score)
-                    # st.write(f"RMSE",rmse)
-                    
-                    # st.write(f"{type(model).__name__} - Root Mean Squared Error: {score:.2f}")
-                    if score < best_score:
-                        best_score = score
-                        best_model = model
+        ############### Add Title for Model Training ###############
 
-                ############### Display the best model and its metrics ###############
-                st.write(f"Best model: {type(best_model).__name__} + Root Mean Squared Error - {best_score:.2f}")
-                st.balloons()
-                st.write(f"<b>🚧 UNDER CONSTRUCTION: Add metrics and price prediction explainations 🚧</b>",unsafe_allow_html=True)            
+        if st.button(f"Run price prediction for {property_selected} in {selected_zipcode} zipcode"):
+
+
+            ############### Training & Testing - Split data into input (X) and output (y) variables ###############
+            X = filtered_mainland_df.drop(["price","state"], axis=1)
+            y = filtered_mainland_df["price"]
+
+            ############### Split data into training and testing sets ###############
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10)
+
+
+            ############### Define the models ###############
+            models = [RandomForestRegressor(random_state=10),
+                      BaggingRegressor(random_state=10),
+                      GradientBoostingRegressor(random_state=10),
+                      LassoCV(random_state=10),
+                      Ridge(random_state=10),
+                      ElasticNet(random_state=10)]
+
+            ############### Train and evaluate the models ###############
+            best_model = None # Declare initial variable
+            best_score = float("inf") # Declare datatype
+            # Iterate through each model in the 'models' array
+            for model in models:
+
+                # Fit train & test model
+                model.fit(X_train, y_train)
+                y_pred = model.predict(X_test)
+
+                # Use Mean Squared Error metrics for scoring metrics
+                score = mean_squared_error(y_test, y_pred)
+                # st.write(f"Score",score)
+                # Move to use RMSE
+                rmse = np.sqrt(score)
+                # st.write(f"RMSE",rmse)
+
+                # st.write(f"{type(model).__name__} - Root Mean Squared Error: {score:.2f}")
+                if score < best_score:
+                    best_score = score
+                    best_model = model
+
+            ############### Display the best model and its metrics ###############
+            st.write(f"Original price for {property_selected}: {property_selected.price} USD")
+            st.write(f"Best model: {type(best_model).__name__} + Root Mean Squared Error - {best_score:.2f}")
+            st.balloons()
+            st.write(f"Price predicted $XYZ USD for time X, signifying a increase/decrease of Y%s")
+            st.write(f"<b>🚧 UNDER CONSTRUCTION: Add metrics and price prediction explainations 🚧</b>",unsafe_allow_html=True)            
                 
                 
                 
