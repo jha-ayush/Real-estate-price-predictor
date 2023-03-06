@@ -238,8 +238,10 @@ with tab1:
                     
                     # Use Mean Squared Error metrics for scoring metrics
                     score = mean_squared_error(y_test, y_pred)
+                    # st.write(f"Score",score)
                     # Move to use RMSE
                     rmse = np.sqrt(score)
+                    # st.write(f"RMSE",rmse)
                     
                     # st.write(f"{type(model).__name__} - Root Mean Squared Error: {score:.2f}")
                     if score < best_score:
