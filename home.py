@@ -58,9 +58,9 @@ def load_data(filename):
 ############### Create variables to load datafiles as dataframes ###############
 
 # Import csv data files for - U.S. Mainland, Puerto Rico, U.S. Virgin Islands
-mainland = load_data("./Resources/mainland_data.csv")
-puerto_rico = load_data("./Resources/puerto_rico_data.csv")
-virgin_islands = load_data("./Resources/virgin_islands_data.csv")
+mainland = load_data("./Resources/data_files/mainland_data.csv")
+puerto_rico = load_data("./Resources/data_files/puerto_rico_data.csv")
+virgin_islands = load_data("./Resources/data_files/virgin_islands_data.csv")
 
 # st.write(mainland["state"].unique())
 
@@ -88,6 +88,7 @@ virgin_islands_by_zip = virgin_islands.groupby('zip_code').agg({'price': 'mean',
 st.header("Real estate price predictor")
 st.write(f"Select from different Machine Learning models to view the best housing predictor for your budget",unsafe_allow_html=True)
 st.info("Download Kaggle `csv` data >> Cleanup and group by regions with the following dimensions - `price`, `bed`, `bath`, `acre_lot`, `house_size`, `state`, `zip_code` >> Focus on U.S. Mainland data only >> Display dataframe(s)/visualization(s) >> Run `lazypredict` analysis on the back-end for PR & VI >> Scoring metrics & Regression Model >> Next steps ??")
+st.image("./Resources/assets/home.gif", caption=None, width=100, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 st.write("---")
 
 
