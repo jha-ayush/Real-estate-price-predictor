@@ -186,7 +186,8 @@ with tab1:
     ax.bar(top_zipcodes.index, top_zipcodes["price"])
     ax.set_xlabel("Property label")
     ax.set_ylabel("Price (USD)")
-    ax.set_title(f"Listings for zipcode {selected_zipcode} in the state of {state_selected}")
+    ax.set_title(f"Listings preview for zipcode {selected_zipcode}, {state_selected} state")
+    # Set X-axis to 1, instead of 0
     ax.set_xlim(0.5, len(top_zipcodes)+0.5)
 
     # Display the chart in Streamlit
