@@ -162,11 +162,14 @@ with tab1:
     ############### Add new column with labels ###############
     selected_zipcode_df["label"] = [f"Property {i+1}" for i in range(len(selected_zipcode_df))]
 
-    ############### Drop state column ###############
-    selected_zipcode_df = selected_zipcode_df.drop(columns="state", axis=1)
+    ############### Drop state & zip_code columns ###############
+    selected_zipcode_df = selected_zipcode_df.drop(columns=["state", "zip_code"], axis=1)
 
-    st.write(f"<b>Here is a list of {len(selected_zipcode_df)} property listings for the zipcode {selected_zipcode} in {state_selected}:</b>",unsafe_allow_html=True)
-    st.write(selected_zipcode_df.set_index("label"))
+    ############### Show unique values of the dataframe ###############
+    unique_properties_df = selected_zipcode_df.drop_duplicates()
+
+    st.write(f"<b>Here is a list of {len(unique_properties_df)} property listings for the zipcode {selected_zipcode} in {state_selected}:</b>",unsafe_allow_html=True)
+    st.write(unique_properties_df.set_index("label"))
 
 
     
@@ -184,12 +187,12 @@ with tab1:
     # Extract numeric part of the property label
     property_number = int(property_selected.split()[-1])
 
-    ############### Create & display dataframe for the selected property label ###############
-    property_selected_df = selected_zipcode_df[selected_zipcode_df["label"] == property_number].sort_values(by="price", ascending=False)
+    # Filter the DataFrame to show only the selected property
+    selected_property_df = selected_zipcode_df[selected_zipcode_df["label"] == f"Property {property_number}"]
 
-    st.write(f"<b>Below is the data for {property_selected}: </b>",unsafe_allow_html=True)
-    st.write(property_selected_df)
-
+    # Display the DataFrame for the selected property
+    st.write(f"<b>Here is the data for {property_selected}:</b>", unsafe_allow_html=True)
+    st.write(selected_property_df)
 
 
 
@@ -203,15 +206,19 @@ with tab1:
 
     ############### Add Title for Model Training ###############
 
-    if st.button(f"Run price prediction for {property_selected} in {selected_zipcode} zipcode"):
+    if st.button(f"Run price prediction for {selected_zipcode} zipcode"):
 
 
         ############### Training & Testing - Split data into input (X) and output (y) variables ###############
-        X = filtered_mainland_df.drop(["price","state"], axis=1)
-        y = filtered_mainland_df["price"]
+        X = selected_zipcode_df[["house_size"]]
+        y = selected_zipcode_df["price"]
 
         ############### Split data into training and testing sets ###############
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=10)
+        st.write("X Training set size:", len(X_train))
+        st.write("X Testing set size:", len(X_test))
+        st.write("y Training set size:", len(y_train))
+        st.write("y Testing set size:", len(y_test))
 
 
         ############### Define the models ###############
@@ -245,7 +252,7 @@ with tab1:
                 best_model = model
 
         ############### Display the best model and its metrics ###############
-        st.write(f"Original price for {property_selected}: {property_selected.price} USD")
+        st.write(f"Original price for {selected_zipcode_df}: {selected_zipcode_df.price} USD")
         st.write(f"Best model: {type(best_model).__name__} + Root Mean Squared Error - {best_score:.2f}")
         st.balloons()
         st.write(f"Price predicted $XYZ USD for time X, signifying a increase/decrease of Y%s")
