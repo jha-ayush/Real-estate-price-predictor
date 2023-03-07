@@ -88,7 +88,6 @@ virgin_islands_by_zip = virgin_islands.groupby('zip_code').agg({'price': 'median
 st.header("Real estate price predictor")
 st.write(f"Select from different Machine Learning models to view the best housing predictor for your budget",unsafe_allow_html=True)
 st.info("Download Kaggle `csv` data >> Cleanup and group by regions with the following dimensions - `price`, `bed`, `bath`, `acre_lot`, `house_size`, `state`, `zip_code` >> Focus on U.S. Mainland data only >> Display dataframe(s)/visualization(s) >> Run `lazypredict` analysis on the back-end for PR & VI >> Scoring metrics & Regression Model >> Next steps ??")
-st.image("./Resources/assets/home.gif", caption=None, width=100)
 st.write("---")
 
 
@@ -215,10 +214,10 @@ with tab1:
 
         ############### Split data into training and testing sets ###############
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=10)
-        st.write("X Training set size:", len(X_train))
-        st.write("X Testing set size:", len(X_test))
-        st.write("y Training set size:", len(y_train))
-        st.write("y Testing set size:", len(y_test))
+        st.write(f"X Training set size:", len(X_train))
+        st.write(f"X Testing set size:", len(X_test))
+        st.write(f"y Training set size:", len(y_train))
+        st.write(f"y Testing set size:", len(y_test))
 
 
         ############### Define the models ###############
@@ -252,10 +251,9 @@ with tab1:
                 best_model = model
 
         ############### Display the best model and its metrics ###############
-        st.write(f"Original price for {selected_zipcode_df}: {selected_zipcode_df.price} USD")
         st.write(f"Best model: {type(best_model).__name__} + Root Mean Squared Error - {best_score:.2f}")
         st.balloons()
-        st.write(f"Price predicted $XYZ USD for time X, signifying a increase/decrease of Y%s")
+        st.write(f"Price predicted $XYZ USD for time X, signifying a increase/decrease of Y%")
         st.write(f"<b>🚧 UNDER CONSTRUCTION: Add metrics and price prediction explainations 🚧</b>",unsafe_allow_html=True)            
                 
                 
