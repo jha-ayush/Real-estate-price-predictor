@@ -179,7 +179,7 @@ with tab1:
     
         
     ############### Selected property dropdown menu ###############
-    property_selected = st.selectbox(f"Select a property label from below for price prediction for the zipcode {selected_zipcode}", selected_zipcode_df["label"])
+    property_selected = st.selectbox(f"Select a property label below for price prediction for the zipcode {selected_zipcode}", selected_zipcode_df["label"])
 
     # Extract numeric part of the property label
     property_number = int(property_selected.split()[-1])
