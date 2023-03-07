@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 
 import plotly.express as px # Visualizations
+import matplotlib.pyplot as plt # Visualizations
 
 from sklearn.model_selection import train_test_split # Train/ Test package
 from sklearn.metrics import make_scorer, r2_score, mean_absolute_error, mean_squared_error # Scoring metrics
@@ -70,7 +71,6 @@ virgin_islands = load_data("./Resources/data_files/virgin_islands_data.csv")
 
 ############### U.S. Mainland by zipcode - Create dataframes with aggregated by Zip Code Values ###############
 mainland_by_zip = mainland.groupby('zip_code').agg({'price': 'median', 'bed': 'median'}).round(2)
-
 
 
 ############### Puerto Rico - Create dataframes with aggregated by Zip Code Values ###############
@@ -153,6 +153,13 @@ with tab1:
     
     ############### Create & display dataframe for selected zipcode ###############
     selected_zipcode_df = filtered_mainland_df[filtered_mainland_df["zip_code"] == int(selected_zipcode)].sort_values(by="price", ascending=False)
+    
+    ############### Check for duplicates in selected columns ###############
+    duplicates = selected_zipcode_df.duplicated(subset=['price', 'bed', 'bath', 'acre_lot', 'zip_code', 'house_size'], keep=False)
+
+    ############### Drop duplicates ###############
+    selected_zipcode_df = selected_zipcode_df[~duplicates].reset_index(drop=True)
+
 
     
     ############### Assign label to each row displayed ###############
@@ -173,7 +180,17 @@ with tab1:
 
     
     ############### Display bar chart ###############
+    
+    # Create a bar chart
+    fig_prop_listings, ax = plt.subplots()
+    ax.bar(top_zipcodes.index, top_zipcodes["price"])
+    ax.set_xlabel("Property label")
+    ax.set_ylabel("Price (USD)")
+    ax.set_title(f"Listings for zipcode {selected_zipcode} in the state of {state_selected}")
+    ax.set_xlim(0.5, len(top_zipcodes)+0.5)
 
+    # Display the chart in Streamlit
+    st.pyplot(fig_prop_listings)
         
     
     st.write("---")
@@ -191,6 +208,13 @@ with tab1:
 
     # Display the DataFrame for the selected property
     st.write(f"<b>Here is the data for {property_selected}:</b>", unsafe_allow_html=True)
+    
+    # Re-arrange columns
+    selected_property_df = selected_property_df.reindex(columns=['label', 'price', 'house_size', 'bed', 'bath', 'acre_lot'])
+    # Set index column to `label`
+    selected_property_df.set_index('label', inplace=True)
+    
+    # Display revised property selected data
     st.write(selected_property_df)
 
 
@@ -205,7 +229,7 @@ with tab1:
 
     ############### Add Title for Model Training ###############
 
-    if st.button(f"Run price prediction for {selected_zipcode} zipcode"):
+    if st.button(f"Run price prediction for {property_selected} in {selected_zipcode}"):
 
 
         ############### Training & Testing - Split data into input (X) and output (y) variables ###############
@@ -214,10 +238,10 @@ with tab1:
 
         ############### Split data into training and testing sets ###############
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=10)
-        st.write(f"X Training set size:", len(X_train))
-        st.write(f"X Testing set size:", len(X_test))
-        st.write(f"y Training set size:", len(y_train))
-        st.write(f"y Testing set size:", len(y_test))
+        # st.write(f"X Training set size:", len(X_train))
+        # st.write(f"X Testing set size:", len(X_test))
+        # st.write(f"y Training set size:", len(y_train))
+        # st.write(f"y Testing set size:", len(y_test))
 
 
         ############### Define the models ###############
@@ -251,10 +275,10 @@ with tab1:
                 best_model = model
 
         ############### Display the best model and its metrics ###############
-        st.write(f"Best model: {type(best_model).__name__} + Root Mean Squared Error - {best_score:.2f}")
+        st.write(f"Best model: {type(best_model).__name__} + Root Mean Squared Error (RMSE) - {best_score:.2f}")
         st.balloons()
         st.write(f"Price predicted $XYZ USD for time X, signifying a increase/decrease of Y%")
-        st.write(f"<b>🚧 UNDER CONSTRUCTION: Add metrics and price prediction explainations 🚧</b>",unsafe_allow_html=True)            
+        st.write(f"<b>🚧 UNDER CONSTRUCTION: Add price prediction explainations 🚧</b>",unsafe_allow_html=True)            
                 
                 
                 
