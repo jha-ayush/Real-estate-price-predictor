@@ -4,7 +4,7 @@ Real estate price predictor using Machine Learning models - U.S. Mainland, Puert
 
 
 <img
-  src="./Resources/assets/home.gif"
+  src="./Resources/assets/home.png"
   alt="Real Estate price predictor"
   title="Real Estate price predictor"
   style="display: inline-block; margin: 0 auto; max-width: 75px">
