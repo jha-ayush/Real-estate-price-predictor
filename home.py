@@ -239,13 +239,13 @@ with tab1:
             rmse = np.sqrt(score)
             # st.write(f"RMSE",rmse)
 
-            # st.write(f"{type(model).__name__} - Root Mean Squared Error: {score:.2f}")
+            ############### Find best score and best model
             if score < best_score:
                 best_score = score
                 best_model = model
 
         ############### Display the best model and its metrics ###############
-        st.write(f"<b>🚧 UNDER CONSTRUCTION: Add price prediction explainations for XY timeline 🚧 <br>🚧 Best model - {type(best_model).__name__} + Root Mean Squared Error (RMSE) 🚧</b>",unsafe_allow_html=True)
+        st.write(f"<b>🚧 UNDER CONSTRUCTION: Add price prediction explainations for XY timeline 🚧 <br>🚧 Best model - {type(best_model).__name__} + Root Mean Squared Error (RMSE) scoring metric 🚧</b>",unsafe_allow_html=True)
         
         # assuming X_test is your test data and y_test is your test target
         price_predictions = best_model.predict(X_test)
@@ -254,8 +254,11 @@ with tab1:
         price_predictions_df = pd.DataFrame(data=X_test, columns=X_test.columns)
         price_predictions_df['price_predictions'] = price_predictions.round(2)
         
-        st.write(price_predictions_df.set_index("house_size"))
+        st.write(price_predictions_df.set_index("house_size").sort_values(by="price_predictions", ascending=False))
         st.balloons()
+        
+        
+        
         
         
         st.write("---")
