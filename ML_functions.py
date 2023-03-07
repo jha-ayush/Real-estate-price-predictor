@@ -41,7 +41,8 @@ def random_forest(X, y):
     rf_mean = mean_squared_error(y_test, y_pred)
     rf_r2 = r2_score(y_test, y_pred)
     rf_mae = mean_squared_error(y, y_pred)
-    rf_mse = np.sqrt(mean_squared_error(y, y_pred)
+    rf_mse = mean_squared_error(y, y_pred)
+    rf_rmse = np.sqrt(mean_squared_error(y, y_pred))
     
     return y_pred
 
@@ -61,6 +62,8 @@ def bagging_regressor(X, y):
     global br_mean
     global br_r2
     global br_mae
+    global br_mse
+    global br_rmse
     
     # Split data into training and test sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
@@ -77,6 +80,8 @@ def bagging_regressor(X, y):
     br_mean = mean_squared_error(y_test, y_pred)
     br_r2 = r2_score(y_test, y_pred)
     br_mae = mean_absolute_error(y, y_pred)
+    br_mse = mean_squared_error(y, y_pred)
+    br_rmse = np.sqrt(mean_squared_error(y, y_pred))
     
     return y_pred
 
@@ -96,6 +101,8 @@ def extra_trees_regressor(X, y):
     global etr_mean
     global etr_r2
     global etr_mae
+    global etr_mse
+    global etr_rmse
     
     # Split data into training and test sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10)
@@ -111,6 +118,8 @@ def extra_trees_regressor(X, y):
     etr_mean=mean_squared_error(y_test, y_pred)
     etr_r2=r2_score(y_test, y_pred)
     etr_mae = mean_absolute_error(y, y_pred)
+    etr_mse = mean_squared_error(y, y_pred)
+    etr_rmse = np.sqrt(mean_squared_error(y, y_pred))
                                        
     return y_pred  
                                        
@@ -130,6 +139,8 @@ def gradient_boosting_regressor(X, y):
     global gbr_mean
     global gbr_r2
     global gbr_mae
+    global gbr_mse
+    global gbr_rmse
         
     # Split data into training and test sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10)
@@ -145,6 +156,8 @@ def gradient_boosting_regressor(X, y):
     gbr_mean=mean_squared_error(y_test, y_pred)
     gbr_r2=r2_score(y_test, y_pred)
     gbr_mae = mean_absolute_error(y, y_pred)
+    gbr_mse = mean_squared_error(y, y_pred)
+    gbr_rmse = np.sqrt(mean_squared_error(y, y_pred))
                                        
     return y_pred
 
@@ -164,6 +177,8 @@ def lasso_cv(X, y):
     global lasso_mean
     global lasso_r2
     global lasso_mae
+    global lasso_mse
+    global lasso_rmse
         
     # Split data into training and test sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10)
@@ -179,6 +194,8 @@ def lasso_cv(X, y):
     lasso_mean = mean_squared_error(y_test, y_pred)
     lasso_r2 = r2_score(y_test, y_pred)
     lasso_mae = mean_absolute_error(y, y_pred)
+    lasso_mse = mean_squared_error(y, y_pred)
+    lasso_rmse = np.sqrt(mean_squared_error(y, y_pred))
                                        
     return y_pred                   
 
@@ -198,6 +215,8 @@ def ridge_regressor(X, y):
     global ridge_mean
     global ridge_r2
     global ridge_mae
+    global ridge_mse
+    global ridge_rmse
     
     # Split data into training and test sets                                   
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10)
@@ -213,6 +232,8 @@ def ridge_regressor(X, y):
     ridge_mean = mean_squared_error(y_test, y_pred)
     ridge_r2 = r2_score(y_test, y_pred)
     ridge_mae = mean_absolute_error(y, y_pred)
+    ridge_mse = mean_squared_error(y, y_pred)
+    ridge_rmse = np.sqrt(mean_squared_error(y, y_pred))
                                        
     return y_pred
 
@@ -232,6 +253,8 @@ def elastic_net_regressor(X, y):
     global enet_mean
     global enet_r2
     global enet_mae
+    global enet_mse
+    global enet_rmse
     
     # Split data into training and test sets                                   
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10)
@@ -247,5 +270,7 @@ def elastic_net_regressor(X, y):
     enet_mean = mean_squared_error(y_test, y_pred)
     enet_r2 = r2_score(y_test, y_pred)
     enet_mae = mean_absolute_error(y, y_pred)
+    enet_mse = mean_squared_error(y, y_pred)
+    enet_rmse = np.sqrt(mean_squared_error(y, y_pred))
                                        
     return y_pred
