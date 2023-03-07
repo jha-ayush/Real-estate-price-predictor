@@ -10,14 +10,12 @@ Real estate price predictor using Machine Learning models - U.S. Mainland, Puert
   style="display: inline-block; margin: 0 auto; max-width: 75px">
   
 
-## Business Case
-
-A real estate company wants to predict the selling prices of houses based on various features such as the number of bedrooms, bathrooms, square footage, and location. They have collected data on past house sales, which includes these features as well as the final selling price. The company wants to use this data to train a machine learning model that can accurately predict the selling price of a house given its features. They also want to be able to evaluate the performance of different models using different scoring metrics.
-
-
-  
-  
 ## Objective
+
+The objective of this project is to predict the selling prices of houses for a real estate company. The company has gathered data on past house sales, including the number of bedrooms, bathrooms, lot acre, house size and state or region in United States, along with the final selling price. 
+The purpose is to implement and deploy machine learning model(s) that can accurately predict the selling price of a house based on its features. Additionally, by using multiple machine learning models, the app evaluates the ML performance against scoring metrics, to provide the user the best ML option. 
+This project aims to help the company make informed decisions based on accurate predictions and improve their business outcomes.
+
 
 ## Technologies
 
