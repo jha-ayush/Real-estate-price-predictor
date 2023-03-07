@@ -186,7 +186,7 @@ with tab1:
     ax.bar(top_zipcodes.index, top_zipcodes["price"])
     ax.set_xlabel("Property label")
     ax.set_ylabel("Price (USD)")
-    ax.set_title(f"Listings preview for zipcode {selected_zipcode}, {state_selected} state")
+    ax.set_title(f"Listings preview for zipcode {selected_zipcode}, {state_selected}")
     # Set X-axis to 1, instead of 0
     ax.set_xlim(0.5, len(top_zipcodes)+0.5)
 
@@ -197,7 +197,89 @@ with tab1:
     st.write("---")
     
     
+    ############### Select a Regression model ###############
+
+    model_options = ["LassoCV", "Ridge", "ElasticNet", "BaggingRegressor", "GradientBoostingRegressor", "RandomForestRegressor", "ExtraTreesRegressor"]
+
+    ############### Add Title for Model Training ###############
+
+    if st.button(f"Run price prediction ML models for {selected_zipcode} zipcode"):
+
+
+        ############### Training & Testing - Split data into input (X) and output (y) variables ###############
+        X = selected_zipcode_df[["house_size"]]
+        y = selected_zipcode_df["price"]
+
+        ############### Split data into training and testing sets ###############
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10)
+
+
+        ############### Define the models ###############
+        models = [RandomForestRegressor(random_state=10),
+                  BaggingRegressor(random_state=10),
+                  GradientBoostingRegressor(random_state=10),
+                  LassoCV(random_state=10),
+                  Ridge(random_state=10),
+                  ElasticNet(random_state=10)]
+
+        ############### Train and evaluate the models ###############
+        best_model = None # Declare initial variable
+        best_score = float("inf") # Declare datatype
+        # Iterate through each model in the 'models' array
+        for model in models:
+
+            # Fit train & test model
+            model.fit(X_train, y_train)
+            y_pred = model.predict(X_test)
+
+            # Use Mean Squared Error metrics for scoring metrics
+            score = mean_squared_error(y_test, y_pred)
+            # st.write(f"Score",score)
+            # Refactor to use RMSE
+            rmse = np.sqrt(score)
+            # st.write(f"RMSE",rmse)
+
+            # st.write(f"{type(model).__name__} - Root Mean Squared Error: {score:.2f}")
+            if score < best_score:
+                best_score = score
+                best_model = model
+
+        ############### Display the best model and its metrics ###############
+        st.write(f"<b>🚧 UNDER CONSTRUCTION: Add price prediction explainations for XY timeline 🚧 <br>🚧 Best model - {type(best_model).__name__} + Root Mean Squared Error (RMSE) 🚧</b>",unsafe_allow_html=True)
         
+        # assuming X_test is your test data and y_test is your test target
+        price_predictions = best_model.predict(X_test)
+
+        # create a new dataframe with a new column for the predicted values
+        price_predictions_df = pd.DataFrame(data=X_test, columns=X_test.columns)
+        price_predictions_df['price_predictions'] = price_predictions.round(2)
+        
+        st.write(price_predictions_df.set_index("house_size"))
+        st.balloons()
+        
+        
+        st.write("---")
+        
+        
+        ############### Create a copy of the unique_properties_df dataframe
+        price_predictions_df = unique_properties_df.copy()
+
+        ############### Make predictions using the best model
+        # price_predictions = best_model.predict(X_test)
+
+        ############### Add the predicted prices as a new column to the price_predictions_df dataframe
+        # price_predictions_df['price_predictions'] = price_predictions
+
+        ############### Set the index of the price_predictions_df dataframe to the 'label' column
+        # price_predictions_df.set_index('label', inplace=True)
+
+        ############### Display the dataframe with the added column
+        # filtered_df = unique_properties_df.set_index("label").join(price_predictions_df.set_index("label"), how="inner")
+
+        
+        
+        
+    
     ############### Selected property dropdown menu ###############
     property_selected = st.selectbox(f"Select a property label below for price prediction for the zipcode {selected_zipcode}", selected_zipcode_df["label"])
 
@@ -224,62 +306,8 @@ with tab1:
 
 
 
-    ############### Select a Regression model ###############
+    
 
-    model_options = ["LassoCV", "Ridge", "ElasticNet", "BaggingRegressor", "GradientBoostingRegressor", "RandomForestRegressor"]
-
-    ############### Add Title for Model Training ###############
-
-    if st.button(f"Run price prediction for {property_selected} in {selected_zipcode}"):
-
-
-        ############### Training & Testing - Split data into input (X) and output (y) variables ###############
-        X = selected_zipcode_df[["house_size"]]
-        y = selected_zipcode_df["price"]
-
-        ############### Split data into training and testing sets ###############
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=10)
-        # st.write(f"X Training set size:", len(X_train))
-        # st.write(f"X Testing set size:", len(X_test))
-        # st.write(f"y Training set size:", len(y_train))
-        # st.write(f"y Testing set size:", len(y_test))
-
-
-        ############### Define the models ###############
-        models = [RandomForestRegressor(random_state=10),
-                  BaggingRegressor(random_state=10),
-                  GradientBoostingRegressor(random_state=10),
-                  LassoCV(random_state=10),
-                  Ridge(random_state=10),
-                  ElasticNet(random_state=10)]
-
-        ############### Train and evaluate the models ###############
-        best_model = None # Declare initial variable
-        best_score = float("inf") # Declare datatype
-        # Iterate through each model in the 'models' array
-        for model in models:
-
-            # Fit train & test model
-            model.fit(X_train, y_train)
-            y_pred = model.predict(X_test)
-
-            # Use Mean Squared Error metrics for scoring metrics
-            score = mean_squared_error(y_test, y_pred)
-            # st.write(f"Score",score)
-            # Move to use RMSE
-            rmse = np.sqrt(score)
-            # st.write(f"RMSE",rmse)
-
-            # st.write(f"{type(model).__name__} - Root Mean Squared Error: {score:.2f}")
-            if score < best_score:
-                best_score = score
-                best_model = model
-
-        ############### Display the best model and its metrics ###############
-        st.write(f"Best model: {type(best_model).__name__} + Root Mean Squared Error (RMSE) - {best_score:.2f}")
-        st.balloons()
-        st.write(f"Price predicted $XYZ USD for time X, signifying a increase/decrease of Y%")
-        st.write(f"<b>🚧 UNDER CONSTRUCTION: Add price prediction explainations 🚧</b>",unsafe_allow_html=True)            
                 
                 
                 
