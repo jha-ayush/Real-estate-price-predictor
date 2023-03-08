@@ -248,8 +248,7 @@ with tab1:
                 best_score = score
                 best_model = model
 
-        ############### Display the best model and its metrics ###############
-        # st.write(f"<b>UNDER CONSTRUCTION: Add time series price prediction explainations for XY timeline <br>Best model - {type(best_model).__name__} + Root Mean Squared Error (RMSE) scoring metric </b>",unsafe_allow_html=True)
+
         
         ############### assuming X_test is your test data and y_test is your test target
         price_predictions_mainland = best_model.predict(selected_mainland_zipcode_df[predictors])
