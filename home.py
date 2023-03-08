@@ -45,7 +45,7 @@ def local_css(file_name):
     with open(file_name) as f:
         st.write(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 # load css file
-local_css("./style/style.css")
+local_css("./src/style/style.css")
 
 
 
