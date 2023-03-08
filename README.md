@@ -43,7 +43,7 @@ Add a demo/png/gif for your project
 
 
 ## Environment setup
-[(Back to top)](#table-of-contents)
+[(Back to top)](#project-title)
 
 - `conda create -n [name] python=3.9`
 - `conda activate [name]`
@@ -53,7 +53,7 @@ Add a demo/png/gif for your project
 
 
 ## Technologies
-[(Back to top)](#table-of-contents)
+[(Back to top)](#project-title)
 
 - `python`
 - `anaconda`
@@ -67,7 +67,7 @@ Add a demo/png/gif for your project
 
 
 ## Deployment
-[(Back to top)](#table-of-contents)
+[(Back to top)](#project-title)
 
 - In Terminal `cd` into cloned repo
 - `cd` to directory where `home.py` file is located
@@ -76,7 +76,7 @@ Add a demo/png/gif for your project
 
 
 ## Contributors
-[(Back to top)](#table-of-contents)
+[(Back to top)](#project-title)
 
 [Christine Pham](https://github.com/cpham35?tab=repositories) - `cpham35`
 
@@ -87,7 +87,7 @@ Add a demo/png/gif for your project
 
 
 ## Next steps
-[(Back to top)](#table-of-contents)
+[(Back to top)](#project-title)
 
 **Next steps** - what could we do next if we had 1 or 2 more weeks to work on the app?
 
