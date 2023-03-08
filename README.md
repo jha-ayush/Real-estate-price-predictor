@@ -8,17 +8,6 @@
 
 Real estate price predictor using Machine Learning models - U.S. Mainland, Puerto Rico & U.S. Virgin Islands
 
-  
-
-## Objective
-
-The objective of this project is to predict the selling prices of houses for a real estate company. The company has gathered data on past house sales, including the number of bedrooms, bathrooms, lot acre, house size and state or region in United States, along with the final selling price. 
-The purpose is to implement and deploy machine learning model(s) that can accurately predict the selling price of a house based on its features. Additionally, by using multiple machine learning models, the app evaluates the ML performance against scoring metrics, to provide the user the best ML option. 
-This project aims to help the company make informed decisions based on accurate predictions and improve their business outcomes.
-
-
-
-
 
 
 
@@ -30,7 +19,7 @@ Add a demo/png/gif for your project
 
 ## Table of contents
 
-- [Project Title](#project-title)
+- [Objective](#objective)
 - [Demo-Preview](#demo-preview)
 - [Table of contents](#table-of-contents)
 - [Environment setup](#environment-setup)
@@ -41,9 +30,18 @@ Add a demo/png/gif for your project
 
 
 
+## Objective
+[(Back to top)](#table-of-contents)
+
+The objective of this project is to predict the selling prices of houses for a real estate company. The company has gathered data on past house sales, including the number of bedrooms, bathrooms, lot acre, house size and state or region in United States, along with the final selling price. 
+The purpose is to implement and deploy machine learning model(s) that can accurately predict the selling price of a house based on its features. Additionally, by using multiple machine learning models, the app evaluates the ML performance against scoring metrics, to provide the user the best ML option. 
+This project aims to help the company make informed decisions based on accurate predictions and improve their business outcomes.
+
+
+
 
 ## Environment setup
-[(Back to top)](#project-title)
+[(Back to top)](#table-of-contents)
 
 - `conda create -n [name] python=3.9`
 - `conda activate [name]`
@@ -53,7 +51,7 @@ Add a demo/png/gif for your project
 
 
 ## Technologies
-[(Back to top)](#project-title)
+[(Back to top)](#table-of-contents)
 
 - `python`
 - `anaconda`
@@ -67,7 +65,7 @@ Add a demo/png/gif for your project
 
 
 ## Deployment
-[(Back to top)](#project-title)
+[(Back to top)](#table-of-contents)
 
 - In Terminal `cd` into cloned repo
 - `cd` to directory where `home.py` file is located
@@ -76,7 +74,7 @@ Add a demo/png/gif for your project
 
 
 ## Contributors
-[(Back to top)](#project-title)
+[(Back to top)](#table-of-contents)
 
 [Christine Pham](https://github.com/cpham35?tab=repositories) - `cpham35`
 
@@ -87,7 +85,7 @@ Add a demo/png/gif for your project
 
 
 ## Next steps
-[(Back to top)](#project-title)
+[(Back to top)](#table-of-contents)
 
 **Next steps** - what could we do next if we had 1 or 2 more weeks to work on the app?
 
