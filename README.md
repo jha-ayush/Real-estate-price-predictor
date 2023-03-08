@@ -1,13 +1,13 @@
+<img
+  src="./Images/home.png"
+  alt="Real Estate price predictor"
+  title="Real Estate price predictor"
+  style="display: inline-block; margin: 0 auto; max-width: 75px">
+
 # Real-estate-price-predictor
 
 Real estate price predictor using Machine Learning models - U.S. Mainland, Puerto Rico & U.S. Virgin Islands
 
-
-<img
-  src="./Resources/assets/home.png"
-  alt="Real Estate price predictor"
-  title="Real Estate price predictor"
-  style="display: inline-block; margin: 0 auto; max-width: 75px">
   
 
 ## Objective
@@ -17,7 +17,43 @@ The purpose is to implement and deploy machine learning model(s) that can accura
 This project aims to help the company make informed decisions based on accurate predictions and improve their business outcomes.
 
 
+
+
+
+
+
+## Demo Preview
+
+Add a demo/png/gif for your project
+
+
+
+## Table of contents
+
+- [Project Title](#project-title)
+- [Demo-Preview](#demo-preview)
+- [Table of contents](#table-of-contents)
+- [Environment setup](#environment-setup)
+- [Technologies](#technologies)
+- [Deployment](#deployment)
+- [Contributors](#contributors)
+- [Footer](#footer)
+
+
+
+
+## Environment setup
+[(Back to top)](#table-of-contents)
+
+- `conda create -n [name] python=3.9`
+- `conda activate [name]`
+- `git init`
+- `git clone` repo
+- `pip install -r requirements.txt`
+
+
 ## Technologies
+[(Back to top)](#table-of-contents)
 
 - `python`
 - `anaconda`
@@ -27,15 +63,11 @@ This project aims to help the company make informed decisions based on accurate 
 - `pandas    : 1.3.5`
 - `streamlit : 1.18.1`
 
-## Environment setup
 
-- `conda create -n [name] python=3.9`
-- `conda activate [name]`
-- `git clone` repo
-- `pip install -r requirements.txt`
 
 
 ## Deployment
+[(Back to top)](#table-of-contents)
 
 - In Terminal `cd` into cloned repo
 - `cd` to directory where `home.py` file is located
@@ -44,6 +76,7 @@ This project aims to help the company make informed decisions based on accurate 
 
 
 ## Contributors
+[(Back to top)](#table-of-contents)
 
 [Christine Pham](https://github.com/cpham35?tab=repositories) - `cpham35`
 
@@ -52,12 +85,14 @@ This project aims to help the company make informed decisions based on accurate 
 [Ayush Jha](https://github.com/jha-ayush?tab=repositories) - `jha-ayush`
 
 
-## Summary
-The provided codebase can be used to calculate different scoring metrics for a machine learning model that predicts the selling price of houses based on various features. The codebase takes as input the actual selling prices of a test set of houses and the predicted selling prices of the same test set of houses using a machine learning model. Based on the selected scoring metric, the codebase calculates the corresponding score and assigns it to the variable "score". The scoring metrics that can be selected are "r2_score", "mean_squared_error", and "mean_absolute_error". This codebase can be used to evaluate the performance of different machine learning models that predict the selling price of houses.
+
+### Adding new features or fixing bugs
+[(Back to top)](#table-of-contents)
+
+Next steps
 
 
+### Footer
+[(Back to top)](#table-of-contents)
 
-## Next steps
-
-
-<sub>Note: This app is for educational purposes only.</sub>
+<sub>**Note:** This app is for educational purposes only.</sub>

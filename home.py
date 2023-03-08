@@ -10,8 +10,11 @@ import matplotlib.pyplot as plt # Visualizations
 
 from sklearn.model_selection import train_test_split # Train/ Test package
 from sklearn.metrics import make_scorer, r2_score, mean_absolute_error, mean_squared_error # Scoring metrics
-from sklearn.linear_model import LassoCV, Ridge, ElasticNet # Machine Learning Models
+from sklearn.linear_model import Ridge, ElasticNet # Machine Learning Models
 from sklearn.ensemble import RandomForestRegressor, BaggingRegressor, GradientBoostingRegressor # Regression ML Models
+
+import xgboost as xgb
+
 
 ############### Import warnings + watermark ###############
 from watermark import watermark
@@ -104,10 +107,10 @@ tab1, tab2, tab3 = st.tabs(["U.S. Mainland", "Puerto Rico", "U.S. Virgin Islands
 ############### U.S. Mainland ###############
 with tab1:
       
-    st.subheader("U.S. Mainland")
+    st.subheader("U.S. Mainland data")
     
     ############### Define a dictionary to map states to U.S. mainland ###############
-    state = ["Connecticut", "Delaware", "Maine", "Massachusetts", "New Hampshire", "New Jersey", "New York", "Pennsylvania", "Rhode Island", "Vermont", "West Virginia", "Wyoming"]
+    state = [" Select a U.S. mainland state", "Connecticut", "Delaware", "Maine", "Massachusetts", "New Hampshire", "New Jersey", "New York", "Pennsylvania", "Rhode Island", "Vermont", "West Virginia", "Wyoming"]
     # Sort states alphabetically
     state.sort()
 
@@ -154,44 +157,49 @@ with tab1:
     ############### Create & display dataframe for selected zipcode ###############
     selected_zipcode_df = filtered_mainland_df[filtered_mainland_df["zip_code"] == int(selected_zipcode)].sort_values(by="price", ascending=False)
     
-    ############### Check for duplicates in selected columns ###############
-    duplicates = selected_zipcode_df.duplicated(subset=['price', 'bed', 'bath', 'acre_lot', 'zip_code', 'house_size'], keep=False)
 
-    ############### Drop duplicates ###############
-    selected_zipcode_df = selected_zipcode_df[~duplicates].reset_index(drop=True)
-
-
-    
-    ############### Assign label to each row displayed ###############
-    selected_zipcode_df = mainland[mainland["zip_code"] == selected_zipcode].sort_values(by="price", ascending=False)
 
     ############### Add new column with labels ###############
-    selected_zipcode_df["label"] = [f"Property {i+1}" for i in range(len(selected_zipcode_df))]
+    selected_zipcode_df["label"] = [f"Home {i+1}" for i in range(len(selected_zipcode_df))]
 
     ############### Drop state & zip_code columns ###############
     selected_zipcode_df = selected_zipcode_df.drop(columns=["state", "zip_code"], axis=1)
 
-    ############### Show unique values of the dataframe ###############
-    unique_properties_df = selected_zipcode_df.drop_duplicates()
+    
+    
+    ############### Title ###############
+    st.write(f"<b>Here is a list of {len(selected_zipcode_df)} property listings for the zipcode {selected_zipcode} in {state_selected}:</b>",unsafe_allow_html=True)
+    
+    
+    
+    
+    # Re-arrange columns
+    selected_zipcode_df = selected_zipcode_df.reindex(columns=["label", "house_size", "bed", "bath", "acre_lot", "price"])
+    # Set index column to `label`
+    
+    selected_zipcode_df = selected_zipcode_df.reset_index(drop=True)
 
-    st.write(f"<b>Here is a list of {len(unique_properties_df)} property listings for the zipcode {selected_zipcode} in {state_selected}:</b>",unsafe_allow_html=True)
-    st.write(unique_properties_df.set_index("label"))
-
+    st.write(selected_zipcode_df)
 
     
     ############### Display bar chart ###############
     
+    labels=selected_zipcode_df["label"].values
+    price=selected_zipcode_df["price"].values
+    
+    
     # Create a bar chart
     fig_prop_listings, ax = plt.subplots()
-    ax.bar(top_zipcodes.index, top_zipcodes["price"])
+    ax.bar(labels, price)
     ax.set_xlabel("Property label")
     ax.set_ylabel("Price (USD)")
     ax.set_title(f"Listings preview for zipcode {selected_zipcode}, {state_selected}")
     # Set X-axis to 1, instead of 0
-    ax.set_xlim(0.5, len(top_zipcodes)+0.5)
+    #ax.set_xlim(0.5, len(top_zipcodes)+0.5)
 
     # Display the chart in Streamlit
     st.pyplot(fig_prop_listings)
+    
         
     
     st.write("---")
@@ -199,15 +207,16 @@ with tab1:
     
     ############### Select a Regression model ###############
 
-    model_options = ["LassoCV", "Ridge", "ElasticNet", "BaggingRegressor", "GradientBoostingRegressor", "RandomForestRegressor", "ExtraTreesRegressor"]
+    model_options = ["Ridge", "ElasticNet", "BaggingRegressor", "GradientBoostingRegressor", "RandomForestRegressor", "ExtraTreesRegressor"]
 
     ############### Add Title for Model Training ###############
 
     if st.button(f"Run price prediction ML models for {selected_zipcode} zipcode"):
 
 
-        ############### Training & Testing - Split data into input (X) and output (y) variables ###############
-        X = selected_zipcode_df[["house_size"]]
+        ############### Training & Testing - Split data into input (X) and output (y) variables 
+        predictors = ['house_size']
+        X = selected_zipcode_df[predictors]
         y = selected_zipcode_df["price"]
 
         ############### Split data into training and testing sets ###############
@@ -215,12 +224,14 @@ with tab1:
 
 
         ############### Define the models ###############
-        models = [RandomForestRegressor(random_state=10),
-                  BaggingRegressor(random_state=10),
-                  GradientBoostingRegressor(random_state=10),
-                  LassoCV(random_state=10),
-                  Ridge(random_state=10),
-                  ElasticNet(random_state=10)]
+        models = [
+            RandomForestRegressor(random_state=10),      
+            BaggingRegressor(random_state=10),
+            GradientBoostingRegressor(random_state=10),
+            Ridge(random_state=10),
+            ElasticNet(random_state=10),
+            xgb.XGBRegressor(seed=10)
+                 ]
 
         ############### Train and evaluate the models ###############
         best_model = None # Declare initial variable
@@ -245,67 +256,20 @@ with tab1:
                 best_model = model
 
         ############### Display the best model and its metrics ###############
-        st.write(f"<b>🚧 UNDER CONSTRUCTION: Add price prediction explainations for XY timeline 🚧 <br>🚧 Best model - {type(best_model).__name__} + Root Mean Squared Error (RMSE) scoring metric 🚧</b>",unsafe_allow_html=True)
+        # st.write(f"<b>UNDER CONSTRUCTION: Add time series price prediction explainations for XY timeline <br>Best model - {type(best_model).__name__} + Root Mean Squared Error (RMSE) scoring metric </b>",unsafe_allow_html=True)
         
         # assuming X_test is your test data and y_test is your test target
-        price_predictions = best_model.predict(X_test)
+        price_predictions = best_model.predict(selected_zipcode_df[predictors])
+
 
         # create a new dataframe with a new column for the predicted values
-        price_predictions_df = pd.DataFrame(data=X_test, columns=X_test.columns)
-        price_predictions_df['price_predictions'] = price_predictions.round(2)
+        price_predictions_df = selected_zipcode_df.copy()
+        price_predictions_df['predictions']= price_predictions
         
-        st.write(price_predictions_df.set_index("house_size").sort_values(by="price_predictions", ascending=False))
+        
+        st.write(price_predictions_df)
+        # st.write(price_predictions_df.sort_values(by="price_predictions", ascending=False))
         st.balloons()
-        
-        
-        
-        
-        
-        st.write("---")
-        
-        
-        ############### Create a copy of the unique_properties_df dataframe
-        price_predictions_df = unique_properties_df.copy()
-
-        ############### Make predictions using the best model
-        # price_predictions = best_model.predict(X_test)
-
-        ############### Add the predicted prices as a new column to the price_predictions_df dataframe
-        # price_predictions_df['price_predictions'] = price_predictions
-
-        ############### Set the index of the price_predictions_df dataframe to the 'label' column
-        # price_predictions_df.set_index('label', inplace=True)
-
-        ############### Display the dataframe with the added column
-        # filtered_df = unique_properties_df.set_index("label").join(price_predictions_df.set_index("label"), how="inner")
-
-        
-        
-        
-    
-    ############### Selected property dropdown menu ###############
-    property_selected = st.selectbox(f"Select a property label below for price prediction for the zipcode {selected_zipcode}", selected_zipcode_df["label"])
-
-    # Extract numeric part of the property label
-    property_number = int(property_selected.split()[-1])
-
-    # Filter the DataFrame to show only the selected property
-    selected_property_df = selected_zipcode_df[selected_zipcode_df["label"] == f"Property {property_number}"]
-
-    # Display the DataFrame for the selected property
-    st.write(f"<b>Here is the data for {property_selected}:</b>", unsafe_allow_html=True)
-    
-    # Re-arrange columns
-    selected_property_df = selected_property_df.reindex(columns=['label', 'price', 'house_size', 'bed', 'bath', 'acre_lot'])
-    # Set index column to `label`
-    selected_property_df.set_index('label', inplace=True)
-    
-    # Display revised property selected data
-    st.write(selected_property_df)
-
-
-
-    st.write("---")
 
 
 
