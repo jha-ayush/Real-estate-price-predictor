@@ -176,7 +176,7 @@ with tab1:
     ############### Set index column to `label`
     selected_mainland_zipcode_df = selected_mainland_zipcode_df.reset_index(drop=True)
 
-    st.write(selected_zipcode_df)
+    st.write(selected_mainland_zipcode_df)
 
     
     ############### Display bar chart ###############
@@ -212,8 +212,8 @@ with tab1:
 
         ############### Training & Testing - Split data into input (X) and output (y) variables 
         predictors = ["house_size"] # Add additional features 
-        X = selected_zipcode_df[predictors]
-        y = selected_zipcode_df["price"]
+        X = selected_mainland_zipcode_df[predictors]
+        y = selected_mainland_zipcode_df["price"]
 
         ############### Split data into training and testing sets ###############
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10)
@@ -259,7 +259,7 @@ with tab1:
 
 
         ############### create a new dataframe with a new column for the predicted values
-        price_predictions_mainland_df = selected_zipcode_df.copy()
+        price_predictions_mainland_df = selected_mainland_zipcode_df.copy()
         price_predictions_mainland_df['predictions']= price_predictions_mainland
         
         
