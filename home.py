@@ -88,7 +88,7 @@ virgin_islands_by_zip = virgin_islands.groupby('zip_code').agg({'price': 'median
 
 ############### Title/ header ###############
 st.header("Real estate price predictor")
-st.info("Download Kaggle `csv` data >> Cleanup and group by regions with the following dimensions - `price`, `bed`, `bath`, `acre_lot`, `house_size`, `state`, `zip_code` >> Focus on U.S. Mainland data only >> Display dataframe(s)/visualization(s) >> Run `lazypredict` analysis on the back-end for PR & VI >> Scoring metrics & Regression Model >> Next steps ??")
+st.markdown(f"<b>Add description here</b> - Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Libero nunc consequat interdum varius sit amet mattis vulputate enim. Iaculis urna id volutpat lacus. Risus nec feugiat in fermentum posuere urna. Etiam sit amet nisl purus. Pharetra vel turpis nunc eget lorem dolor. Vestibulum sed arcu non odio euismod. Quam nulla porttitor massa id neque aliquam vestibulum. Vulputate dignissim suspendisse in est ante in nibh mauris. Tincidunt nunc pulvinar sapien et ligula ullamcorper malesuada proin libero.",unsafe_allow_html=True)
 st.write("---")
 
 
