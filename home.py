@@ -96,7 +96,7 @@ st.write("---")
 
 
 ############### Initial app in Streamlit tab format ###############
-tab1, tab2, tab3 = st.tabs(["U.S. Mainland", "Puerto Rico", "U.S. Virgin Islands"])
+tab1, tab2, tab3, tab4 = st.tabs(["U.S. Mainland", "Puerto Rico", "U.S. Virgin Islands", "Next steps"])
 
 
 #######################################################################################################################
@@ -553,4 +553,12 @@ with tab3:
     
     
     
-#######################################################################################################################    
+#######################################################################################################################
+
+
+############### Next steps ###############
+with tab4:
+    
+    st.subheader("What can we do next...")
+    st.info("Initial data capture - better, more robust data sets")
+    st.info("Include attributes like `price_per_sq_ft`, `address`, `date_sold`, etc.")
