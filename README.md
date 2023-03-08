@@ -21,7 +21,6 @@ Add a demo/png/gif for your project
 
 - [Objective](#objective)
 - [Demo-Preview](#demo-preview)
-- [Table of contents](#table-of-contents)
 - [Environment setup](#environment-setup)
 - [Technologies](#technologies)
 - [Deployment](#deployment)
