@@ -201,9 +201,6 @@ with tab1:
     st.write("---")
     
     
-    ############### Regression ML model run in the UI-backend ###############
-
-    model_options = ["Ridge", "ElasticNet", "BaggingRegressor", "GradientBoostingRegressor", "RandomForestRegressor", "ExtraTreesRegressor"]
 
     ############### Add Title for Model Training ###############
 
