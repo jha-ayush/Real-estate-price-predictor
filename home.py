@@ -88,7 +88,6 @@ virgin_islands_by_zip = virgin_islands.groupby('zip_code').agg({'price': 'median
 
 ############### Title/ header ###############
 st.header("Real estate price predictor")
-st.write(f"Select from different Machine Learning models to view the best housing predictor for your budget",unsafe_allow_html=True)
 st.info("Download Kaggle `csv` data >> Cleanup and group by regions with the following dimensions - `price`, `bed`, `bath`, `acre_lot`, `house_size`, `state`, `zip_code` >> Focus on U.S. Mainland data only >> Display dataframe(s)/visualization(s) >> Run `lazypredict` analysis on the back-end for PR & VI >> Scoring metrics & Regression Model >> Next steps ??")
 st.write("---")
 
@@ -136,12 +135,12 @@ with tab1:
     
     
     ############### Show list of top zip codes based on Median price ###############
-    top_zipcodes = filtered_mainland_df.groupby("zip_code")["price"].median().reset_index().sort_values(by="price", ascending=False)
-    top_zipcodes["zip_code"] = top_zipcodes["zip_code"].apply(lambda x: '{0:0>5}'.format(x))
-    top_zipcodes["price"] = top_zipcodes["price"].round(2)
+    top_mainland_zipcodes = filtered_mainland_df.groupby("zip_code")["price"].median().reset_index().sort_values(by="price", ascending=False)
+    top_mainland_zipcodes["zip_code"] = top_mainland_zipcodes["zip_code"].apply(lambda x: '{0:0>5}'.format(x))
+    top_mainland_zipcodes["price"] = top_mainland_zipcodes["price"].round(2)
 
     st.write(f"<b>Here is a list of all the zip codes by median descening price in {state_selected} for the above {bedrooms_selected} bed & {bathrooms_selected} bath criteria ⬇️</b>",unsafe_allow_html=True)
-    st.write(top_zipcodes.set_index("zip_code").drop_duplicates().sort_values(by="price", ascending=False))
+    st.write(top_mainland_zipcodes.set_index("zip_code").drop_duplicates().sort_values(by="price", ascending=False))
 
     
     
@@ -151,39 +150,39 @@ with tab1:
     ############### Show property listings of a selected zipcode from the top list ###############
     
     ############### Create dropdown to select a specific zipcode ###############
-    selected_zipcode = st.selectbox("Select a zipcode from the above top list", top_zipcodes["zip_code"])
+    selected_mainland_zipcode = st.selectbox("Select a zipcode from the above top list", top_mainland_zipcodes["zip_code"])
     
     ############### Create & display dataframe for selected zipcode ###############
-    selected_zipcode_df = filtered_mainland_df[filtered_mainland_df["zip_code"] == int(selected_zipcode)].sort_values(by="price", ascending=False)
+    selected_mainland_zipcode_df = filtered_mainland_df[filtered_mainland_df["zip_code"] == int(selected_mainland_zipcode)].sort_values(by="price", ascending=False)
     
 
 
     ############### Add new column with labels ###############
-    selected_zipcode_df["label"] = [f"Home {i+1}" for i in range(len(selected_zipcode_df))]
+    selected_mainland_zipcode_df["label"] = [f"Home {i+1}" for i in range(len(selected_mainland_zipcode_df))]
 
     ############### Drop state & zip_code columns ###############
-    selected_zipcode_df = selected_zipcode_df.drop(columns=["state", "zip_code"], axis=1)
+    selected_mainland_zipcode_df = selected_mainland_zipcode_df.drop(columns=["state", "zip_code"], axis=1)
 
     
     
     ############### Title ###############
-    st.write(f"<b>Here is a list of {len(selected_zipcode_df)} property listings for the zipcode {selected_zipcode} in {state_selected}:</b>",unsafe_allow_html=True)
+    st.write(f"<b>Here is a list of {len(selected_mainland_zipcode_df)} property listings for the zipcode {selected_mainland_zipcode} in {state_selected}:</b>",unsafe_allow_html=True)
     
     
     
     
     ############### Re-arrange columns & Display ###############
-    selected_zipcode_df = selected_zipcode_df.reindex(columns=["label", "house_size", "bed", "bath", "acre_lot", "price"])
+    selected_mainland_zipcode_df = selected_mainland_zipcode_df.reindex(columns=["label", "house_size", "bed", "bath", "acre_lot", "price"])
     ############### Set index column to `label`
-    selected_zipcode_df = selected_zipcode_df.reset_index(drop=True)
+    selected_mainland_zipcode_df = selected_mainland_zipcode_df.reset_index(drop=True)
 
     st.write(selected_zipcode_df)
 
     
     ############### Display bar chart ###############
     
-    labels=selected_zipcode_df["label"].values
-    price=selected_zipcode_df["price"].values
+    labels=selected_mainland_zipcode_df["label"].values
+    price=selected_mainland_zipcode_df["price"].values
     
     
     ############### Create a bar chart
@@ -191,9 +190,9 @@ with tab1:
     ax.bar(labels, price)
     ax.set_xlabel("Property label")
     ax.set_ylabel("Price (USD)")
-    ax.set_title(f"Listings preview for zipcode {selected_zipcode}, {state_selected}")
+    ax.set_title(f"Listings preview for zipcode {selected_mainland_zipcode}, {state_selected}")
     # Set X-axis to 1, instead of 0
-    #ax.set_xlim(0.5, len(top_zipcodes)+0.5)
+    #ax.set_xlim(0.5, len(top_mainland_zipcodes)+0.5)
 
     ############### Display the chart in Streamlit
     st.pyplot(fig_prop_listings)
@@ -208,11 +207,11 @@ with tab1:
 
     ############### Add Title for Model Training ###############
 
-    if st.button(f"Run price prediction ML models for {selected_zipcode} zipcode"):
+    if st.button(f"Run price prediction ML models for {selected_mainland_zipcode} zipcode"):
 
 
         ############### Training & Testing - Split data into input (X) and output (y) variables 
-        predictors = ['house_size']
+        predictors = ["house_size"] # Add additional features 
         X = selected_zipcode_df[predictors]
         y = selected_zipcode_df["price"]
 
@@ -256,16 +255,16 @@ with tab1:
         # st.write(f"<b>UNDER CONSTRUCTION: Add time series price prediction explainations for XY timeline <br>Best model - {type(best_model).__name__} + Root Mean Squared Error (RMSE) scoring metric </b>",unsafe_allow_html=True)
         
         ############### assuming X_test is your test data and y_test is your test target
-        price_predictions = best_model.predict(selected_zipcode_df[predictors])
+        price_predictions_mainland = best_model.predict(selected_mainland_zipcode_df[predictors])
 
 
         ############### create a new dataframe with a new column for the predicted values
-        price_predictions_df = selected_zipcode_df.copy()
-        price_predictions_df['predictions']= price_predictions
+        price_predictions_mainland_df = selected_zipcode_df.copy()
+        price_predictions_mainland_df['predictions']= price_predictions_mainland
         
         
         ############### Display final predicted pricings
-        st.write(price_predictions_df)
+        st.write(price_predictions_mainland_df)
         # st.write(price_predictions_df.sort_values(by="price_predictions", ascending=False))
         st.balloons()
 
@@ -284,23 +283,108 @@ with tab2:
     st.subheader("Puerto Rico")
     
     ############### Display number of bedrooms dropdown menu ###############
-    bedrooms_options = [2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8]
-    bedrooms_selected = st.selectbox(f"Select number of bedroom(s) in Puerto Rico", bedrooms_options)
-    st.write(f"You have selected the following count for bedroom(s): <b>{bedrooms_selected}</b>",unsafe_allow_html=True)
+    bedrooms_options = [2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6]
+    bedrooms_selected = st.selectbox(f"Select number of bedroom(s) in the territory of Puerto Rico", bedrooms_options)
+
 
     ############### Display number of bedrooms dropdown menu ###############
-    bathrooms_options = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7]
-    bathrooms_selected = st.selectbox(f"Select number of bathroom(s) in Puerto Rico", bathrooms_options)
-    st.write(f"You have selected the following count for bathroom(s): <b>{bathrooms_selected}</b>",unsafe_allow_html=True)
+    bathrooms_options = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]
+    bathrooms_selected = st.selectbox(f"Select number of bathroom(s) in the territory of Puerto Rico", bathrooms_options)
 
-    
-    
-    st.write("---")
         
         
         
     ############### Create new datafram - Filter data based on user selections ###############
     filtered_puerto_rico_df = puerto_rico[(puerto_rico["bed"] == bedrooms_selected) & (puerto_rico["bath"] == bathrooms_selected)]
+    
+    
+    ############### Show list of top zip codes based on Median price ###############
+    top_mainland_zipcodes = filtered_puerto_rico_df.groupby("zip_code")["price"].median().reset_index().sort_values(by="price", ascending=False)
+    top_mainland_zipcodes["zip_code"] = top_mainland_zipcodes["zip_code"].apply(lambda x: '{0:0>5}'.format(x))
+    top_mainland_zipcodes["price"] = top_mainland_zipcodes["price"].round(2)
+
+    st.write(f"<b>Here is a list of all the zip codes by median descening price in Puerto Rico for the above {bedrooms_selected} bed & {bathrooms_selected} bath criteria ⬇️</b>",unsafe_allow_html=True)
+    st.write(top_mainland_zipcodes.set_index("zip_code").drop_duplicates().sort_values(by="price", ascending=False))
+    
+    
+    
+    
+    st.write("---")
+    
+    
+    
+    ############### Show property listings of a selected zipcode from the top list ###############
+    
+    ############### Create dropdown to select a specific zipcode ###############
+    selected_zipcode = st.selectbox("Select a zipcode in PR from the above top list", top_mainland_zipcodes["zip_code"])
+    
+    ############### Create & display dataframe for selected zipcode ###############
+    selected_zipcode_df = filtered_mainland_df[filtered_mainland_df["zip_code"] == int(selected_zipcode)].sort_values(by="price", ascending=False)
+    
+
+
+    ############### Add new column with labels ###############
+    selected_zipcode_df["label"] = [f"Home {i+1}" for i in range(len(selected_zipcode_df))]
+
+    ############### Drop state & zip_code columns ###############
+    selected_zipcode_df = selected_zipcode_df.drop(columns=["state", "zip_code"], axis=1)
+
+    
+    
+    ############### Title ###############
+    st.write(f"<b>Here is a list of {len(selected_zipcode_df)} property listings for the zipcode {selected_zipcode} in {state_selected}:</b>",unsafe_allow_html=True)
+    
+    
+    
+    
+    ############### Re-arrange columns & Display ###############
+    selected_zipcode_df = selected_zipcode_df.reindex(columns=["label", "house_size", "bed", "bath", "acre_lot", "price"])
+    ############### Set index column to `label`
+    selected_zipcode_df = selected_zipcode_df.reset_index(drop=True)
+
+    st.write(selected_zipcode_df)
+
+    
+    ############### Display bar chart ###############
+    
+    labels=selected_zipcode_df["label"].values
+    price=selected_zipcode_df["price"].values
+    
+    
+    ############### Create a bar chart
+    fig_prop_listings, ax = plt.subplots()
+    ax.bar(labels, price)
+    ax.set_xlabel("Property label")
+    ax.set_ylabel("Price (USD)")
+    ax.set_title(f"Listings preview for zipcode {selected_zipcode}, {state_selected}")
+    # Set X-axis to 1, instead of 0
+    #ax.set_xlim(0.5, len(top_mainland_zipcodes)+0.5)
+
+    ############### Display the chart in Streamlit
+    st.pyplot(fig_prop_listings)
+        
+    
+    st.write("---")
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -324,26 +408,15 @@ with tab2:
     st.write("---")
     
     
-    ############### Show list of top zip codes based on overall price ###############  
-    if st.checkbox(f"Display top zip codes by median price for Puerto Rico"):
-        top_zipcodes = filtered_puerto_rico_df.groupby("zip_code")["price"].mean().reset_index().sort_values(by="price", ascending=False).head(15)
-        top_zipcodes["zip_code"] = top_zipcodes["zip_code"].apply(lambda x: '{0:0>5}'.format(x))
-        top_zipcodes["price"] = top_zipcodes["price"].round(2)
-
-        st.write("top zip codes:")
-        st.write(top_zipcodes.set_index("zip_code").drop_duplicates())
-    
-    
-    st.write("---")
     
     
     ############### Select a single zipcode from the top 15 list for further analysis ###############
     if st.checkbox(f"Display price predictions for {bedrooms_selected} bedroom(s) & {bathrooms_selected} bathroom(s) in  the top 15 Puerto Rico zipcodes"):
-        ############### Check if top_zipcodes is empty ###############
-        if top_zipcodes.empty:
+        ############### Check if top_mainland_zipcodes is empty ###############
+        if top_mainland_zipcodes.empty:
             st.write("Please select the Display data checkbox above to populate top zip codes.")
         else:
-            zip_selected = st.selectbox(f"Select from the top zip codes in Puerto Rico for price prediction", top_zipcodes["zip_code"].unique())
+            zip_selected = st.selectbox(f"Select from the top zip codes in Puerto Rico for price prediction", top_mainland_zipcodes["zip_code"].unique())
 
             ############### Filter the dataframe by the selected zip code ###############
             data = filtered_puerto_rico_df[filtered_puerto_rico_df['zip_code'] == zip_selected]
@@ -443,12 +516,12 @@ with tab3:
     
     ############### Show list of top zip codes based on overall price ###############  
     if st.checkbox(f"Display top zip codes by median price for U.S. Virgin Islands"):
-        top_zipcodes = filtered_virgin_islands_df.groupby("zip_code")["price"].mean().reset_index().sort_values(by="price", ascending=False).head(15)
-        top_zipcodes["zip_code"] = top_zipcodes["zip_code"].apply(lambda x: '{0:0>5}'.format(x))
-        top_zipcodes["price"] = top_zipcodes["price"].round(2)
+        top_mainland_zipcodes = filtered_virgin_islands_df.groupby("zip_code")["price"].mean().reset_index().sort_values(by="price", ascending=False).head(15)
+        top_mainland_zipcodes["zip_code"] = top_mainland_zipcodes["zip_code"].apply(lambda x: '{0:0>5}'.format(x))
+        top_mainland_zipcodes["price"] = top_mainland_zipcodes["price"].round(2)
 
         st.write("top zip codes:")
-        st.write(top_zipcodes.set_index("zip_code").drop_duplicates())
+        st.write(top_mainland_zipcodes.set_index("zip_code").drop_duplicates())
     
     
     st.write("---")
@@ -456,11 +529,11 @@ with tab3:
     
     ############### Select a single zipcode from the top 15 list for further analysis ###############
     if st.checkbox(f"Display price predictions for {bedrooms_selected} bedroom(s) & {bathrooms_selected} bathroom(s) in  the top 15 U.S. Virgin Islands zipcodes"):
-        ############### Check if top_zipcodes is empty ###############
-        if top_zipcodes.empty:
+        ############### Check if top_mainland_zipcodes is empty ###############
+        if top_mainland_zipcodes.empty:
             st.write("Please select the Display data checkbox above to populate top zip codes.")
         else:
-            zip_selected = st.selectbox(f"Select from the top zip codes in U.S. Virgin Islands for price prediction", top_zipcodes["zip_code"].unique())
+            zip_selected = st.selectbox(f"Select from the top zip codes in U.S. Virgin Islands for price prediction", top_mainland_zipcodes["zip_code"].unique())
 
             ############### Filter the dataframe by the selected zip code ###############
             data = filtered_virgin_islands_df[filtered_virgin_islands_df['zip_code'] == zip_selected]
