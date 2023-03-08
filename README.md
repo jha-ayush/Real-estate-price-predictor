@@ -37,7 +37,7 @@ Add a demo/png/gif for your project
 - [Technologies](#technologies)
 - [Deployment](#deployment)
 - [Contributors](#contributors)
-- [Footer](#footer)
+- [Next steps](#next-steps)
 
 
 
@@ -86,13 +86,12 @@ Add a demo/png/gif for your project
 
 
 
-### Adding new features or fixing bugs
+## Next steps
 [(Back to top)](#table-of-contents)
 
-Next steps
+**Next steps** - what could we do next if we had 1 or 2 more weeks to work on the app?
 
 
-### Footer
-[(Back to top)](#table-of-contents)
+
 
 <sub>**Note:** This app is for educational purposes only.</sub>
