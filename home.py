@@ -12,7 +12,6 @@ from sklearn.model_selection import train_test_split # Train/ Test package
 from sklearn.metrics import make_scorer, r2_score, mean_absolute_error, mean_squared_error # Scoring metrics
 from sklearn.linear_model import Ridge, ElasticNet # Machine Learning Models
 from sklearn.ensemble import RandomForestRegressor, BaggingRegressor, GradientBoostingRegressor # Regression ML Models
-
 import xgboost as xgb
 
 
@@ -173,10 +172,9 @@ with tab1:
     
     
     
-    # Re-arrange columns
+    ############### Re-arrange columns & Display ###############
     selected_zipcode_df = selected_zipcode_df.reindex(columns=["label", "house_size", "bed", "bath", "acre_lot", "price"])
-    # Set index column to `label`
-    
+    ############### Set index column to `label`
     selected_zipcode_df = selected_zipcode_df.reset_index(drop=True)
 
     st.write(selected_zipcode_df)
@@ -188,7 +186,7 @@ with tab1:
     price=selected_zipcode_df["price"].values
     
     
-    # Create a bar chart
+    ############### Create a bar chart
     fig_prop_listings, ax = plt.subplots()
     ax.bar(labels, price)
     ax.set_xlabel("Property label")
@@ -197,15 +195,14 @@ with tab1:
     # Set X-axis to 1, instead of 0
     #ax.set_xlim(0.5, len(top_zipcodes)+0.5)
 
-    # Display the chart in Streamlit
+    ############### Display the chart in Streamlit
     st.pyplot(fig_prop_listings)
-    
         
     
     st.write("---")
     
     
-    ############### Select a Regression model ###############
+    ############### Regression ML model run in the UI-backend ###############
 
     model_options = ["Ridge", "ElasticNet", "BaggingRegressor", "GradientBoostingRegressor", "RandomForestRegressor", "ExtraTreesRegressor"]
 
@@ -258,15 +255,16 @@ with tab1:
         ############### Display the best model and its metrics ###############
         # st.write(f"<b>UNDER CONSTRUCTION: Add time series price prediction explainations for XY timeline <br>Best model - {type(best_model).__name__} + Root Mean Squared Error (RMSE) scoring metric </b>",unsafe_allow_html=True)
         
-        # assuming X_test is your test data and y_test is your test target
+        ############### assuming X_test is your test data and y_test is your test target
         price_predictions = best_model.predict(selected_zipcode_df[predictors])
 
 
-        # create a new dataframe with a new column for the predicted values
+        ############### create a new dataframe with a new column for the predicted values
         price_predictions_df = selected_zipcode_df.copy()
         price_predictions_df['predictions']= price_predictions
         
         
+        ############### Display final predicted pricings
         st.write(price_predictions_df)
         # st.write(price_predictions_df.sort_values(by="price_predictions", ascending=False))
         st.balloons()
