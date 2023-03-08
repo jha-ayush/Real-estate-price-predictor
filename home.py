@@ -264,15 +264,13 @@ with tab1:
         
         
         ############### Display final predicted pricings
-        st.write(price_predictions_mainland_df)
+        st.write(price_predictions_mainland_df.round(2))
         # st.write(price_predictions_df.sort_values(by="price_predictions", ascending=False))
         st.balloons()
 
 
-
-    
-
-                
+        
+        
                 
                 
 #######################################################################################################################                
@@ -330,7 +328,7 @@ with tab2:
     
     
     ############### Title ###############
-    st.write(f"<b>Here is a list of {len(selected_puerto_rico_zipcode_df)} property listings for the zipcode {selected_puerto_rico_zipcode} in PR:</b>",unsafe_allow_html=True)
+    st.write(f"<b>Here is a list of {len(selected_puerto_rico_zipcode_df)} property listings for the zipcode {selected_puerto_rico_zipcode} in Puerto Rico:</b>",unsafe_allow_html=True)
     
     
     
@@ -409,7 +407,7 @@ with tab2:
         
         
         ############### Display final predicted pricings
-        st.write(price_predictions_puerto_rico_df)
+        st.write(price_predictions_puerto_rico_df.round(2))
         st.balloons()
     
                 
@@ -471,7 +469,7 @@ with tab3:
     
     
     ############### Title ###############
-    st.write(f"<b>Here is a list of {len(selected_virgin_islands_zipcode_df)} property listings for the zipcode {selected_virgin_islands_zipcode} in PR:</b>",unsafe_allow_html=True)
+    st.write(f"<b>Here is a list of {len(selected_virgin_islands_zipcode_df)} property listings for the zipcode {selected_virgin_islands_zipcode} in U.S. Virgin Islands:</b>",unsafe_allow_html=True)
     
     
     
@@ -550,7 +548,7 @@ with tab3:
         
         
         ############### Display final predicted pricings
-        st.write(price_predictions_virgin_islands_df)
+        st.write(price_predictions_virgin_islands_df.round(2))
         st.balloons()
     
     
