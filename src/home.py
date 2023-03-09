@@ -214,7 +214,7 @@ with tab1:
 
 
         ############### Training & Testing - Split data into input (X) and output (y) variables 
-        predictors = ["house_size", "bed", "bath"] # Add additional features 
+        predictors = ["house_size", "bed", "bath", "acre_lot"] # Add additional features 
         X = selected_mainland_zipcode_df[predictors]
         y = selected_mainland_zipcode_df["price"]
 
@@ -396,7 +396,7 @@ with tab2:
         
         
         ############### Training & Testing - Split data into input (X) and output (y) variables 
-        predictors = ["house_size", "bed", "bath"] # Add additional features 
+        predictors = ["house_size", "bed", "bath", "acre_lot"] # Add additional features 
         X = selected_puerto_rico_zipcode_df[predictors]
         y = selected_puerto_rico_zipcode_df["price"]
 
@@ -540,7 +540,7 @@ with tab3:
         
         
         ############### Training & Testing - Split data into input (X) and output (y) variables 
-        predictors = ["house_size", "bed", "bath"] # Add additional features 
+        predictors = ["house_size", "bed", "bath", "acre_lot"] # Add additional features 
         X = selected_virgin_islands_zipcode_df[predictors]
         y = selected_virgin_islands_zipcode_df["price"]
 
