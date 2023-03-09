@@ -558,3 +558,4 @@ with tab4:
     st.subheader("What can we do next...🚧")
     st.info("Initial data capture - better, more robust data sets")
     st.info("Include attributes like `price_per_sq_ft`, `address`, `date_sold`, etc.")
+    st.info("Blockchain implementation: By recording real estate data on a blockchain, we can create a transparent and immutable record of real estate transactions. This can help prevent fraud and corruption, as all transactions are publicly visible and cannot be altered after the fact.")
