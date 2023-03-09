@@ -12,12 +12,9 @@ from sklearn.metrics import make_scorer, r2_score, mean_absolute_error, mean_squ
 from sklearn.linear_model import Ridge, ElasticNet, LinearRegression # Machine Learning Models
 from sklearn.ensemble import RandomForestRegressor, BaggingRegressor, GradientBoostingRegressor # Regression ML Models
 import xgboost as xgb # Regression ML Model
+from sklearn.neighbors import KNeighborsRegressor
 
-# Import packages for Mondrian cross-conformal prediction
-from nonconformist.nc import NcFactory, RegressionErrFunc, RegressorNc
-from nonconformist.cp import IcpRegressor
-from nonconformist.nc import AbsErrorErrFunc
-
+import scipy.stats as stats #Significance scoring
 
 ############### Import warnings + watermark ###############
 from watermark import watermark
@@ -263,38 +260,38 @@ with tab1:
 
         ############### create a new dataframe with a new column for the predicted values
         price_predictions_mainland_df = selected_mainland_zipcode_df.copy()
-        price_predictions_mainland_df['predictions']= price_predictions_mainland
+        price_predictions_mainland_df["predictions"]= price_predictions_mainland
         
         
         ############### Display final predicted pricings
         st.write(price_predictions_mainland_df.round(2))
         # st.write(price_predictions_df.sort_values(by="price_predictions", ascending=False))
         
-        # Display the results
-        st.write(f"<b>Prediction intervals at 90% significance level</b>",unsafe_allow_html=True)
         
-        # Use Mondrian cross-conformal prediction to generate prediction intervals for the test data
-        nc = NcFactory.create_nc(model) # Initialize the nonconformity function
-        icp = IcpRegressor(nc, significance=0.1) # Initialize the inductive conformal predictor with 90% significance level
-        icp.fit(X_train, y_train) # Fit the inductive conformal predictor to the training data
-        icp.calibrate(X_train, y_train) # Calibrate the inductive conformal predictor on the training data
+        
+        
+        
+        ############### Conformal prediction theory implication ###############
+        
+        
+        ############### Calculate the t and p-values for the linear regression coefficients
+        _, p_values = stats.ttest_ind(price_predictions_mainland_df["price"], price_predictions_mainland_df["predictions"])
 
-        # Generate the prediction intervals for the test data
-        y_pred, y_lower, y_upper = icp.predict(X_test, significance=0.1)
+        ############### Set the significance level
+        alpha = 0.05
 
+        ############### Check if any of the p-values are less than the significance level
+        if (p_values < alpha).any():
+            st.write(f"<b>Prediction confidence at 90% significance level</b> - At least one coefficient is statistically significant. 🥳",unsafe_allow_html=True)
+        else:
+            st.write(f"<b>Prediction confidence at 90% significance level</b> - None of the coefficients are statistically significant. 👎",unsafe_allow_html=True)
 
-        for i in range(len(y_pred)):
-            st.write(f"Prediction: {y_pred[i]}")
-            st.write(f"Lower bound: {y_lower[i]}")
-            st.write(f"Upper bound: {y_upper[i]}")
-    
-    
+            
+        
+        
         st.balloons()
-
-
         
         
-                
                 
 #######################################################################################################################                
                 
@@ -429,11 +426,32 @@ with tab2:
 
         ############### create a new dataframe with a new column for the predicted values
         price_predictions_puerto_rico_df = selected_puerto_rico_zipcode_df.copy()
-        price_predictions_puerto_rico_df['predictions']= price_predictions_puerto_rico
+        price_predictions_puerto_rico_df["predictions"]= price_predictions_puerto_rico
         
         
         ############### Display final predicted pricings
         st.write(price_predictions_puerto_rico_df.round(2))
+        
+        
+        
+        ############### Conformal prediction theory implication ###############
+        
+        
+        ############### Calculate the t and p-values for the linear regression coefficients
+        _, p_values = stats.ttest_ind(price_predictions_puerto_rico_df["price"], price_predictions_puerto_rico_df["predictions"])
+
+        ############### Set the significance level
+        alpha = 0.05
+
+        ############### Check if any of the p-values are less than the significance level
+        if (p_values < alpha).any():
+            st.write(f"<b>Prediction confidence at 90% significance level</b> - At least one coefficient is statistically significant. 🥳",unsafe_allow_html=True)
+        else:
+            st.write(f"<b>Prediction confidence at 90% significance level</b> - None of the coefficients are statistically significant. 👎",unsafe_allow_html=True)
+        
+        
+        
+        
         st.balloons()
     
                 
@@ -573,11 +591,32 @@ with tab3:
 
         ############### create a new dataframe with a new column for the predicted values
         price_predictions_virgin_islands_df = selected_virgin_islands_zipcode_df.copy()
-        price_predictions_virgin_islands_df['predictions']= price_predictions_virgin_islands
+        price_predictions_virgin_islands_df["predictions"]= price_predictions_virgin_islands
         
         
         ############### Display final predicted pricings
         st.write(price_predictions_virgin_islands_df.round(2))
+        
+        
+        
+        ############### Conformal prediction theory implication ###############
+        
+        
+        ############### Calculate the t and p-values for the linear regression coefficients
+        _, p_values = stats.ttest_ind(price_predictions_virgin_islands_df["price"], price_predictions_virgin_islands_df["predictions"])
+
+        ############### Set the significance level
+        alpha = 0.05
+
+        ############### Check if any of the p-values are less than the significance level
+        if (p_values < alpha).any():
+            st.write(f"<b>Prediction confidence at 90% significance level</b> - At least one coefficient is statistically significant. 🥳",unsafe_allow_html=True)
+        else:
+            st.write(f"<b>Prediction confidence at 90% significance level</b> - None of the coefficients are statistically significant. 👎",unsafe_allow_html=True)
+        
+        
+        
+        
         st.balloons()
     
     
