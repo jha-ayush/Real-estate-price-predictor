@@ -96,7 +96,7 @@ st.write("---")
 
 
 ############### Initial app in Streamlit tab format ###############
-tab1, tab2, tab3, tab4 = st.tabs(["U.S. Mainland", "Puerto Rico", "U.S. Virgin Islands", "Next steps"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["U.S. Mainland", "Puerto Rico", "U.S. Virgin Islands", "Next steps", "Zillow forecast"])
 
 
 #######################################################################################################################
@@ -191,6 +191,8 @@ with tab1:
     ax.set_xlabel("Property label")
     ax.set_ylabel("Price (USD)")
     ax.set_title(f"Listings preview for zipcode {selected_mainland_zipcode}, {state_selected}")
+    # rotate the x-axis tick labels
+    ax.set_xticklabels(labels, rotation=45, ha="right")
     # Set X-axis to 1, instead of 0
     #ax.set_xlim(0.5, len(top_mainland_zipcodes)+0.5)
 
@@ -349,6 +351,9 @@ with tab2:
     ax.set_xlabel("Property label")
     ax.set_ylabel("Price (USD)")
     ax.set_title(f"Listings preview for zipcode {selected_puerto_rico_zipcode}")
+    
+    # rotate the x-axis tick labels
+    ax.set_xticklabels(labels, rotation=45, ha="right")
 
 
     ############### Display the chart in Streamlit
@@ -490,6 +495,9 @@ with tab3:
     ax.set_xlabel("Property label")
     ax.set_ylabel("Price (USD)")
     ax.set_title(f"Listings preview for zipcode {selected_virgin_islands_zipcode}")
+    
+    # rotate the x-axis tick labels
+    ax.set_xticklabels(labels, rotation=45, ha="right")
 
 
     ############### Display the chart in Streamlit
@@ -559,3 +567,13 @@ with tab4:
     st.info("Initial data capture - better, more robust data sets, paid APIs")
     st.info("Include attributes like `price_per_sq_ft`, `address`, `date_sold`, etc.")
     st.info("Blockchain implementation: By recording real estate data on a blockchain, we can create a transparent and immutable record of real estate transactions. This can help prevent fraud and corruption, as all transactions are publicly visible and cannot be altered after the fact.")
+    
+    
+    
+    
+
+    
+
+#######################################################################################################################
+
+
