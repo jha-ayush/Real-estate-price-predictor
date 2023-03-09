@@ -80,7 +80,7 @@ This project aims to help the company make informed decisions based on accurate 
 
 - `conda create -n [name] python=3.9`
 - `conda activate [name]`
-- `git init`
+- `git init` inside a directory where you want to save this repo
 - `git clone` repo
 - `pip install -r requirements.txt`
 
