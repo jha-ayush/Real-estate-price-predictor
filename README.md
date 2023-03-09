@@ -88,13 +88,7 @@ This project aims to help the company make informed decisions based on accurate 
 ## Technologies
 [(Back to top)](#table-of-contents)
 
-- `python`
-- `anaconda`
-- `numpy     : 1.21.6`
-- `plotly    : 5.11.0`
-- `matplotlib: 3.5.3`
-- `pandas    : 1.3.5`
-- `streamlit : 1.18.1`
+`python`, `anaconda`, `numpy`, `matplotlib`, `pandas`, `streamlit`, `sklearn`
 
 
 
