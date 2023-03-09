@@ -594,8 +594,8 @@ with tab4:
     st.info("Use conformal prediction to find the best ranked sore for price predictions")
     st.info("Blockchain implementation: By recording real estate data on a blockchain, we can create a transparent and immutable record of real estate transactions. This can help prevent fraud and corruption, as all transactions are publicly visible and cannot be altered after the fact.")
     st.info("Rental predictions based on bed, batha nd square footage")
-    st.write("Realestate portfolio creation and management for investors")
-    st.write("House price prediction based on sq footage price using time series")
+    st.info("Realestate portfolio creation and management for investors")
+    st.info("House price prediction based on sq footage price using time series")
     
 
     

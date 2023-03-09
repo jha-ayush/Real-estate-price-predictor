@@ -112,7 +112,13 @@ This project aims to help the company make informed decisions based on accurate 
 ## Next steps
 [(Back to top)](#table-of-contents)
 
-**Next steps** - what could we do next if we had 1 or 2 more weeks to work on the app?
+- Initial data capture - better, more robust data sets, time series data, paid APIs
+- Include attributes like `price_per_sq_ft`, `address`, `date_sold`, etc.
+- Use conformal prediction to find the best ranked sore for price predictions
+- Blockchain implementation: By recording real estate data on a blockchain, we can create a transparent and immutable record of real estate transactions. This can help prevent fraud and corruption, as all transactions are publicly visible and cannot be altered after the fact.
+- Rental predictions based on bed, batha nd square footage
+- Realestate portfolio creation and management for investors
+- House price prediction based on sq footage price using time series data
 
 
 
