@@ -13,6 +13,7 @@ Real estate price predictor using Machine Learning models - U.S. Mainland, Puert
 
 ## Demo Preview
 
+**Project flowchart**
 <img
   src="./Images/app_flowchart.png"
   alt="App flowchart"
@@ -20,20 +21,21 @@ Real estate price predictor using Machine Learning models - U.S. Mainland, Puert
   style="display: inline-block; margin: 0 auto; max-width: 65px">
   
 
+**UI flow - screenshot 01**
 <img
   src="./Images/app_screenshot_01.png"
   alt="App screenshot 01"
   title="App screenshot 01"
   style="display: inline-block; margin: 0 auto; max-width: 65px">
   
-
+**UI flow - screenshot 02**
 <img
   src="./Images/app_screenshot_02.png"
   alt="App screenshot 02"
   title="App screenshot 02"
   style="display: inline-block; margin: 0 auto; max-width: 65px">
   
-
+**UI flow - screenshot 03**
 <img
   src="./Images/app_screenshot_03.png"
   alt="App screenshot 03"
