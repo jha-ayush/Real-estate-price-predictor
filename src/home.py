@@ -210,7 +210,7 @@ with tab1:
 
 
         ############### Training & Testing - Split data into input (X) and output (y) variables 
-        predictors = ["house_size"] # Add additional features 
+        predictors = ["house_size", "bed", "bath"] # Add additional features 
         X = selected_mainland_zipcode_df[predictors]
         y = selected_mainland_zipcode_df["price"]
 
@@ -371,7 +371,7 @@ with tab2:
         
         
         ############### Training & Testing - Split data into input (X) and output (y) variables 
-        predictors = ["house_size"] # Add additional features 
+        predictors = ["house_size", "bed", "bath"] # Add additional features 
         X = selected_puerto_rico_zipcode_df[predictors]
         y = selected_puerto_rico_zipcode_df["price"]
 
@@ -515,7 +515,7 @@ with tab3:
         
         
         ############### Training & Testing - Split data into input (X) and output (y) variables 
-        predictors = ["house_size"] # Add additional features 
+        predictors = ["house_size", "bed", "bath"] # Add additional features 
         X = selected_virgin_islands_zipcode_df[predictors]
         y = selected_virgin_islands_zipcode_df["price"]
 
@@ -567,6 +567,7 @@ with tab4:
     st.info("Initial data capture - better, more robust data sets, paid APIs")
     st.info("Include attributes like `price_per_sq_ft`, `address`, `date_sold`, etc.")
     st.info("Blockchain implementation: By recording real estate data on a blockchain, we can create a transparent and immutable record of real estate transactions. This can help prevent fraud and corruption, as all transactions are publicly visible and cannot be altered after the fact.")
+    st.info("Mondrian cross-conformal prediction for non-time series data")
     
     
     
