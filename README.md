@@ -11,7 +11,7 @@ Real estate price predictor using Machine Learning models - U.S. Mainland, Puert
 
 
 
-## Demo Preview
+## Preview
 
 
 **Project flowchart**
@@ -55,7 +55,7 @@ Real estate price predictor using Machine Learning models - U.S. Mainland, Puert
 ## Table of contents
 
 - [Objective](#objective)
-- [Demo-Preview](#demo-preview)
+- [Preview](#preview)
 - [Environment setup](#environment-setup)
 - [Technologies](#technologies)
 - [Deployment](#deployment)
