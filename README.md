@@ -2,7 +2,7 @@
   src="./Images/home.png"
   alt="Real Estate price predictor"
   title="Real Estate price predictor"
-  style="display: inline-block; margin: 0 auto; max-width: 70px">
+  style="display: inline-block; margin: 0 auto; max-width: 60px">
 
 # Real-estate-price-predictor
 
@@ -18,7 +18,7 @@ Real estate price predictor using Machine Learning models - U.S. Mainland, Puert
   src="./Images/app_flowchart.png"
   alt="App flowchart"
   title="App flowchart"
-  style="display: inline-block; margin: 0 auto; max-width: 65px">
+  style="display: inline-block; margin: 0 auto; max-width: 55px">
   
 
 **UI flow - screenshot 01**
@@ -26,21 +26,21 @@ Real estate price predictor using Machine Learning models - U.S. Mainland, Puert
   src="./Images/app_screenshot_01.png"
   alt="App screenshot 01"
   title="App screenshot 01"
-  style="display: inline-block; margin: 0 auto; max-width: 65px">
+  style="display: inline-block; margin: 0 auto; max-width: 55px">
   
 **UI flow - screenshot 02**
 <img
   src="./Images/app_screenshot_02.png"
   alt="App screenshot 02"
   title="App screenshot 02"
-  style="display: inline-block; margin: 0 auto; max-width: 65px">
+  style="display: inline-block; margin: 0 auto; max-width: 55px">
   
 **UI flow - screenshot 03**
 <img
   src="./Images/app_screenshot_03.png"
   alt="App screenshot 03"
   title="App screenshot 03"
-  style="display: inline-block; margin: 0 auto; max-width: 65px">
+  style="display: inline-block; margin: 0 auto; max-width: 55px">
 
 
 
