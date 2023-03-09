@@ -630,7 +630,7 @@ with tab4:
     st.subheader("What can we do next...🚧")
     st.info("Initial data capture - better, more robust data sets, time series data, paid APIs")
     st.info("Include attributes like `price_per_sq_ft`, `address`, `date_sold`, etc.")
-    st.info("Use conformal prediction to find the best ranked sore for price predictions")
+    st.info("Use enhanced conformal prediction to find the best ranked sore for price predictions")
     st.info("`Blockchain` implementation: By recording real estate data on a blockchain, we can create a transparent and immutable record of real estate transactions to prevent fraud and corruption, as all transactions are publicly visible and immutable or can't be altered.")
     st.info("Rental predictions based on `bed`, `bath` and `sq_footage`")
     st.info("Real-estate portfolio creation and management for investors")
