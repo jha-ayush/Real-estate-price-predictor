@@ -109,7 +109,7 @@ with tab1:
     st.subheader("U.S. Mainland data")
     
     ############### Define a dictionary to map states to U.S. mainland ###############
-    state = [" Select a U.S. mainland state", "Connecticut", "Delaware", "Maine", "Massachusetts", "New Hampshire", "New Jersey", "New York", "Pennsylvania", "Rhode Island", "Vermont", "West Virginia", "Wyoming"]
+    state = [" ", "Connecticut", "Delaware", "Maine", "Massachusetts", "New Hampshire", "New Jersey", "New York", "Pennsylvania", "Rhode Island", "Vermont", "West Virginia", "Wyoming"]
     # Sort states alphabetically
     state.sort()
 
@@ -151,7 +151,7 @@ with tab1:
     ############### Show property listings of a selected zipcode from the top list ###############
     
     ############### Create dropdown to select a specific zipcode ###############
-    selected_mainland_zipcode = st.selectbox("Select a zipcode from the above top list", top_mainland_zipcodes["zip_code"])
+    selected_mainland_zipcode = st.selectbox("Select a zipcode from the above top list", top_mainland_zipcodes["zip_code"].unique())
     
     ############### Create & display dataframe for selected zipcode ###############
     selected_mainland_zipcode_df = filtered_mainland_df[filtered_mainland_df["zip_code"] == int(selected_mainland_zipcode)].sort_values(by="price", ascending=False)
@@ -332,7 +332,7 @@ with tab2:
     ############### Show property listings of a selected zipcode from the top list ###############
     
     ############### Create dropdown to select a specific zipcode ###############
-    selected_puerto_rico_zipcode = st.selectbox("Select a zipcode from the above top list", top_puerto_rico_zipcodes["zip_code"])
+    selected_puerto_rico_zipcode = st.selectbox("Select a zipcode from the above top list", top_puerto_rico_zipcodes["zip_code"].unique())
     
     ############### Create & display dataframe for selected zipcode ###############
     selected_puerto_rico_zipcode_df = filtered_puerto_rico_df[filtered_puerto_rico_df["zip_code"] == int(selected_puerto_rico_zipcode)].sort_values(by="price", ascending=False)
@@ -497,7 +497,7 @@ with tab3:
     ############### Show property listings of a selected zipcode from the top list ###############
     
     ############### Create dropdown to select a specific zipcode ###############
-    selected_virgin_islands_zipcode = st.selectbox("Select a zipcode from the above top list", top_virgin_islands_zipcodes["zip_code"])
+    selected_virgin_islands_zipcode = st.selectbox("Select a zipcode from the above top list", top_virgin_islands_zipcodes["zip_code"].unique())
     
     ############### Create & display dataframe for selected zipcode ###############
     selected_virgin_islands_zipcode_df = filtered_virgin_islands_df[filtered_virgin_islands_df["zip_code"] == int(selected_virgin_islands_zipcode)].sort_values(by="price", ascending=False)
