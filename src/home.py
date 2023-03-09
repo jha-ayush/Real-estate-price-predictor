@@ -44,7 +44,7 @@ def local_css(file_name):
     with open(file_name) as f:
         st.write(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 # load css file
-local_css("./src/style/style.css")
+local_css("./style/style.css")
 
 
 
@@ -61,9 +61,9 @@ def load_data(filename):
 ############### Create variables to load datafiles as dataframes ###############
 
 # Import csv data files for - U.S. Mainland, Puerto Rico, U.S. Virgin Islands
-mainland = load_data("./Resources/data_files/mainland_data.csv")
-puerto_rico = load_data("./Resources/data_files/puerto_rico_data.csv")
-virgin_islands = load_data("./Resources/data_files/virgin_islands_data.csv")
+mainland = load_data("../Resources/data_files/mainland_data.csv")
+puerto_rico = load_data("../Resources/data_files/puerto_rico_data.csv")
+virgin_islands = load_data("../Resources/data_files/virgin_islands_data.csv")
 
 # st.write(mainland["state"].unique())
 

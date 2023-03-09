@@ -68,7 +68,7 @@ This project aims to help the company make informed decisions based on accurate 
 [(Back to top)](#table-of-contents)
 
 - In Terminal `cd` into cloned repo
-- `cd` to directory where `home.py` file is located
+- `cd` to `src` directory where `home.py` file is located
 - `streamlit run home.py`
 - The app will run on `http://localhost:8501/`
 
