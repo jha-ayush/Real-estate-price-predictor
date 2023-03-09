@@ -96,7 +96,7 @@ st.write("---")
 
 
 ############### Initial app in Streamlit tab format ###############
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["U.S. Mainland", "Puerto Rico", "U.S. Virgin Islands", "Next steps", "Zillow forecast"])
+tab1, tab2, tab3, tab4 = st.tabs(["U.S. Mainland", "Puerto Rico", "U.S. Virgin Islands", "Next steps"])
 
 
 #######################################################################################################################
