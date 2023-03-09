@@ -10,9 +10,14 @@ import matplotlib.pyplot as plt # Visualizations
 
 from sklearn.model_selection import train_test_split # Train/ Test package
 from sklearn.metrics import make_scorer, r2_score, mean_absolute_error, mean_squared_error # Scoring metrics
-from sklearn.linear_model import Ridge, ElasticNet # Machine Learning Models
+from sklearn.linear_model import Ridge, ElasticNet, LinearRegression # Machine Learning Models
 from sklearn.ensemble import RandomForestRegressor, BaggingRegressor, GradientBoostingRegressor # Regression ML Models
-import xgboost as xgb
+import xgboost as xgb # Regression ML Model
+
+# Import packages for Mondrian cross-conformal prediction
+from nonconformist.nc import NcFactory
+from nonconformist.cp import IcpRegressor
+from nonconformist.nc import AbsErrorErrFunc
 
 
 ############### Import warnings + watermark ###############
@@ -225,7 +230,8 @@ with tab1:
             GradientBoostingRegressor(random_state=10),
             Ridge(random_state=10),
             ElasticNet(random_state=10),
-            xgb.XGBRegressor(seed=10)
+            xgb.XGBRegressor(seed=10),
+            LinearRegression()
                  ]
 
         ############### Train and evaluate the models ###############
@@ -264,6 +270,26 @@ with tab1:
         ############### Display final predicted pricings
         st.write(price_predictions_mainland_df.round(2))
         # st.write(price_predictions_df.sort_values(by="price_predictions", ascending=False))
+        
+        # Display the results
+        st.write(f"<b>Prediction intervals at 90% significance level</b>",unsafe_allow_html=True)
+        
+        # Use Mondrian cross-conformal prediction to generate prediction intervals for the test data
+        nc = NcFactory.create_nc(model) # Initialize the nonconformity function
+        icp = IcpRegressor(nc, significance=0.1) # Initialize the inductive conformal predictor with 90% significance level
+        icp.fit(X_train, y_train) # Fit the inductive conformal predictor to the training data
+        icp.calibrate(X_train, y_train) # Calibrate the inductive conformal predictor on the training data
+
+        # Generate the prediction intervals for the test data
+        y_pred, y_lower, y_upper = icp.predict(X_test, significance=0.1)
+
+
+        for i in range(len(y_pred)):
+            st.write(f"Prediction: {y_pred[i]}")
+            st.write(f"Lower bound: {y_lower[i]}")
+            st.write(f"Upper bound: {y_upper[i]}")
+    
+    
         st.balloons()
 
 
