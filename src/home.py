@@ -15,7 +15,7 @@ from sklearn.ensemble import RandomForestRegressor, BaggingRegressor, GradientBo
 import xgboost as xgb # Regression ML Model
 
 # Import packages for Mondrian cross-conformal prediction
-from nonconformist.nc import NcFactory
+from nonconformist.nc import NcFactory, RegressionErrFunc, RegressorNc
 from nonconformist.cp import IcpRegressor
 from nonconformist.nc import AbsErrorErrFunc
 
@@ -590,13 +590,13 @@ with tab3:
 with tab4:
     
     st.subheader("What can we do next...🚧")
-    st.info("Initial data capture - better, more robust data sets, paid APIs")
+    st.info("Initial data capture - better, more robust data sets, time series data, paid APIs")
     st.info("Include attributes like `price_per_sq_ft`, `address`, `date_sold`, etc.")
+    st.info("Use conformal prediction to find the best ranked sore for price predictions")
     st.info("Blockchain implementation: By recording real estate data on a blockchain, we can create a transparent and immutable record of real estate transactions. This can help prevent fraud and corruption, as all transactions are publicly visible and cannot be altered after the fact.")
-    st.info("Mondrian cross-conformal prediction for non-time series data")
-    
-    
-    
+    st.info("Rental predictions based on bed, batha nd square footage")
+    st.write("Realestate portfolio creation and management for investors")
+    st.write("House price prediction based on sq footage price using time series")
     
 
     
