@@ -109,7 +109,7 @@ with tab1:
     st.subheader("U.S. Mainland data")
     
     ############### Define a dictionary to map states to U.S. mainland ###############
-    state = [" ", "Connecticut", "Delaware", "Maine", "Massachusetts", "New Hampshire", "New Jersey", "New York", "Pennsylvania", "Rhode Island", "Vermont", "West Virginia", "Wyoming"]
+    state = ["Connecticut", "Delaware", "Maine", "Massachusetts", "New Hampshire", "New Jersey", "New York", "Pennsylvania", "Rhode Island", "Vermont", "West Virginia", "Wyoming"]
     # Sort states alphabetically
     state.sort()
 
