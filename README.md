@@ -55,6 +55,7 @@ Real estate price predictor using Machine Learning models - U.S. Mainland, Puert
 ## Table of contents
 
 - [Objective](#objective)
+- [Conformal prediction analysis](#conformal-prediction-analysis)
 - [Preview](#preview)
 - [Environment setup](#environment-setup)
 - [Technologies](#technologies)
@@ -69,8 +70,24 @@ Real estate price predictor using Machine Learning models - U.S. Mainland, Puert
 [(Back to top)](#table-of-contents)
 
 The objective of this project is to predict the selling prices of houses for a real estate app. Static historical data was gathere from Kaggle, on past house sales, including the number of bedrooms, bathrooms, lot acre, house size and state or region in United States, along with the final selling price. 
-The purpose is to implement and deploy machine learning model(s) that can accurately predict the selling price of a house based on its features. Additionally, by using multiple machine learning models, the app evaluates the ML performance against scoring metrics, to provide the user the best ML option. 
-This project aims to help the company make informed decisions based on accurate predictions and improve their business outcomes.
+The purpose is to implement and deploy machine learning model(s) that can accurately predict the selling price of a house based on its features. Additionally, by using multiple machine learning models, the app evaluates the ML performance against scoring metrics, to provide the user the best ML option.
+
+
+
+## Conformal prediction analysis
+[(Back to top)](#table-of-contents)
+
+The CSV file contains real estate data with the following columns: house_size, bed, bath, acre_lot, and price. 
+Multiple machine learning models have been trained on the data using the `lazypredict` python package, which ranks models based on their performance against the RMSE scoring metric. The top regression models have been selected based on their RMSE scores, and may include models such as linear regression, random forest regression, or gradient boosting regression.
+Conformal prediction can be used with these top regression models to provide reliable and statistically sound estimates of the price of a new property based on its features. The non-conformity measure can be defined as the difference between the actual sale price and the predicted sale price based on the relevant features, and can be used to construct prediction regions that cover the true market value of a new property with a certain probability. This can help in assessing the uncertainty and risk associated with a particular property valuation, and provide valuable insights and confidence measures for real estate professionals and buyers.
+
+
+**What is Conformal Prediction Analysis?**
+
+Conformal prediction analysis is a Machine Learning framework that provides a way to assign confidence levels to individual predictions, based on a given level of significance. The basic idea is to use a portion of the available data to create a model, and then use the remaining data to test the model and generate predictions with associated confidence levels. By using multiple regression models and nonconformist, the performance of the models can be optimized and provided with confidence levels to each of the predictions.
+
+The `nonconformist` python package assigns a confidence level to each prediction based on the error rate and the desired level of significance.
+By selecting the model with the highest confidence level for each prediction, we are able to provide predictions with the highest confidence score using conformal predictions.
 
 
 
