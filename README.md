@@ -88,7 +88,7 @@ The purpose is to implement and deploy machine learning model(s) that can accura
 By using multiple regression models & scoring metrics via the [`lazypredict`](https://pypi.org/project/lazypredict/) python package, we first selected the top ML models results that were ranked based on their performance against `R^2` & `RMSE` scoring metrics, from `lazypredict` analysis.
 
 
-The `nonconformist` python package assigned a confidence level to each prediction based on the error rate and the desired level of significance (95%).
+After top ML model selection(s), the `nonconformist` python package assigned a confidence level to each prediction based on the error rate and the desired level of significance (95%).
 
 By selecting the model with the highest confidence level for each prediction, we were able to provide price predictions and then assess those predictions against the 95% price prediction confidence level.
 
