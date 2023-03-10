@@ -69,8 +69,9 @@ Real estate price predictor using Machine Learning models - U.S. Mainland, Puert
 ## Objective
 [(Back to top)](#table-of-contents)
 
-The objective of this project is to predict the selling prices of houses for a real estate app. Static historical data was gathere from Kaggle, on past house sales, including the number of bedrooms, bathrooms, lot acre, house size and state or region in United States, along with the final selling price. 
-The purpose is to implement and deploy machine learning model(s) that can accurately predict the selling price of a house based on its features. Additionally, by using multiple machine learning models, the app evaluates the ML performance against scoring metrics, to provide the user the best ML option.
+The objective of this project is to predict the selling prices of houses for a real estate app. Static historical data was gathered from Kaggle, on past house sales, including the number of `bed`, `bath`, `acre_lot`, `house_size` and `state` or region in United States, along with the final selling price. 
+
+The goal is to implement and deploy machine learning model(s) that can accurately predict the selling price of a house based on its features against the available `price`. Additionally, by using multiple machine learning models in conjunction with Conformal prediction analysis, the app evaluates the ML performance against scoring metrics, to provide the user with model `price_predictions` and then evaluate via conformal analysis to inform the user whether the prediced price has over 95% confidence level or not.
 
 
 
