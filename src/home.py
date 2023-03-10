@@ -37,25 +37,7 @@ st.set_page_config(page_title="Real estate price predictor",
 
 
 
-############### Load and Use local style.css file ###############
-def local_css(file_name):
-    """
-    Use a local style.css file.
-    """
-    with open(file_name) as f:
-        st.write(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-# load css file
-local_css("./style/style.css")
 
-
-
-############### Load data ###############
-def load_data(filename):
-    try:
-        return pd.read_csv(filename)
-    except:
-        logging.error(f"Cannot find {filename}")
-        st.error(f"Failed to load {filename}")
         
         
 
