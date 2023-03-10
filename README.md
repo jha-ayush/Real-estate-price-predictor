@@ -77,17 +77,20 @@ The purpose is to implement and deploy machine learning model(s) that can accura
 ## Conformal prediction analysis
 [(Back to top)](#table-of-contents)
 
-The CSV file contains real estate data with the following columns: house_size, bed, bath, acre_lot, and price. 
-Multiple machine learning models have been trained on the data using the `lazypredict` python package, which ranks models based on their performance against the RMSE scoring metric. The top regression models have been selected based on their RMSE scores, and may include models such as linear regression, random forest regression, or gradient boosting regression.
-Conformal prediction can be used with these top regression models to provide reliable and statistically sound estimates of the price of a new property based on its features. The non-conformity measure can be defined as the difference between the actual sale price and the predicted sale price based on the relevant features, and can be used to construct prediction regions that cover the true market value of a new property with a certain probability. This can help in assessing the uncertainty and risk associated with a particular property valuation, and provide valuable insights and confidence measures for real estate professionals and buyers.
-
 
 **What is Conformal Prediction Analysis?**
 
-Conformal prediction analysis is a Machine Learning framework that provides a way to assign confidence levels to individual predictions, based on a given level of significance. The basic idea is to use a portion of the available data to create a model, and then use the remaining data to test the model and generate predictions with associated confidence levels. By using multiple regression models and nonconformist, the performance of the models can be optimized and provided with confidence levels to each of the predictions.
+[Conformal prediction analysis](https://medium.com/low-code-for-advanced-data-science/conformal-prediction-theory-explained-14a35226df80) is a machine learning framework that provides a way to assign confidence levels to individual predictions, in our case - real-estate future prices, based on a given level of significance.
 
-The `nonconformist` python package assigns a confidence level to each prediction based on the error rate and the desired level of significance.
-By selecting the model with the highest confidence level for each prediction, we are able to provide predictions with the highest confidence score using conformal predictions.
+
+**How is Conformal Prediction Analysis used in this repo?**
+
+By using multiple regression models & scoring metrics via the [`lazypredict`](https://pypi.org/project/lazypredict/) python package, we first selected the top ML models results that were ranked based on their performance against `R^2` & `RMSE` scoring metrics, from `lazypredict` analysis.
+
+
+The `nonconformist` python package assigned a confidence level to each prediction based on the error rate and the desired level of significance (95%).
+
+By selecting the model with the highest confidence level for each prediction, we were able to provide price predictions and then assess those predictions against the 95% price prediction confidence level.
 
 
 
