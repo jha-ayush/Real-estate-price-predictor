@@ -116,10 +116,14 @@ By selecting the model with the highest confidence level for each prediction, we
 ## Deployment
 [(Back to top)](#table-of-contents)
 
+
+**Localhost**
+
 - In Terminal `cd` into cloned repo
 - `cd` to `src` directory where `home.py` file is located
 - `streamlit run home.py`
 - The app will run on `http://localhost:8501/`
+
 
 
 ## Contributors
