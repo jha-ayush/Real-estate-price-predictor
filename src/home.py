@@ -282,9 +282,9 @@ with tab1:
 
         ############### Check if any of the p-values are less than the significance level
         if (p_values < alpha).any():
-            st.write(f"<b>Prediction confidence at 95% significance level</b> - At least one coefficient is statistically significant. 🥳",unsafe_allow_html=True)
+            st.write(f"<b>Prediction confidence at 95% significance level</b> - At least one price prediction is statistically significant. 🥳",unsafe_allow_html=True)
         else:
-            st.write(f"<b>Prediction confidence at 95% significance level</b> - None of the coefficients are statistically significant. 👎",unsafe_allow_html=True)
+            st.write(f"<b>Prediction confidence at 95% significance level</b> - None of the price predictions are statistically significant. 👎",unsafe_allow_html=True)
 
             
         
@@ -445,9 +445,9 @@ with tab2:
 
         ############### Check if any of the p-values are less than the significance level
         if (p_values < alpha).any():
-            st.write(f"<b>Prediction confidence at 95% significance level</b> - At least one coefficient is statistically significant. 🥳",unsafe_allow_html=True)
+            st.write(f"<b>Prediction confidence at 95% significance level</b> - At least one price prediction is statistically significant. 🥳",unsafe_allow_html=True)
         else:
-            st.write(f"<b>Prediction confidence at 95% significance level</b> - None of the coefficients are statistically significant. 👎",unsafe_allow_html=True)
+            st.write(f"<b>Prediction confidence at 95% significance level</b> - None of the price predictions are statistically significant. 👎",unsafe_allow_html=True)
         
         
         
@@ -610,9 +610,9 @@ with tab3:
 
         ############### Check if any of the p-values are less than the significance level
         if (p_values < alpha).any():
-            st.write(f"<b>Prediction confidence at 95% significance level</b> - At least one coefficient is statistically significant. 🥳",unsafe_allow_html=True)
+            st.write(f"<b>Prediction confidence at 95% significance level</b> - At least one price prediction is statistically significant. 🥳",unsafe_allow_html=True)
         else:
-            st.write(f"<b>Prediction confidence at 95% significance level</b> - None of the coefficients are statistically significant. 👎",unsafe_allow_html=True)
+            st.write(f"<b>Prediction confidence at 95% significance level</b> - None of the price predictions are statistically significant. 👎",unsafe_allow_html=True)
         
         
         
